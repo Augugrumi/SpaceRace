@@ -1,7 +1,5 @@
 package com.spacerace.augugrumi.spacerace.intro;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
@@ -9,7 +7,6 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 import com.spacerace.augugrumi.spacerace.R;
-import com.spacerace.augugrumi.spacerace.intro.slides.SlideOneFragment;
 
 public class IntroActivity extends AppIntro {
 
@@ -24,11 +21,13 @@ public class IntroActivity extends AppIntro {
         SliderPage sliderPage1 = new SliderPage();
         sliderPage1.setTitle(getResources().getString(R.string.slide1Title));
         sliderPage1.setDescription(getResources().getString(R.string.slide2Subtitle));
+        sliderPage1.setImageDrawable(R.drawable.world);
         sliderPage1.setBgColor(getResources().getColor(R.color.slide1Bg));
 
         SliderPage sliderPage2 = new SliderPage();
         sliderPage2.setTitle(getResources().getString(R.string.slide2Title));
         sliderPage2.setDescription(getResources().getString(R.string.slide2Subtitle));
+        sliderPage2.setImageDrawable(R.drawable.treasurechest);
         sliderPage2.setBgColor(getResources().getColor(R.color.slide2Bg));
 
         SliderPage sliderPage3 = new SliderPage();
