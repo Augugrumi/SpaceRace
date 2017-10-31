@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Space Race</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="slide1Title">Prova</string>
+    <string name="slide1Subtitle">Slider fatta con un fragment a mannella</string>
 </resources>

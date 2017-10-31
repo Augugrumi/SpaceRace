@@ -1,0 +1,36 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Slide1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.spacerace.augugrumi.spacerace.intro.slides.SlideOneFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:id="@+id/slide1LLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/slide1Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10pt"
+            android:gravity="center"
+            android:text="@string/slide1Title"
+            android:textColor="#FFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/slide1Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5pt"
+            android:textColor="#FFFF"
+            android:text="@string/slide1Subtitle" />
+    </LinearLayout>
+
+</FrameLayout>
