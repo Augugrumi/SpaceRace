@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, IntroActivity.class);
             startActivity(intent);
 
-            prefs.edit().putBoolean("firstrun", false).commit();
+            //prefs.edit().putBoolean("firstrun", false).commit();
         }
     }
 }

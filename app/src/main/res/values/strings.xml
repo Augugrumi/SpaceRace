@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Space Race</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="slide1Title">Prova</string>
-    <string name="slide1Subtitle">Slider fatta con un fragment a mannella</string>
+    <string name="slide1Title">Padova Space Week</string>
+    <string name="slide1Subtitle">Esplora gli spazi di Padova legati all\'astronomia</string>
+
+    <string name="slide2Title">Caccia al tesoro</string>
+    <string name="slide2Subtitle">Trova i luoghi disseminati per Padova risolvendo gli indovinelli</string>
+
+    <string name="slide3Title">Sfida i tuoi amici!</string>
+    <string name="slide3Subtitle">Competi con i tuoi amici e vinci la sfida!</string>
+
 </resources>

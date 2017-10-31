@@ -19,21 +19,31 @@ public class IntroActivity extends AppIntro {
         super.onCreate(savedInstanceState);
 
         // In order to add slides as fragments
-        addSlide(new SlideOneFragment());
+        //addSlide(new SlideOneFragment());
 
         SliderPage sliderPage1 = new SliderPage();
-        sliderPage1.setTitle("Boh");
-        sliderPage1.setDescription("Slide fatta col builder della libreria");
-        sliderPage1.setBgColor(getResources().getColor(R.color.slide2Bg));
+        sliderPage1.setTitle(getResources().getString(R.string.slide1Title));
+        sliderPage1.setDescription(getResources().getString(R.string.slide2Subtitle));
+        sliderPage1.setBgColor(getResources().getColor(R.color.slide1Bg));
+
+        SliderPage sliderPage2 = new SliderPage();
+        sliderPage2.setTitle(getResources().getString(R.string.slide2Title));
+        sliderPage2.setDescription(getResources().getString(R.string.slide2Subtitle));
+        sliderPage2.setBgColor(getResources().getColor(R.color.slide2Bg));
+
+        SliderPage sliderPage3 = new SliderPage();
+        sliderPage3.setTitle(getResources().getString(R.string.slide3Title));
+        sliderPage3.setDescription(getResources().getString(R.string.slide3Subtitle));
+        sliderPage3.setBgColor(getResources().getColor(R.color.slide3Bg));
+
+
         addSlide(AppIntroFragment.newInstance(sliderPage1));
-
-
-        //setBarColor(Color.parseColor("#3F51B5"));
-        //setSeparatorColor(Color.parseColor("#2196F3"));
+        addSlide(AppIntroFragment.newInstance(sliderPage2));
+        addSlide(AppIntroFragment.newInstance(sliderPage3));
 
         showSkipButton(false);
         setProgressButtonEnabled(true);
-
+        showStatusBar(false);
         setVibrate(false);
 
     }

@@ -9,5 +9,8 @@
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#BDBDBD</color>
 
-    <color name="slide2Bg">#00796B</color>
+    <color name="slide1Bg">#00796B</color>
+    <color name="slide2Bg">#FF9800</color>
+    <color name="slide3Bg">#388E3C</color>
+
 </resources>
