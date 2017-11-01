@@ -31,12 +31,15 @@ dependencies {
     compile 'com.github.apl-devs:appintro:v4.2.2'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
 
-    // UI
+    // UI Helpers
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Play services
     compile 'com.google.android.gms:play-services-auth:11.4.2'
     compile 'com.google.android.gms:play-services-games:11.4.2'
-    
+
+
+    // Main activity UI
+    compile 'nl.psdcompany:duo-navigation-drawer:2.0.6'
 }
