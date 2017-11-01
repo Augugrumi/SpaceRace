@@ -7,6 +7,7 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 import com.spacerace.augugrumi.spacerace.R;
+import com.spacerace.augugrumi.spacerace.intro.slides.SlideOneFragment;
 
 public class IntroActivity extends AppIntro {
 
@@ -16,13 +17,7 @@ public class IntroActivity extends AppIntro {
         super.onCreate(savedInstanceState);
 
         // In order to add slides as fragments
-        //addSlide(new SlideOneFragment());
-
-        SliderPage sliderPage1 = new SliderPage();
-        sliderPage1.setTitle(getResources().getString(R.string.slide1Title));
-        sliderPage1.setDescription(getResources().getString(R.string.slide1Subtitle));
-        sliderPage1.setImageDrawable(R.drawable.world);
-        sliderPage1.setBgColor(getResources().getColor(R.color.slide1Bg));
+        addSlide(new SlideOneFragment());
 
         SliderPage sliderPage2 = new SliderPage();
         sliderPage2.setTitle(getResources().getString(R.string.slide2Title));
@@ -35,11 +30,10 @@ public class IntroActivity extends AppIntro {
         sliderPage3.setDescription(getResources().getString(R.string.slide3Subtitle));
         sliderPage3.setBgColor(getResources().getColor(R.color.slide3Bg));
 
-
-        addSlide(AppIntroFragment.newInstance(sliderPage1));
         addSlide(AppIntroFragment.newInstance(sliderPage2));
         addSlide(AppIntroFragment.newInstance(sliderPage3));
 
+        showSeparator(false);
         showSkipButton(false);
         setProgressButtonEnabled(true);
         showStatusBar(false);
