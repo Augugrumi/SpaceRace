@@ -49,7 +49,7 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:id="@+id/playButton"
             android:layout_margin="15dp"
             android:layout_width="wrap_content"
@@ -57,8 +57,7 @@
             android:layout_gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            tools:ignore="ContentDescription"
-            android:text="Accedi"/>
+            tools:ignore="ContentDescription"/>
 
         <TextView
             android:id="@+id/description"

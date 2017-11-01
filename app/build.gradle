@@ -27,9 +27,16 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    // Slides
     compile 'com.github.apl-devs:appintro:v4.2.2'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
 
+    // UI
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
+
+    // Play services
+    compile 'com.google.android.gms:play-services-auth:11.4.2'
+    compile 'com.google.android.gms:play-services-games:11.4.2'
+    
 }

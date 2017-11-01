@@ -8,9 +8,9 @@
     <string name="slide2Subtitle">Trova indizzi e risolvi indovinelli per trovare la tua meta</string>
 
     <string name="slide3Title">Sfida i tuoi amici!</string>
-    <string name="slide3Subtitle">Competi vinci!</string>
+    <string name="slide3Subtitle">Accedi con Google per competere e vincere!</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="warningSlider3Title">Errore login</string>
+    <string name="warningSlider3SubTitle">Qualcosa è andato storto durante il login</string>
 </resources>
