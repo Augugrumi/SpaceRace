@@ -20,7 +20,7 @@ public class IntroActivity extends AppIntro {
 
         SliderPage sliderPage1 = new SliderPage();
         sliderPage1.setTitle(getResources().getString(R.string.slide1Title));
-        sliderPage1.setDescription(getResources().getString(R.string.slide2Subtitle));
+        sliderPage1.setDescription(getResources().getString(R.string.slide1Subtitle));
         sliderPage1.setImageDrawable(R.drawable.world);
         sliderPage1.setBgColor(getResources().getColor(R.color.slide1Bg));
 
