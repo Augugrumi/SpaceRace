@@ -16,28 +16,30 @@ public class IntroActivity extends AppIntro {
 
         super.onCreate(savedInstanceState);
 
-        // In order to add slides as fragments
-        addSlide(new SlideOneFragment());
-
+        // Slides creation
         SliderPage sliderPage2 = new SliderPage();
         sliderPage2.setTitle(getResources().getString(R.string.slide2Title));
         sliderPage2.setDescription(getResources().getString(R.string.slide2Subtitle));
         sliderPage2.setImageDrawable(R.drawable.treasurechest);
-        sliderPage2.setBgColor(getResources().getColor(R.color.slide2Bg));
+        sliderPage2.setBgColor(getResources().getColor(R.color.slide2BgDark));
 
         SliderPage sliderPage3 = new SliderPage();
         sliderPage3.setTitle(getResources().getString(R.string.slide3Title));
         sliderPage3.setDescription(getResources().getString(R.string.slide3Subtitle));
-        sliderPage3.setBgColor(getResources().getColor(R.color.slide3Bg));
+        sliderPage3.setBgColor(getResources().getColor(R.color.slide3BgPlayGames));
 
+        // Including slides...
+        addSlide(new SlideOneFragment());
         addSlide(AppIntroFragment.newInstance(sliderPage2));
         addSlide(AppIntroFragment.newInstance(sliderPage3));
 
+        // Slider configuration
         showSeparator(false);
         showSkipButton(false);
         setProgressButtonEnabled(true);
         showStatusBar(false);
         setVibrate(false);
+        setDepthAnimation();
 
     }
 

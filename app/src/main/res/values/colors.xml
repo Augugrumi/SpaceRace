@@ -11,6 +11,8 @@
 
     <color name="slide1Bg">#181844</color>
     <color name="slide2Bg">#FBC02D</color>
+    <color name="slide2BgDark">#F57F17</color>
     <color name="slide3Bg">#388E3C</color>
+    <color name="slide3BgPlayGames">#0d733b</color>
 
 </resources>
