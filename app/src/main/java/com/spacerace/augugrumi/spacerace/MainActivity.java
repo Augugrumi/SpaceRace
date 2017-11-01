@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_intro);
+        setContentView(R.layout.activity_main);
 
         prefs = getSharedPreferences("com.spacerace.augugrumi", MODE_PRIVATE);
     }
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, IntroActivity.class);
             startActivity(intent);
 
-            //prefs.edit().putBoolean("firstrun", false).commit();
+            prefs.edit().putBoolean("firstrun", false).apply();
         }
     }
 }
