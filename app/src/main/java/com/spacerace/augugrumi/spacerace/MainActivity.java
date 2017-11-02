@@ -7,15 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.spacerace.augugrumi.spacerace.intro.IntroActivity;
+import com.spacerace.augugrumi.spacerace.utility.SharedPreferencesManager;
 
 public class MainActivity extends AppCompatActivity {
-
-    SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         prefs = getSharedPreferences("com.spacerace.augugrumi", MODE_PRIVATE);
@@ -25,14 +23,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (prefs.getBoolean("firstrun", true)) {
+        if (!SharedPreferencesManager.getFirstApplicationRun()) {
 
             Log.d("INTRO", "First run detected, launching sliders...");
 
             Intent intent = new Intent(MainActivity.this, IntroActivity.class);
             startActivity(intent);
 
-            prefs.edit().putBoolean("firstrun", false).apply();
+            SharedPreferencesManager.setFirstApplicationRun(true);
         }
     }
 }
