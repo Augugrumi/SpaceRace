@@ -10,15 +10,13 @@ import android.util.Log;
  * date 01/11/17
  */
 
-public class MyApplication extends Application {
+public class SpaceRace extends Application {
 
     private static Context instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        Log.d("SHARED", "SI VOLA");
 
         instance = this;
     }
