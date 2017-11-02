@@ -1,4 +1,4 @@
-package com.spacerace.augugrumi.spacerace;
+package com.augugrumi.spacerace;
 
 import org.junit.Test;
 

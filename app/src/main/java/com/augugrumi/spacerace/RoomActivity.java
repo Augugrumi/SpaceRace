@@ -1,4 +1,4 @@
-package com.spacerace.augugrumi.spacerace;
+package com.augugrumi.spacerace;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
-import com.spacerace.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
+import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

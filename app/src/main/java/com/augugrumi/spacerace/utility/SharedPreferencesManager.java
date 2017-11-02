@@ -1,10 +1,10 @@
-package com.spacerace.augugrumi.spacerace.utility;
+package com.augugrumi.spacerace.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.spacerace.augugrumi.spacerace.SpaceRace;
+import com.augugrumi.spacerace.SpaceRace;
 
 
 /**
@@ -15,7 +15,7 @@ import com.spacerace.augugrumi.spacerace.SpaceRace;
 
 public class SharedPreferencesManager {
 
-    private static final String SHARED_PREFERENCES_FILE = "com.spacerace.augugrumi";
+    private static final String SHARED_PREFERENCES_FILE = "com.augugrumi";
     private static final String FIRST_RUN = "first_application_run";
 
     public static boolean getFirstApplicationRun() {

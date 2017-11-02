@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.spacerace.augugrumi.spacerace.utility.gameutility;
+package com.augugrumi.spacerace.utility.gameutility;
 
 import android.content.Intent;
 import android.os.Bundle;

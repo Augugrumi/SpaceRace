@@ -1,12 +1,12 @@
-package com.spacerace.augugrumi.spacerace;
+package com.augugrumi.spacerace;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.spacerace.augugrumi.spacerace.intro.IntroActivity;
-import com.spacerace.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.augugrumi.spacerace.intro.IntroActivity;
+import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 
 public class MainActivity extends AppCompatActivity {
 

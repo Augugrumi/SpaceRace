@@ -1,4 +1,4 @@
-package com.spacerace.augugrumi.spacerace.utility.gameutility;
+package com.augugrumi.spacerace.utility.gameutility;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.games.GamesActivityResultCodes;
-import com.spacerace.augugrumi.spacerace.R;
+import com.augugrumi.spacerace.R;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,4 +1,4 @@
-package com.spacerace.augugrumi.spacerace.intro;
+package com.augugrumi.spacerace.intro;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.os.Bundle;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
-import com.spacerace.augugrumi.spacerace.R;
-import com.spacerace.augugrumi.spacerace.intro.slides.PlayGamesSlideFragment;
-import com.spacerace.augugrumi.spacerace.intro.slides.SlideOneFragment;
+import com.augugrumi.spacerace.R;
+import com.augugrumi.spacerace.intro.slides.PlayGamesSlideFragment;
+import com.augugrumi.spacerace.intro.slides.SlideOneFragment;
 
 public class IntroActivity extends AppIntro {
 

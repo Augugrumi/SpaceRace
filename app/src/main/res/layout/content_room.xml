@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.spacerace.augugrumi.spacerace.RoomActivity"
+    tools:context="com.augugrumi.spacerace.RoomActivity"
     tools:showIn="@layout/activity_room">
 
 </android.support.constraint.ConstraintLayout>

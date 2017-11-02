@@ -1,4 +1,4 @@
-package com.spacerace.augugrumi.spacerace.utility.gameutility;
+package com.augugrumi.spacerace.utility.gameutility;
 
 import android.app.Activity;
 import android.app.AlertDialog;

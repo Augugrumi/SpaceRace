@@ -1,23 +1,16 @@
-package com.spacerace.augugrumi.spacerace.intro.slides;
+package com.augugrumi.spacerace.intro.slides;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.games.Games;
-import com.spacerace.augugrumi.spacerace.R;
-import com.spacerace.augugrumi.spacerace.SpaceRace;
+import com.augugrumi.spacerace.R;
+import com.augugrumi.spacerace.SpaceRace;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

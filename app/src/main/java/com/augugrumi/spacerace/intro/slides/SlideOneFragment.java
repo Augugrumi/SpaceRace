@@ -1,4 +1,4 @@
-package com.spacerace.augugrumi.spacerace.intro.slides;
+package com.augugrumi.spacerace.intro.slides;
 
 
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.spacerace.augugrumi.spacerace.R;
+import com.augugrumi.spacerace.R;
 
 /**
  * A simple {@link Fragment} subclass.
