@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
             SharedPreferencesManager.setFirstApplicationRun(true);
+        } else {
+            /*Intent intent = new Intent(MainActivity.this, RoomActivity.class);
+            startActivity(intent);*/
         }
     }
 }
