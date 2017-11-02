@@ -2,6 +2,7 @@ package com.spacerace.augugrumi.spacerace;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 /**
  * @author Marco Zanella
@@ -16,6 +17,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.d("SHARED", "SI VOLA");
+
         instance = this;
     }
 
