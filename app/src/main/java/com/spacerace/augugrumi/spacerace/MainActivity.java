@@ -14,7 +14,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro);
+        setContentView(R.layout.activity_main);
+
+        prefs = getSharedPreferences("com.spacerace.augugrumi", MODE_PRIVATE);
     }
 
     @Override
