@@ -1,10 +1,10 @@
 package com.augugrumi.spacerace;
 
-import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -30,13 +30,26 @@ public class SpaceRace extends Application {
         instance = this;
 
         gAPIClient = new GoogleApiClient.Builder(instance)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        Log.d("INTRO", "Connected to Google Play Games");
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                        Log.d("INTRO", "Connection to Google Play Games suspended");
+                    }
+                })
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-                        Log.d("INTRO", "Something went wrong with Google Play Games connection...");
+                        Log.d("INTRO", "Something went wrong with Google Play Games connection...\n" +
+                                connectionResult.toString());
 
-                        new AlertDialog.Builder(instance)
+                        /*new AlertDialog.Builder(instance)
                                 .setTitle(getResources().getText(R.string.warningSlider3Title))
                                 .setMessage(getResources().getText(R.string.warningSlider3SubTitle))
                                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -47,7 +60,7 @@ public class SpaceRace extends Application {
                                         // Nothing?
                                     }
                                 })
-                                .show();
+                                .show();*/
                     }
                 })
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)

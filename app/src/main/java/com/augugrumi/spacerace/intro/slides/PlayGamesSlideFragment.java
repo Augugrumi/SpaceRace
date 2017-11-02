@@ -3,6 +3,7 @@ package com.augugrumi.spacerace.intro.slides;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,10 +49,17 @@ public class PlayGamesSlideFragment extends Fragment {
         gPlaySignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (gAPIClient != null && gAPIClient.isConnected()) {
-                    gAPIClient.clearDefaultAccountAndReconnect();
+                if (gAPIClient != null) {
+
+                    Log.d("INTRO", "gAPIClient is not null, performing sign in");
+
+                    if (gAPIClient.isConnected()) {
+                        gAPIClient.clearDefaultAccountAndReconnect();
+                    }
+                    gAPIClient.connect();
+                } else {
+                    Log.d("INTRO", "gAPIClient is null, not performing sign in");
                 }
-                gAPIClient.connect();
             }
         });
 

@@ -26,6 +26,9 @@
             android:name=".RoomActivity"
             android:label="@string/title_activity_room"
             android:theme="@style/AppTheme"></activity>
+
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
     </application>
 
 </manifest>
