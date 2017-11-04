@@ -1,5 +1,6 @@
 package com.augugrumi.spacerace;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 9001;
+    private ProgressDialog mProgressDialog;
 
     @BindView(R.id.main_activity)
     View myView;
@@ -78,23 +82,39 @@ public class MainActivity extends AppCompatActivity implements
         if (!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
         }
-        //mGoogleApiClient.clearDefaultAccountAndReconnect();
-        // [END build_client]
 
-        // [START customize_button]
-        // Set the dimensions of the sign-in button.
+    }
 
-        // [END customize_button]
+    @Override
+    public void onStart() {
+        super.onStart();
 
-
-            /*Intent intent = new Intent(MainActivity.this, RoomActivity.class);
-            startActivity(intent);*/
-        //}
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d("INTRO", "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        hideProgressDialog();
 
         if (!SharedPreferencesManager.getFirstApplicationRun()) {
 
@@ -135,6 +155,22 @@ public class MainActivity extends AppCompatActivity implements
             Log.i("INTRO", acct.getDisplayName());
         } else {
             Log.i("INTRO", "account not connected");
+        }
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Loading");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
         }
     }
 }
