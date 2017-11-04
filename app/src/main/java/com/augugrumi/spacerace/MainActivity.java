@@ -11,7 +11,9 @@ import android.view.View;
 import com.augugrumi.spacerace.intro.IntroActivity;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
@@ -22,6 +24,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
+
+    private static final int RC_SIGN_IN = 9001;
 
     @BindView(R.id.main_activity)
     View myView;
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements
                 .addApi(Drive.API)//.addScope(Drive.SCOPE_APPFOLDER)
                 .build();
 
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
 
         if (!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
@@ -106,5 +112,29 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d("INTRO", "onConnectionFailed:" + connectionResult);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+    // [END onActivityResult]
+
+    // [START handleSignInResult]
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("INTRO", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Log.i("INTRO", acct.getDisplayName());
+        } else {
+            Log.i("INTRO", "account not connected");
+        }
     }
 }
