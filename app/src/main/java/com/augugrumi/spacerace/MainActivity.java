@@ -18,13 +18,11 @@ import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
@@ -95,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
 
     private int mCurScreen = -1;
+
+    private boolean backOnNewMatch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,9 +294,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
     }
-    // [END onActivityResult]
 
-    // [START handleSignInResult]
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d("INTRO", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -333,19 +331,20 @@ public class MainActivity extends AppCompatActivity implements
 
     @OnClick(R.id.new_match)
     public void onClickNewMatch(View view) {
+        backOnNewMatch = true;
         Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 1);
         startActivityForResult(intent, RC_SELECT_PLAYERS);
-
+        switchToScreen(R.id.screen_wait);
     }
 
-    //TODO change -> only debug purposes
     @OnClick(R.id.join)
     public void onClickJoin(View view) {
-        Intent intent = new Intent(MainActivity.this, RoomActivity.class);
-        startActivity(intent);
+        backOnNewMatch = true;
+        Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
+        switchToScreen(R.id.screen_wait);
+        startActivityForResult(intent, RC_INVITATION_INBOX);
+        switchToScreen(R.id.screen_main);
     }
-
-
 
     @Override
     public void onInvitationReceived(Invitation invitation) {
@@ -366,9 +365,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onRealTimeMessageReceived(RealTimeMessage realTimeMessage) {
-
-    }
+    public void onRealTimeMessageReceived(RealTimeMessage realTimeMessage) {}
 
     @Override
     public void onRoomConnecting(Room room) {
@@ -428,14 +425,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onP2PConnected(String s) {
-        //Nothing to do?
-    }
+    public void onP2PConnected(String s) {/*Nothing to do?*/}
 
     @Override
-    public void onP2PDisconnected(String s) {
-        //Nothing to do?
-    }
+    public void onP2PDisconnected(String s) {/*Nothing to do?*/}
 
     @Override
     public void onRoomCreated(int statusCode, Room room) {
@@ -446,6 +439,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             mRoomId = room.getRoomId();
             showWaitingRoom(room);
+            switchToScreen(R.id.screen_main);
         }
     }
 
@@ -461,9 +455,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLeftRoom(int i, String s) {
-        //Nothing to do?
-    }
+    public void onLeftRoom(int i, String s) {/*Nothing to do?*/}
 
     @Override
     public void onRoomConnected(int statusCode, Room room) {
@@ -473,39 +465,6 @@ public class MainActivity extends AppCompatActivity implements
             return;
         } else {
             updateRoom(room);
-        }
-    }
-
-    private void setUpGoogleApi() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(Games.SCOPE_GAMES, Drive.SCOPE_APPFOLDER)
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle) {
-                        Log.d("INTRO", "onConnected");
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int i) {
-                        Log.d("INTRO", "OnConnectionSuspended");
-                    }
-                })
-                .addApi(Games.API)//.addScope(Games.SCOPE_GAMES)
-                .addApi(Drive.API)//.addScope(Drive.SCOPE_APPFOLDER)
-                .build();
-
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-
-        if (!mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.connect();
-            SpaceRace.setgAPIClient(mGoogleApiClient);
         }
     }
 
@@ -535,5 +494,10 @@ public class MainActivity extends AppCompatActivity implements
             showInvPopup = (mCurScreen == R.id.screen_main || mCurScreen == R.id.screen_game);
         }
         findViewById(R.id.invitation_popup).setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
