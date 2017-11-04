@@ -1,14 +1,13 @@
 package com.augugrumi.spacerace.intro;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
+import com.augugrumi.spacerace.R;
+import com.augugrumi.spacerace.intro.slides.SlideOneFragment;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
-import com.augugrumi.spacerace.R;
-import com.augugrumi.spacerace.intro.slides.PlayGamesSlideFragment;
-import com.augugrumi.spacerace.intro.slides.SlideOneFragment;
 
 public class IntroActivity extends AppIntro {
 
@@ -24,10 +23,19 @@ public class IntroActivity extends AppIntro {
         sliderPage2.setImageDrawable(R.drawable.treasurechest);
         sliderPage2.setBgColor(getResources().getColor(R.color.slide2BgDark));
 
+        // Slides creation
+        SliderPage sliderPage3 = new SliderPage();
+        sliderPage3.setTitle(getResources().getString(R.string.slide3Title));
+        sliderPage3.setDescription(getResources().getString(R.string.slide3Subtitle));
+        sliderPage3.setImageDrawable(R.drawable.crossedswords);
+        sliderPage3.setBgColor(getResources().getColor(R.color.slide3Bg));
+
+
+
         // Including slides...
         addSlide(new SlideOneFragment());
         addSlide(AppIntroFragment.newInstance(sliderPage2));
-        addSlide(new PlayGamesSlideFragment());
+        addSlide(AppIntroFragment.newInstance(sliderPage3));
 
         // Slider configuration
         showSeparator(false);

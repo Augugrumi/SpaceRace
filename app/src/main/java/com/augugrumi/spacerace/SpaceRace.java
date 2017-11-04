@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
@@ -29,11 +30,20 @@ public class SpaceRace extends Application {
 
         instance = this;
 
+        // [START configure_signin]
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // [END configure_signin]
+
         gAPIClient = new GoogleApiClient.Builder(instance)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(@Nullable Bundle bundle) {
                         Log.d("INTRO", "Connected to Google Play Games");
+
                     }
 
                     @Override
@@ -65,6 +75,7 @@ public class SpaceRace extends Application {
                 })
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
+                //.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
     }
