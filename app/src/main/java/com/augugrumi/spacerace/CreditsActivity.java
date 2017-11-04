@@ -32,14 +32,14 @@ public class CreditsActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.facebook)
-    public void goOnGhiocaFacebookPage() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/Ghio-Ca-297296710681639/"));
+    public void goOnFacebookPage() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com"));
         startActivity(browserIntent);
     }
 
-    /*@OnClick(R.id.github)
-    public void goOnGhiocaGithubPage() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Augugrumi/ghioca"));
+    @OnClick(R.id.github)
+    public void goOnGithubPage() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Augugrumi"));
         startActivity(browserIntent);
-    }*/
+    }
 }
