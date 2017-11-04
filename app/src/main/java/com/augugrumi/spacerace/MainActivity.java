@@ -1,5 +1,6 @@
 package com.augugrumi.spacerace;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
@@ -31,6 +33,7 @@ import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final int RC_SIGN_IN = 9001;
     final static int RC_WAITING_ROOM = 10002;
+    final static int RC_SELECT_PLAYERS = 10000;
+
 
     private ProgressDialog mProgressDialog;
 
@@ -118,7 +123,46 @@ public class MainActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+        } else if (requestCode == RC_SELECT_PLAYERS) {
+            if (resultCode != Activity.RESULT_OK) {
+                // user canceled
+                return;
+            }
+
+            // get the invitee list
+            Bundle extras = data.getExtras();
+            final ArrayList<String> invitees =
+                    data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+
+            // get auto-match criteria
+            Bundle autoMatchCriteria = null;
+            int minAutoMatchPlayers =
+                    data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+            int maxAutoMatchPlayers =
+                    data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+
+            if (minAutoMatchPlayers > 0) {
+                autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
+                        minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+            } else {
+                autoMatchCriteria = null;
+            }
+
+            // create the room and specify a variant if appropriate
+            RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(this)
+                    .setMessageReceivedListener(this)
+                    .setRoomStatusUpdateListener(this);
+            roomConfigBuilder.addPlayersToInvite(invitees);
+            if (autoMatchCriteria != null) {
+                roomConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+            }
+            RoomConfig roomConfig = roomConfigBuilder.build();
+            Games.RealTimeMultiplayer.create(mGoogleApiClient, roomConfig);
+
+            // prevent screen from sleeping during handshake
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+
     }
     // [END onActivityResult]
 
@@ -159,18 +203,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @OnClick(R.id.new_match)
     public void onClickNewMatch(View view) {
-        /*Intent i = new Intent(MainActivity.this, RoomActivity.class);
-        startActivity(i);
-        finish();*/
-        final int MIN_OPPONENTS = 1, MAX_OPPONENTS = 1;
-        Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(MIN_OPPONENTS, MAX_OPPONENTS, 0);
-        RoomConfig.Builder rtmConfigBuilder = RoomConfig.builder(this)
-                .setMessageReceivedListener(this)
-                .setRoomStatusUpdateListener(this)
-                .setAutoMatchCriteria(autoMatchCriteria);
-        //findViewById(R.id.invitation_popup).setVisibility(View.VISIBLE);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Games.RealTimeMultiplayer.create(mGoogleApiClient, rtmConfigBuilder.build());
+        Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 1);
+        startActivityForResult(intent, RC_SELECT_PLAYERS);
+
     }
 
 
