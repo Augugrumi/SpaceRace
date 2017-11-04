@@ -88,4 +88,8 @@ public class SpaceRace extends Application {
         return gAPIClient;
     }
 
+    public static void setgAPIClient(GoogleApiClient client) {
+        SpaceRace.gAPIClient = client;
+    }
+
 }

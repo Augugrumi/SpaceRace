@@ -117,11 +117,6 @@ public class RoomActivity extends Activity
                 .addOnConnectionFailedListener(this)
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .build();
-
-        // set up a click listener for everything we care about
-        for (int id : CLICKABLES) {
-            findViewById(id).setOnClickListener(this);
-        }
     }
 
     @Override
@@ -199,7 +194,7 @@ public class RoomActivity extends Activity
         switchToScreen(R.id.screen_wait);
         keepScreenOn();
         resetGameVars();
-        Games.RealTimeMultiplayer.create(mGoogleApiClient, rtmConfigBuilder.build());
+        Games.RealTimeMultiplayer.create(SpaceRace.getgAPIClient(), rtmConfigBuilder.build());
     }
 
     @Override

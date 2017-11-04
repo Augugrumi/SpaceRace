@@ -42,4 +42,11 @@ public class CreditsActivity extends AppCompatActivity {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Augugrumi"));
         startActivity(browserIntent);
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(CreditsActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
 }
