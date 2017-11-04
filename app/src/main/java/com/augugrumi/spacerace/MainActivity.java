@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.augugrumi.spacerace.intro.IntroActivity;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
@@ -24,6 +25,7 @@ import com.google.android.gms.games.Games;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -82,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements
         if (!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
         }
-
     }
 
     @Override
@@ -172,5 +173,12 @@ public class MainActivity extends AppCompatActivity implements
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
         }
+    }
+
+    @OnClick(R.id.credits)
+    public void onClickCredits(View view) {
+        Intent i = new Intent(MainActivity.this, CreditsActivity.class);
+        startActivity(i);
+        finish();
     }
 }

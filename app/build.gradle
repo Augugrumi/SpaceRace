@@ -44,7 +44,11 @@ dependencies {
 
     // Main activity UI
     compile 'nl.psdcompany:duo-navigation-drawer:2.0.6'
+
+    //buttons
+    compile 'com.github.championswimmer:Android-SocialButtons:1.0'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

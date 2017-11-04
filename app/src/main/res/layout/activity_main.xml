@@ -16,4 +16,34 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/app_name"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/new_match"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_match" />
+
+        <Button
+            android:id="@+id/join"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/join_existing_match" />
+
+        <Button
+            android:id="@+id/highscores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/high_scores" />
+
+        <Button
+            android:id="@+id/credits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/credits" />
+    </LinearLayout>
+
 </LinearLayout>

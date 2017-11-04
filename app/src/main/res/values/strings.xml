@@ -49,4 +49,17 @@
     <string name="license_failed">License check failed.</string>
     <string name="unknown_error">Unknown error.</string>
     <string name="title_activity_sign_in">SignInActivity</string>
+
+    <!--main activity buttons-->
+    <string name="new_match">Create new match</string>
+    <string name="join_existing_match">Join existing match</string>
+    <string name="high_scores">High scores</string>
+    <string name="credits">Credits</string>
+    <string name="title_activity_credits">CreditsActivity</string>
+
+    <!--credits activity-->
+    <string name="augugrumi_team" translatable="false">Augugrumi team</string>
+    <string name="find_proj">You can find us on</string>
+    <string name="creators" translatable="false">Davide Polonio\nFederico Tavella\nMarco Zanella</string>
+
 </resources>
