@@ -339,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @OnClick(R.id.join)
     public void onClickJoin(View view) {
+        findViewById(R.id.invitation_popup).setVisibility(View.GONE);
         backOnNewMatch = true;
         Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
         switchToScreen(R.id.screen_wait);
