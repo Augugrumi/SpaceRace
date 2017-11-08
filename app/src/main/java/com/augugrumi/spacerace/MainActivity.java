@@ -501,4 +501,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    @OnClick(R.id.debug_btn)
+    public void onClickSeeMap(View view) {
+        Intent i = new Intent(MainActivity.this, MapActivity.class);
+        startActivity(i);
+    }
 }
