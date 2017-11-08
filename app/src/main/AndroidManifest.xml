@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.augugrumi.spacerace">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".SpaceRace"
         android:allowBackup="true"
@@ -34,7 +36,14 @@
         <activity
             android:name=".CreditsActivity"
             android:label="@string/title_activity_credits"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map"
             android:theme="@style/AppTheme"></activity>
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
     </application>
 
 </manifest>

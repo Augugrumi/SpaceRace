@@ -30,6 +30,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
 
@@ -282,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(LocationServices.API)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -308,5 +310,11 @@ public class MainActivity extends AppCompatActivity implements
             mGoogleApiClient.connect();
             SpaceRace.setgAPIClient(mGoogleApiClient);
         }
+    }
+
+    @OnClick(R.id.debug_btn)
+    public void onClickSeeMap(View view) {
+        Intent i = new Intent(MainActivity.this, MapActivity.class);
+        startActivity(i);
     }
 }
