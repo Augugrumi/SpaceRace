@@ -31,17 +31,11 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -68,7 +62,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 2000;
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -83,16 +77,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
 
     private GoogleMap map;
-    /*
-    map.addPolyline(new PolylineOptions()
-                .add(new LatLng(mLastKnownLocation.getLatitude(),
-                        mLastKnownLocation.getLongitude()),
-                     new LatLng(location.getLatitude(),
-                        location.getLongitude()))
-                .width(5)
-                .color(Color.RED));
-        mLastKnownLocation = location;
-     */
 
     /**
      * Provides access to the Fused Location Provider API.
@@ -138,15 +122,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private String mLastUpdateTime;
 
 
-    private boolean mLocationPermissionGranted = false;
-    private LatLng mDefaultLocation = new LatLng(45.406389, 11.877778);
-    private PlaceDetectionClient mPlaceDetectionClient;
-    private String [] mLikelyPlaceNames;
-    private String [] mLikelyPlaceAddresses;
-    private String [] mLikelyPlaceAttributions;
-    private LatLng [] mLikelyPlaceLatLngs;
+    private boolean mLocationPermissionGranted;
+    private boolean isLocationEnabled;
 
-    private static final int M_MAX_ENTRIES = 50;
+    private LatLng mDefaultLocation = new LatLng(45.406389, 11.877778);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,17 +147,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mSettingsClient = LocationServices.getSettingsClient(this);
 
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-
         // Kick off the process of building the LocationCallback, LocationRequest, and
         // LocationSettingsRequest objects.
         createLocationCallback();
         createLocationRequest();
         buildLocationSettingsRequest();
 
-        startLocationUpdates();
+        isLocationEnabled = false;
 
-        requestPermissions();
+        mLocationPermissionGranted = checkPermissions();
+        if(!mLocationPermissionGranted) {
+            requestPermissions();
+        } else {
+            startLocationUpdates();
+        }
     }
 
     /**
@@ -207,7 +189,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             if (savedInstanceState.keySet().contains(KEY_LAST_UPDATED_TIME_STRING)) {
                 mLastUpdateTime = savedInstanceState.getString(KEY_LAST_UPDATED_TIME_STRING);
             }
-            updateUI();
+            updateUI(null);
         }
     }
 
@@ -248,24 +230,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onLocationResult(final LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mCurrentLocation != null) {
-                            map.addPolyline(new PolylineOptions()
-                                    .add(new LatLng(mCurrentLocation.getLatitude(),
-                                                    mCurrentLocation.getLongitude()),
-                                            new LatLng(locationResult.getLastLocation().getLatitude(),
-                                                    locationResult.getLastLocation().getLongitude()))
-                                    .width(5)
-                                    .color(Color.RED));
-                        }
-                        mCurrentLocation = locationResult.getLastLocation();
-                    }
-                });
-                //mCurrentLocation = locationResult.getLastLocation();
+                Log.i(TAG, "update event");
+                Location oldLocation = mCurrentLocation;
+                mCurrentLocation = locationResult.getLastLocation();
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                updateLocationUI();
+                updateUI(oldLocation);
             }
         };
     }
@@ -291,37 +260,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Log.i(TAG, "User agreed to make required location settings changes.");
                         // Nothing to do. startLocationupdates() gets called in onResume again.
                         mLocationPermissionGranted = true;
+                        if (map != null) {
+                            map.setMyLocationEnabled(true);
+                            isLocationEnabled = true;
+                            showCurrentPlace();
+                        }
                         break;
                     case Activity.RESULT_CANCELED:
                         Log.i(TAG, "User chose not to make required location settings changes.");
                         mRequestingLocationUpdates = false;
-                        updateUI();
                         break;
                 }
                 break;
         }
-    }
-
-    /**
-     * Handles the Start Updates button and requests start of location updates. Does nothing if
-     * updates have already been requested.
-     */
-    public void startUpdatesButtonHandler(View view) {
-        if (!mRequestingLocationUpdates) {
-            mRequestingLocationUpdates = true;
-            setButtonsEnabledState();
-            startLocationUpdates();
-        }
-    }
-
-    /**
-     * Handles the Stop Updates button, and requests removal of location updates.
-     */
-    public void stopUpdatesButtonHandler(View view) {
-        // It is a good practice to remove location requests when the activity is in a paused or
-        // stopped state. Doing so helps battery performance and is especially
-        // recommended in applications that request frequent location updates.
-        stopLocationUpdates();
     }
 
     /**
@@ -341,7 +292,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
 
-                        updateUI();
+                        updateUI(null);
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -351,7 +302,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         switch (statusCode) {
                             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                                 Log.i(TAG, "Location settings are not satisfied. Attempting to upgrade " +
-                                        "location settings ");
+                                        "location settings " + ((ApiException) e).getStatusMessage());
                                 try {
                                     // Show the dialog by calling startResolutionForResult(), and check the
                                     // result in onActivityResult().
@@ -369,7 +320,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 mRequestingLocationUpdates = false;
                         }
 
-                        updateUI();
+                        updateUI(null);
                     }
                 });
     }
@@ -377,32 +328,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     /**
      * Updates all UI fields.
      */
-    private void updateUI() {
-        updateLocationUI();
-    }
-
-    /**
-     * Disables both buttons when functionality is disabled due to insuffucient location settings.
-     * Otherwise ensures that only one button is enabled at any time. The Start Updates button is
-     * enabled if the user is not requesting location updates. The Stop Updates button is enabled
-     * if the user is requesting location updates.
-     */
-    private void setButtonsEnabledState() {
-        if (mRequestingLocationUpdates) {
-
-
-        } else {
-
-
+    private void updateUI(final Location oldLocation) {
+        if (!isLocationEnabled && map != null) {
+            map.setMyLocationEnabled(true);
+            showCurrentPlace();
         }
-    }
-
-    /**
-     * Sets the value of the UI fields for the location latitude, longitude and last update time.
-     */
-    private void updateLocationUI() {
+        if (mCurrentLocation != null && oldLocation!=null) {
+            map.addPolyline(new PolylineOptions()
+                    .add(new LatLng(oldLocation.getLatitude(),
+                                    oldLocation.getLongitude()),
+                         new LatLng(mCurrentLocation.getLatitude(),
+                                    mCurrentLocation.getLongitude()))
+                    .width(30)
+                    .color(Color.CYAN));
+        }
         if (mCurrentLocation != null) {
-
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(mCurrentLocation.getLatitude(),
+                            mCurrentLocation.getLongitude()), 50));
         }
     }
 
@@ -423,7 +366,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         mRequestingLocationUpdates = false;
-                        setButtonsEnabledState();
                     }
                 });
     }
@@ -433,13 +375,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onResume();
         // Within {@code onPause()}, we remove location updates. Here, we resume receiving
         // location updates if the user has requested them.
-        if (mRequestingLocationUpdates && checkPermissions()) {
+        if (checkPermissions()) {
             startLocationUpdates();
-        } else if (!checkPermissions()) {
+        } else {
             requestPermissions();
         }
-
-        updateUI();
+        if (!isLocationEnabled && mLocationPermissionGranted && map != null) {
+            map.setMyLocationEnabled(true);
+            showCurrentPlace();
+        }
     }
 
     @Override
@@ -567,7 +511,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
-        showCurrentPlace();
+        if (mLocationPermissionGranted) {
+            map.setMyLocationEnabled(true);
+            showCurrentPlace();
+        }
     }
 
     private void showCurrentPlace() {
@@ -575,7 +522,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (map == null) {
             return;
         }
-        Task locationResult = mFusedLocationClient.getLastLocation();
+        if (!mLocationPermissionGranted)
+            return;
+        @SuppressLint("MissingPermission") Task locationResult =
+                mFusedLocationClient.getLastLocation();
         locationResult.addOnCompleteListener(this, new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
@@ -595,36 +545,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), 50));*/
                     }
-                            /*runOnUiThread(new Runnable() {
-
-                                @Override
-                                public void run() {
-
-                                    try {
-                                        Thread.sleep(5000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    double i = mDefaultLocation.latitude;
-                                    double j = mDefaultLocation.longitude;
-                                    while (true) {
-                                        Log.i("DEBUGP", "poliline");
-                                        map.addPolyline(new PolylineOptions()
-                                                .add(new LatLng(i,
-                                                                j),
-                                                        new LatLng(++i,
-                                                                ++j))
-                                                .width(5)
-                                                .color(Color.RED));
-                                        try {
-                                            Thread.sleep(5000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-                            });*/
                 } else {
                     Log.d("MAP", "Current location is null. Using defaults.");
                     Log.e("MAP", "Exception: %s", task.getException());
@@ -636,73 +556,4 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
-        //if (mLocationPermissionGranted) {
-            // Get the likely places - that is, the businesses and other points of interest that
-            // are the best match for the device's current location.
-            /*@SuppressWarnings("MissingPermission") final
-            Task<PlaceLikelihoodBufferResponse> placeResult =
-                    mPlaceDetectionClient.getCurrentPlace(null);
-            placeResult.addOnCompleteListener
-                    (new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-                        @Override
-                        public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                            Log.e("POSIZ_MOV", "2");
-
-                            if (task.isSuccessful() && task.getResult() != null) {
-                                PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-
-                                // Set the count, handling cases where less than 5 entries are returned.
-                                int count;
-                                if (likelyPlaces.getCount() < M_MAX_ENTRIES) {
-                                    count = likelyPlaces.getCount();
-                                } else {
-                                    count = M_MAX_ENTRIES;
-                                }
-
-                                int i = 0;
-                                mLikelyPlaceNames = new String[count];
-                                mLikelyPlaceAddresses = new String[count];
-                                mLikelyPlaceAttributions = new String[count];
-                                mLikelyPlaceLatLngs = new LatLng[count];
-
-                                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                                    // Build a list of likely places to show the user.
-                                    mLikelyPlaceNames[i] = (String) placeLikelihood.getPlace().getName();
-                                    mLikelyPlaceAddresses[i] = (String) placeLikelihood.getPlace()
-                                            .getAddress();
-                                    mLikelyPlaceAttributions[i] = (String) placeLikelihood.getPlace()
-                                            .getAttributions();
-                                    mLikelyPlaceLatLngs[i] = placeLikelihood.getPlace().getLatLng();
-
-                                    i++;
-                                    if (i > (count - 1)) {
-                                        break;
-                                    }
-                                }
-
-                                // Release the place likelihood buffer, to avoid memory leaks.
-                                likelyPlaces.release();
-
-                            } else {
-                                Log.e("MAP", "Exception: %s", task.getException());
-                            }
-                        }
-                    });
-        /*} else {
-            // The user has not granted permission.
-            Log.i("MAP", "The user did not grant location permission.");
-
-            // Add a default marker, because the user hasn't selected a place.
-            map.addMarker(new MarkerOptions()
-                    .title("To mare vaca")
-                    .icon(BitmapDescriptorFactory.defaultMarker(
-                            BitmapDescriptorFactory.HUE_GREEN))
-                    .position(mDefaultLocation)
-                    .snippet("Snippet"));
-
-            // Prompt the user for permission.
-            requestPermissions();
-        }*/
-}/*
-    }
-}*/
+}
