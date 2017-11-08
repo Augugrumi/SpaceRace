@@ -61,5 +61,11 @@
     <string name="augugrumi_team" translatable="false">Augugrumi team</string>
     <string name="find_proj">You can find us on</string>
     <string name="creators" translatable="false">Davide Polonio\nFederico Tavella\nMarco Zanella</string>
+    <string name="title_activity_map">MapActivity</string>
 
+    <!--map activity-->
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="settings">Settings</string>
 </resources>
