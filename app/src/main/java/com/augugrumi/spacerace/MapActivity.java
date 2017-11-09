@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.gameutility.PiecePicker;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -239,11 +240,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onLocationResult(final LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                Log.i(TAG, "update event");
-                Location oldLocation = mCurrentLocation;
-                mCurrentLocation = locationResult.getLastLocation();
-                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                updateUI(oldLocation);
+
+                if (mRequestingLocationUpdates) {
+
+                    Log.i(TAG, "update event");
+                    Location oldLocation = mCurrentLocation;
+                    mCurrentLocation = locationResult.getLastLocation();
+                    mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+                    updateUI(oldLocation);
+                }
+
             }
         };
     }
@@ -270,6 +276,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         // Nothing to do. startLocationupdates() gets called in onResume again.
                         mLocationPermissionGranted = true;
                         if (map != null) {
+                            mRequestingLocationUpdates = true;
                             map.setMyLocationEnabled(true);
                             isLocationEnabled = true;
                             showCurrentPlace();
@@ -337,6 +344,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
      */
     private void updateUI(final Location oldLocation) {
         if (!isLocationEnabled && map != null) {
+            mRequestingLocationUpdates = true;
             map.setMyLocationEnabled(true);
             showCurrentPlace();
         }
@@ -351,7 +359,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                         mCurrentLocation.getLongitude()))
                         .width(30)
                         .color(Color.CYAN));
+                marker.setVisible(false);
                 marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+                marker.setVisible(true);
             }
         }
         if (mCurrentLocation != null) {
@@ -381,18 +391,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                 });
     }
-
     @Override
     public void onResume() {
         super.onResume();
         // Within {@code onPause()}, we remove location updates. Here, we resume receiving
         // location updates if the user has requested them.
+
+
+
         if (checkPermissions()) {
             startLocationUpdates();
         } else {
             requestPermissions();
         }
         if (!isLocationEnabled && mLocationPermissionGranted && map != null) {
+            if (mCurrentLocation != null) {
+                marker.setVisible(true);
+            }
+            mRequestingLocationUpdates = true;
             map.setMyLocationEnabled(true);
             showCurrentPlace();
         }
@@ -404,6 +420,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Remove location updates to save battery.
         stopLocationUpdates();
+        if (marker != null) {
+
+            marker.setVisible(false);
+        }
     }
 
     /**
@@ -548,14 +568,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     // Set the map's camera position to the current location of the device.
                     mCurrentLocation = (Location) task.getResult();
                     if (mCurrentLocation!=null) {
-                        marker = map.addMarker(new MarkerOptions().position(
-                                new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
+                        marker = map.addMarker(new MarkerOptions()
+                                .position(new LatLng(
+                                        mCurrentLocation.getLatitude(),
+                                        mCurrentLocation.getLongitude()))
+                                .icon(PiecePicker.pickRandomPieceBitMap()));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), DEFAULT_ZOOM));
                     } else {
                         marker = map.addMarker(new MarkerOptions().position(
-                                mDefaultLocation));
+                                mDefaultLocation)
+                                .icon(PiecePicker.pickRandomPieceBitMap()));
                         /*map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), 50));*/
@@ -570,5 +594,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
