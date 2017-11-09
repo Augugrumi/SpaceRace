@@ -137,6 +137,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private LatLng mDefaultLocation = new LatLng(45.406389, 11.877778);
 
+    private HintFragment hf;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +171,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else {
             startLocationUpdates();
         }
+
+        hf = new HintFragment();
     }
 
     /**
@@ -551,18 +555,40 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         .hide(mapFragment)
                         .commit();
 
-                HintFragment hf = new HintFragment();
-
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.hint_cont, hf)
                         .commit();
-                /*HintFragment hintFragment =
-                        (HintFragment) getSupportFragmentManager().findFragmentById(R.id.hints);
-                //getFragmentManager().beginTransaction().hide(getFragmentManager().findFragmentById(R.id.map)).commit();
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fr_lay, hintFragment)
-                        .commit();*/
+
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        Log.i("FRAG_", "stop");
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            Log.i("FRAG_", "err");
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .hide(hf)
+                                .commit();
+
+                        SupportMapFragment mapFragment =
+                                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                        getSupportFragmentManager().
+                                beginTransaction()
+                                .show(mapFragment)
+                                .commit();
+                    }
+                }.execute(null, null, null);
             }
         }.execute(null, null, null);
 
