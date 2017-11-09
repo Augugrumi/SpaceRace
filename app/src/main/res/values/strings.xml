@@ -114,4 +114,25 @@
     <string name="title_card_20">The mysteriour sky</string>
     <string name="card_20_specola">The Specola appears framed by trees, water and sky, in a corner filled with silence and beauty. Originally the tower of the Carraresi castle and even before the place where the tyrant Ezzelino locked up and tortured his prisoners, in the eighteenth century it was converted to an observatory, becoming the astronomical specula. Today it is the headquarters of the National Institute of Astrophysics and of the Museo La Specola. Inside, you will discover a universe suspended in time, a maze of vaults, stairs and corridors in which to explore the work of astronomers.</string>
     <string name="title_card_21">The way to the stars</string>
+    <string name="name_card_1" translatable="false">Prato della Valle</string>
+    <string name="name_card_2">Sant’Antonio\'s Basilica - piazza del Santo 11</string>
+    <string name="name_card_3">Galileo’s House - Via Galileo Galilei 17</string>
+    <string name="name_card_4">San Francesco\'s church - via San Francesco 118</string>
+    <string name="name_card_5">Santa Sofia\'s church - via Santa Sofia 102</string>
+    <string name="name_card_6" translatable="false">Borgo Altinate</string>
+    <string name="name_card_10">Civilian clock - via VIII Febbraio</string>
+    <string name="name_card_7">Eremitani\'s church - piazza Eremitani 9</string>
+    <string name="name_card_8">The Scrovegni\'s Cappella - piazza Eremitani 8</string>
+    <string name="name_card_9" translatable="false">Caffè Pedrocchi - via VIII Febbraio 15</string>
+    <string name="name_card_11">The Bo - via VIII Febbraio 2</string>
+    <string name="name_card_12">Palace of Ragione - piazza delle Erbe</string>
+    <string name="name_card_13">Toward Saint Lucia</string>
+    <string name="name_card_14">Oratory of San Rocco - via Santa Lucia</string>
+    <string name="name_card_15">Signori\' square - Piazza dei Signori</string>
+    <string name="name_card_16">Saint Nicolò\'s church - piazzetta San Nicolò</string>
+    <string name="name_card_17">The Baptistery of the Cathedral - piazza Duomo</string>
+    <string name="name_card_18">Capitaniato square - Accademia galileiana</string>
+    <string name="name_card_19">San Pietro\'s church - via San Pietro 125</string>
+    <string name="name_card_20">San Tomaso\'s church - via San Tomaso 3</string>
+    <string name="name_card_21" translatable="false">Specola - vicolo dell’Osservatorio 5</string>
 </resources>

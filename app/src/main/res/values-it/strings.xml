@@ -85,4 +85,23 @@
     <string name="title_card_20">Il cielo misterioso</string>
     <string name="card_20_specola">La Specola appare incorniciata da alberi, acqua e cielo, in un angolo di quiete e bellezza. In origine torre del castello carrarese e, prima ancora, luogo in cui il tiranno Ezzelino rinchiudeva e torturava i prigionieri, fu adibita a luogo di studio del cielo nel corso del Settecento, diventando così specula astronomica, Osservatorio astronomico. Oggi è sede dell’Istituto Nazionale di Astrofisica e del Museo La Specola; entrando si resterà affascinati da una costruzione sospesa nel tempo, quasi un labirinto di volte, scale e corridoi dove scoprire il lavoro degli astronomi.</string>
     <string name="title_card_21">La via agli astri</string>
+    <string name="permission_rationale">L\'accesso alla posizione è necessario per le funzionalità primarie</string>
+    <string name="permission_denied_explanation">Il permesso è stato negato, ma è necessario per le funzionalità primarie</string>
+    <string name="settings">Impostazioni</string>
+    <string name="name_card_2">Basilica di Sant’Antonio - Piazza del Santo 11</string>
+    <string name="name_card_3">La casa di Galileo - Via Galileo Galilei 17</string>
+    <string name="name_card_4">Chiesa di San Francesco - via San Francesco 118</string>
+    <string name="name_card_5">Chiesa di Santa Sofia - via Santa Sofia 102</string>
+    <string name="name_card_10">Orologio Civile - via VIII Febbraio</string>
+    <string name="name_card_7">Chiesa degli Eremitani - piazza Eremitani 9</string>
+    <string name="name_card_8">Cappella degli Scrovegni - piazza Eremitani 8</string>
+    <string name="name_card_12">Palazzo della Ragione - piazza delle Erbe</string>
+    <string name="name_card_13">Toward Santa Lucia</string>
+    <string name="name_card_14">" Oratorio di San Rocco - via Santa Lucia"</string>
+    <string name="name_card_15">Piazza dei Signori</string>
+    <string name="name_card_16">Chiesa di San Nicolò - piazzetta San Nicolò</string>
+    <string name="name_card_17">Il Battistero del Duomo - piazza Duomoù</string>
+    <string name="name_card_18">Piazza Capitaniato - Accademia galileiana</string>
+    <string name="name_card_19">Chiesa di San Pietro - via San Pietro 125</string>
+    <string name="name_card_20">Chiesa di San Tomaso - via San Tomaso 3</string>
 </resources>
