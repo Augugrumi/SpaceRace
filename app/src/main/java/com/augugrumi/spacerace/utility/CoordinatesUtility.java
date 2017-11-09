@@ -26,6 +26,11 @@ public class CoordinatesUtility {
         double lat1 = l1.getLatitude(), lat2 = l2.getLatitude(),
                lng1 = l1.getLongitude(), lng2 = l2.getLongitude();
 
+        return distance(lat1, lng1, lat2, lng2);
+    }
+
+    public static double distance(double lat1, double lng1, double lat2, double lng2) {
+
         double dLat = Math.toRadians(lat2-lat1);
         double dLng = Math.toRadians(lng2-lng1);
 

@@ -16,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -35,7 +34,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -53,6 +51,12 @@ import java.util.Date;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
+
+    /************************FORDEBUG**************************/
+    private static final LatLng POI = new LatLng(45.412780, 11.882273);
+    /************************FORDEBUG**************************/
+
+    private static final double KM_DISTANCE_HINT = 0.020;
 
     /**
      * Code used in requesting runtime permissions.
@@ -356,6 +360,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         .color(Color.CYAN));
                 marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
             }
+            showHintIfNear();
         }
         if (mCurrentLocation != null) {
             map.moveCamera(CameraUpdateFactory.newLatLng(
@@ -523,6 +528,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private boolean hintShown = false;
+    private void showHintIfNear() {
+        Log.i("FRAG_", "" + CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
+                POI.latitude, POI.longitude));
+        if (CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
+                POI.latitude, POI.longitude)<KM_DISTANCE_HINT && !hintShown) {
+            stopLocationUpdates();
+            Log.i("FRAG_", "show");
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            getSupportFragmentManager().
+                    beginTransaction()
+                    .hide(mapFragment)
+                    .commit();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.hint_cont, hf)
+                    .commit();
+            hintShown = true;
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -532,7 +560,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             showCurrentPlace();
         }
 
-        new AsyncTask<Void, Void, Void>() {
+        /*new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 Log.i("FRAG_", "stop");
@@ -590,7 +618,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                 }.execute(null, null, null);
             }
-        }.execute(null, null, null);
+        }.execute(null, null, null);*/
 
 
 
