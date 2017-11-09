@@ -35,6 +35,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -140,8 +141,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -520,6 +519,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
@@ -527,6 +527,47 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             map.setMyLocationEnabled(true);
             showCurrentPlace();
         }
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Log.i("FRAG_", "stop");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Log.i("FRAG_", "err");
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                Log.i("FRAG_", "show");
+                SupportMapFragment mapFragment =
+                        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                getSupportFragmentManager().
+                        beginTransaction()
+                        .hide(mapFragment)
+                        .commit();
+
+                HintFragment hf = new HintFragment();
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.hint_cont, hf)
+                        .commit();
+                /*HintFragment hintFragment =
+                        (HintFragment) getSupportFragmentManager().findFragmentById(R.id.hints);
+                //getFragmentManager().beginTransaction().hide(getFragmentManager().findFragmentById(R.id.map)).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fr_lay, hintFragment)
+                        .commit();*/
+            }
+        }.execute(null, null, null);
+
+
+
     }
 
     private void showCurrentPlace() {
