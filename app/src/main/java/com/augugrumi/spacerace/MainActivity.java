@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements
     // Are we playing in multiplayer mode?
     boolean mMultiplayer = false;
 
+    private boolean alreadySignIn = false;
+
     // The participants in the currently active game
     ArrayList<Participant> mParticipants = null;
 
@@ -161,6 +163,11 @@ public class MainActivity extends AppCompatActivity implements
         switchToScreen(R.id.screen_wait);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfigBuilder.build());
+        if (alreadySignIn){
+
+            //setUpGoogleApi();
+            alreadySignIn = false;
+        }
     }
 
     @Override
@@ -197,6 +204,8 @@ public class MainActivity extends AppCompatActivity implements
                 }
             });
         }
+        alreadySignIn = false;
+
     }
 
     void showWaitingRoom(Room room) {
@@ -224,8 +233,6 @@ public class MainActivity extends AppCompatActivity implements
 
             SharedPreferencesManager.setFirstApplicationRun(true);
         }
-        /*
-        } else {*/
     }
 
     @Override
@@ -500,5 +507,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @OnClick(R.id.debug_btn)
+    public void onClickSeeMap(View view) {
+        Intent i = new Intent(MainActivity.this, MapActivity.class);
+        startActivity(i);
     }
 }

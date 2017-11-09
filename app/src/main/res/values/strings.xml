@@ -61,5 +61,11 @@
     <string name="slide3Subtitle">Sign In with google to play and win!</string>
     <string name="warningSlider3Title">Login error</string>
     <string name="warningSlider3SubTitle">Something went wrong during the login</string>
+    <string name="title_activity_map">MapActivity</string>
 
+    <!--map activity-->
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="settings">Settings</string>
 </resources>
