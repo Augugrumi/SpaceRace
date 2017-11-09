@@ -1,21 +1,17 @@
 <resources>
-    <string name="app_name">Space Race</string>
-    <string name="app_id">444006907114</string>
+    <string name="app_name" translatable="false">Space Race</string>
+    <string name="app_id" translatable="false">444006907114</string>
     <!--<string name="server_client_id">444006907114-dh61m4sijhkqcaoufu7tqbo6o1rplqra.apps.googleusercontent.com</string>
 -->
 
-    <string name="slide1Title">Padova Space Week</string>
-    <string name="slide1Subtitle">Esplora i luoghi di Padova legati all\'astronomia</string>
+    <string name="slide1Title" translatable="false">Padova Space Week</string>
 
-    <string name="slide2Title">Caccia al tesoro</string>
-    <string name="slide2Subtitle">Trova indizzi e risolvi indovinelli per trovare la tua meta</string>
+    <string name="slide2Title">Scavenger hunt</string>
+    <string name="slide2Subtitle">Discover the right path finding hits and resolving riddles</string>
 
-    <string name="slide3Title">Sfida i tuoi amici!</string>
-    <string name="slide3Subtitle">Accedi con Google per competere e vincere!</string>
+    <string name="slide3Title">Challenge your friends!</string>
 
 
-    <string name="warningSlider3Title">Errore login</string>
-    <string name="warningSlider3SubTitle">Qualcosa è andato storto durante il login</string>
     <string name="title_activity_room">RoomActivity</string>
 
     <string name="game_title">Button Clicker 2000!</string>
@@ -61,5 +57,9 @@
     <string name="augugrumi_team" translatable="false">Augugrumi team</string>
     <string name="find_proj">You can find us on</string>
     <string name="creators" translatable="false">Davide Polonio\nFederico Tavella\nMarco Zanella</string>
+    <string name="slide1Subtitle">Explore astronomy related places in Padova</string>
+    <string name="slide3Subtitle">Sign In with google to play and win!</string>
+    <string name="warningSlider3Title">Login error</string>
+    <string name="warningSlider3SubTitle">Something went wrong during the login</string>
 
 </resources>
