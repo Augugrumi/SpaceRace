@@ -7,7 +7,7 @@
     <string name="slide1Title" translatable="false">Padova Space Week</string>
 
     <string name="slide2Title">Scavenger hunt</string>
-    <string name="slide2Subtitle">Discover the right path finding hits and resolving riddles</string>
+    <string name="slide2Subtitle">Discover the right path finding hints and resolving riddles</string>
 
     <string name="slide3Title">Challenge your friends!</string>
 
@@ -58,7 +58,7 @@
     <string name="find_proj">You can find us on</string>
     <string name="creators" translatable="false">Davide Polonio\nFederico Tavella\nMarco Zanella</string>
     <string name="slide1Subtitle">Explore astronomy related places in Padova</string>
-    <string name="slide3Subtitle">Sign In with google to play and win!</string>
+    <string name="slide3Subtitle">Sign In with Google, play and win!</string>
     <string name="warningSlider3Title">Login error</string>
     <string name="warningSlider3SubTitle">Something went wrong during the login</string>
     <string name="title_activity_map">MapActivity</string>
