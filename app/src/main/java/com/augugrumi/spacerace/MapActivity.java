@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -36,6 +38,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,7 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 2000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1500;
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -71,12 +75,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
+    private static final int DEFAULT_ZOOM = 80;
+    private static final int MAX_DIFFERENCE_UPDATE_POLYLINE = 15;
+
     // Keys for storing activity state in the Bundle.
     private final static String KEY_REQUESTING_LOCATION_UPDATES = "requesting-location-updates";
     private final static String KEY_LOCATION = "location";
     private final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
 
     private GoogleMap map;
+
+    private Marker marker;
 
     /**
      * Provides access to the Fused Location Provider API.
@@ -114,7 +123,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
      * Tracks the status of the location updates request. Value changes when the user presses the
      * Start Updates and Stop Updates buttons.
      */
-    private Boolean mRequestingLocationUpdates;
+    private boolean mRequestingLocationUpdates;
 
     /**
      * Time when the location was updated represented as a String.
@@ -283,15 +292,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Begin by checking if the device has the necessary location settings.
         mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
                 .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-                    @SuppressLint("MissingPermission")
+                    @SuppressLint({"MissingPermission", "StaticFieldLeak"})
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         Log.i(TAG, "All location settings are satisfied.");
 
-                        //noinspection MissingPermission
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
-
                         updateUI(null);
                     }
                 })
@@ -334,18 +341,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             showCurrentPlace();
         }
         if (mCurrentLocation != null && oldLocation!=null) {
-            map.addPolyline(new PolylineOptions()
-                    .add(new LatLng(oldLocation.getLatitude(),
-                                    oldLocation.getLongitude()),
-                         new LatLng(mCurrentLocation.getLatitude(),
-                                    mCurrentLocation.getLongitude()))
-                    .width(30)
-                    .color(Color.CYAN));
+            // refresh ogni 2 sec -> record mondiale 8,33m/s => ~16 ogni 2 sec => 15
+            // per essere sicuri
+            if (CoordinatesUtility.distance(mCurrentLocation, oldLocation)<MAX_DIFFERENCE_UPDATE_POLYLINE) {
+                map.addPolyline(new PolylineOptions()
+                        .add(new LatLng(oldLocation.getLatitude(),
+                                        oldLocation.getLongitude()),
+                                new LatLng(mCurrentLocation.getLatitude(),
+                                        mCurrentLocation.getLongitude()))
+                        .width(30)
+                        .color(Color.CYAN));
+                marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+            }
         }
         if (mCurrentLocation != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+            map.moveCamera(CameraUpdateFactory.newLatLng(
                     new LatLng(mCurrentLocation.getLatitude(),
-                            mCurrentLocation.getLongitude()), 50));
+                            mCurrentLocation.getLongitude())));
         }
     }
 
@@ -536,11 +548,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     // Set the map's camera position to the current location of the device.
                     mCurrentLocation = (Location) task.getResult();
                     if (mCurrentLocation!=null) {
+                        marker = map.addMarker(new MarkerOptions().position(
+                                new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
-                                        mCurrentLocation.getLongitude()), 50));
+                                        mCurrentLocation.getLongitude()), DEFAULT_ZOOM));
                     } else {
-
+                        marker = map.addMarker(new MarkerOptions().position(
+                                mDefaultLocation));
                         /*map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), 50));*/
@@ -548,7 +563,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 } else {
                     Log.d("MAP", "Current location is null. Using defaults.");
                     Log.e("MAP", "Exception: %s", task.getException());
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, 50));
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                     map.getUiSettings().setMyLocationButtonEnabled(false);
                 }
 
