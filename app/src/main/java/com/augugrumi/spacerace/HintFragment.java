@@ -6,6 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * @author Marco Zanella
@@ -15,11 +19,15 @@ import android.view.ViewGroup;
 
 public class HintFragment extends Fragment {
 
+    @BindView(R.id.hint_text)TextView hintTextView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.content_hint, container, false);
+        View view = inflater.inflate(R.layout.content_hint, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
 
@@ -32,5 +40,13 @@ public class HintFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    public void setHint(int hintId) {
+        hintTextView.setText(hintId);
+    }
+
+    public void setHint(String hintString) {
+        hintTextView.setText(hintString);
     }
 }
