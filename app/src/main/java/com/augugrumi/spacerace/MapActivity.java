@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
@@ -22,7 +21,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
-import com.augugrumi.spacerace.utility.gameutility.PiecePicker;
+import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
+import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
+import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -567,19 +568,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     // Set the map's camera position to the current location of the device.
                     mCurrentLocation = (Location) task.getResult();
+                    PieceShape markerDimension = new PieceSquareShape(64);
                     if (mCurrentLocation!=null) {
                         marker = map.addMarker(new MarkerOptions()
                                 .position(new LatLng(
                                         mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()))
-                                .icon(PiecePicker.pickRandomPieceBitMap()));
+                                .icon(PiecePicker.pickRandomPieceBitMap(markerDimension)));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), DEFAULT_ZOOM));
                     } else {
                         marker = map.addMarker(new MarkerOptions().position(
                                 mDefaultLocation)
-                                .icon(PiecePicker.pickRandomPieceBitMap()));
+                                .icon(PiecePicker.pickRandomPieceBitMap(markerDimension)));
                         /*map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), 50));*/

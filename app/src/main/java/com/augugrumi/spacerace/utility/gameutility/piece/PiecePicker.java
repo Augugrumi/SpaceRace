@@ -1,4 +1,9 @@
-package com.augugrumi.spacerace.utility.gameutility;
+package com.augugrumi.spacerace.utility.gameutility.piece;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 
 import com.augugrumi.spacerace.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -29,13 +34,18 @@ public class PiecePicker {
 
     };
 
+    @NonNull
     public static int pickRandomPieceResource () {
 
         return listOfPieces[(int)(Math.random() * (listOfPieces.length - 1))];
     }
 
-    public static BitmapDescriptor pickRandomPieceBitMap () {
+    @NonNull
+    public static BitmapDescriptor pickRandomPieceBitMap (@NonNull PieceShape shape) {
 
-        return BitmapDescriptorFactory.fromResource(pickRandomPieceResource());
+        Bitmap toScale = BitmapFactory.decodeResource(Resources.getSystem(), pickRandomPieceResource());
+        toScale = Bitmap.createScaledBitmap(toScale, shape.getWidth(), shape.getLength(), false);
+
+        return BitmapDescriptorFactory.fromBitmap(toScale);
     }
 }
