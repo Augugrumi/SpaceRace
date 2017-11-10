@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 
 import com.augugrumi.spacerace.R;
+import com.augugrumi.spacerace.SpaceRace;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
@@ -43,7 +44,7 @@ public class PiecePicker {
     @NonNull
     public static BitmapDescriptor pickRandomPieceBitMap (@NonNull PieceShape shape) {
 
-        Bitmap toScale = BitmapFactory.decodeResource(Resources.getSystem(), pickRandomPieceResource());
+        Bitmap toScale = BitmapFactory.decodeResource(SpaceRace.getAppContext().getResources(), pickRandomPieceResource());
         toScale = Bitmap.createScaledBitmap(toScale, shape.getWidth(), shape.getLength(), false);
 
         return BitmapDescriptorFactory.fromBitmap(toScale);
