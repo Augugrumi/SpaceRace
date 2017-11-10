@@ -55,6 +55,7 @@ import java.util.Date;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
 
+    private static final int PIECE_SIZE=72;
     /**
      * Code used in requesting runtime permissions.
      */
@@ -568,20 +569,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     // Set the map's camera position to the current location of the device.
                     mCurrentLocation = (Location) task.getResult();
-                    PieceShape markerDimension = new PieceSquareShape(64);
+                    PieceShape markerPic = new PieceSquareShape(PIECE_SIZE);
                     if (mCurrentLocation!=null) {
                         marker = map.addMarker(new MarkerOptions()
                                 .position(new LatLng(
                                         mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()))
-                                .icon(PiecePicker.pickRandomPieceBitMap(markerDimension)));
+                                .icon(PiecePicker.pickRandomPieceBitMap(markerPic)));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), DEFAULT_ZOOM));
                     } else {
                         marker = map.addMarker(new MarkerOptions().position(
                                 mDefaultLocation)
-                                .icon(PiecePicker.pickRandomPieceBitMap(markerDimension)));
+                                .icon(PiecePicker.pickRandomPieceBitMap(markerPic)));
                         /*map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), 50));*/
