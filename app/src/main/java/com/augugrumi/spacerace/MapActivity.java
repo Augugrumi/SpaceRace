@@ -551,7 +551,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
