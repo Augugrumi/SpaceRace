@@ -55,7 +55,7 @@ import java.util.Date;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
 
-    private static final int PIECE_SIZE=72;
+    private static final int PIECE_SIZE=80;
     /**
      * Code used in requesting runtime permissions.
      */
@@ -279,7 +279,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mLocationPermissionGranted = true;
                         if (map != null) {
                             mRequestingLocationUpdates = true;
-                            map.setMyLocationEnabled(true);
                             isLocationEnabled = true;
                             showCurrentPlace();
                         }
@@ -347,7 +346,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void updateUI(final Location oldLocation) {
         if (!isLocationEnabled && map != null) {
             mRequestingLocationUpdates = true;
-            map.setMyLocationEnabled(true);
             showCurrentPlace();
         }
         if (mCurrentLocation != null && oldLocation!=null) {
@@ -411,7 +409,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 marker.setVisible(true);
             }
             mRequestingLocationUpdates = true;
-            map.setMyLocationEnabled(true);
             showCurrentPlace();
         }
     }
@@ -546,7 +543,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
         if (mLocationPermissionGranted) {
-            map.setMyLocationEnabled(true);
             showCurrentPlace();
         }
     }
@@ -573,7 +569,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (mCurrentLocation!=null) {
                         marker = map.addMarker(new MarkerOptions()
                                 .position(new LatLng(
-                                        mCurrentLocation.getLatitude(),
+                                        mCurrentLocation.getLatitude() - 15,
                                         mCurrentLocation.getLongitude()))
                                 .icon(PiecePicker.pickRandomPieceBitMap(markerPic)));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
