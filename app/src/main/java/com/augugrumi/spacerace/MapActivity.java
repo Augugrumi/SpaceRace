@@ -53,7 +53,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String TAG = MapActivity.class.getSimpleName();
 
     /************************FORDEBUG**************************/
-    private static final LatLng POI = new LatLng(45.412780, 11.882273);
+    private static final LatLng POI = new LatLng(45.411011, 11.887503);
     /************************FORDEBUG**************************/
 
     private static final double KM_DISTANCE_HINT = 0.020;
@@ -139,7 +139,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private boolean mLocationPermissionGranted;
     private boolean isLocationEnabled;
 
-    private LatLng mDefaultLocation = new LatLng(45.406389, 11.877778);
+    private LatLng mDefaultLocation = new LatLng(45.414380, 11.876797);
 
     private HintFragment hf;
 
@@ -558,69 +558,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             map.setMyLocationEnabled(true);
             showCurrentPlace();
         }
-
-        /*new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Log.i("FRAG_", "stop");
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Log.i("FRAG_", "err");
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                Log.i("FRAG_", "show");
-                SupportMapFragment mapFragment =
-                        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                getSupportFragmentManager().
-                        beginTransaction()
-                        .hide(mapFragment)
-                        .commit();
-
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.hint_cont, hf)
-                        .commit();
-
-                new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        Log.i("FRAG_", "stop");
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            Log.i("FRAG_", "err");
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .hide(hf)
-                                .commit();
-
-                        SupportMapFragment mapFragment =
-                                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                        getSupportFragmentManager().
-                                beginTransaction()
-                                .show(mapFragment)
-                                .commit();
-                    }
-                }.execute(null, null, null);
-            }
-        }.execute(null, null, null);*/
-
-
-
     }
 
     private void showCurrentPlace() {
@@ -664,5 +601,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
+    }
+
+    public void hideHintAndShowMap() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(hf)
+                .commit();
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        getSupportFragmentManager().
+                beginTransaction()
+                .show(mapFragment)
+                .commit();
     }
 }
