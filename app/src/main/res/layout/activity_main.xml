@@ -1,69 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:id="@+id/main_activity">
+    android:background="@color/mainBg">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/app_name"/>
+        android:src="@drawable/rocket"
+        tools:ignore="ContentDescription" />
 
     <!-- INVITATION POPUP -->
-    <LinearLayout android:id="@+id/invitation_popup" style="@style/InvPopup">
-        <TextView android:id="@+id/incoming_invitation_text" style="@style/InvPopupText" />
-        <Button android:id="@+id/button_accept_popup_invitation"
-            style="@style/InvPopupButton"
-            android:text="@string/accept_popup_invite" />
-    </LinearLayout>
+
+    <TextView
+        android:id="@+id/incoming_invitation_text"
+        style="@style/InvPopupText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="131dp"
+        tools:layout_editor_absoluteY="126dp" />
+
+    <Button
+        android:id="@+id/button_accept_popup_invitation"
+        style="@style/InvPopupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accept_popup_invite"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="67dp" />
+
 
     <!-- "PLEASE WAIT" SCREEN -->
-    <LinearLayout android:id="@+id/screen_wait" style="@style/LLScreen">
-        <TextView style="@style/Blurb" android:text="@string/please_wait" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/screen_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/textView"
+        style="@style/Blurb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/please_wait"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="37dp" />
 
-        <Button
-            android:id="@+id/new_match"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/new_match" />
 
-        <Button
-            android:id="@+id/join"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/join_existing_match" />
+    <Button
+        android:id="@+id/new_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_match"
+        tools:layout_editor_absoluteX="111dp"
+        tools:layout_editor_absoluteY="368dp" />
 
-        <Button
-            android:id="@+id/highscores"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/high_scores" />
+    <Button
+        android:id="@+id/join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/join_existing_match"
+        tools:layout_editor_absoluteX="105dp"
+        tools:layout_editor_absoluteY="432dp" />
 
-        <Button
-            android:id="@+id/credits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/credits" />
+    <Button
+        android:id="@+id/highscores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/high_scores"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="303dp" />
 
-        <Button
-            android:id="@+id/debug_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="For debug - Map" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/credits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/credits"
+        tools:layout_editor_absoluteX="280dp"
+        tools:layout_editor_absoluteY="503dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/debug_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="For debug - Map"
+        tools:layout_editor_absoluteX="122dp"
+        tools:layout_editor_absoluteY="154dp" />
+
+
+</android.support.constraint.ConstraintLayout>

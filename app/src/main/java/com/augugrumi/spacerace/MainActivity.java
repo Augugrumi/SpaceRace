@@ -98,12 +98,30 @@ public class MainActivity extends AppCompatActivity implements
 
     private boolean backOnNewMatch = false;
 
+//    @BindView(R.id.main_activity_bg)
+//    ImageView activityBg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+/*
+        Glide.with(this)
+                .load(R.drawable.rocket2)
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                )
+                .into(activityBg);
+
+
+
+        activityBg.setBackgroundResource(R.drawable.main_activity_animation);
+        AnimationDrawable animationBg = (AnimationDrawable) activityBg.getBackground();
+        animationBg.start();
+*/
 
         mGoogleApiClient = GoogleApiClientManager.setUpGoogleApi(this,
                 new GoogleApiClient.ConnectionCallbacks() {
@@ -483,7 +501,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     void switchToScreen(int screenId) {
-        // make the requested screen visible; hide all others.
+        /*// make the requested screen visible; hide all others.
         for (int id : SCREENS) {
             findViewById(id).setVisibility(screenId == id ? View.VISIBLE : View.GONE);
         }
@@ -501,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements
             // single-player: show on main screen and gameplay screen
             showInvPopup = (mCurScreen == R.id.screen_main || mCurScreen == R.id.screen_game);
         }
-        findViewById(R.id.invitation_popup).setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
+        findViewById(R.id.invitation_popup).setVisibility(showInvPopup ? View.VISIBLE : View.GONE);*/
     }
 
     @Override
