@@ -55,7 +55,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String TAG = MapActivity.class.getSimpleName();
 
 
-    private static final int PIECE_SIZE=80;
+    private static final int PIECE_SIZE=95;
 
     /************************FORDEBUG**************************/
     private static final LatLng POI = new LatLng(45.411011, 11.887503);
