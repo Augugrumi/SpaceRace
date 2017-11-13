@@ -69,7 +69,6 @@
         functionality.</string>
     <string name="settings">Settings</string>
 
-
     <!--schede-->
     <string name="introduction">Avete mai incontrato Galileo a Padova? E sapete che la prima stella cometa “con la coda” fu dipinta proprio a Padova da Giotto, nella celebre Cappella degli Scrovegni? Storie di stelle e pianeti, orologi e meridiane si nascondono nelle città, sotto un portico, dentro a una chiesa, sulla facciata di un palazzo e ci raccontano quanto la conoscenza del cielo fosse importante per i nostri antenati. Il progetto “Seconda stella a destra” traccia un itinerario alla ricerca degli elementi celesti disseminati nel centro storico di Padova e permette di scoprire una città non convenzionale, tra astronomia, arte e cultura.    L’itinerario parte simbolicamente da Prato della Valle, ai piedi della statua di Galileo Galilei, che proprio a Padova fece delle scoperte che cambiarono profondamente la nostra conoscenza astronomica. Il percorso si snoda tra i luoghi del centro storico, dentro le mura, e si conclude alla Specola, sede dell’Osservatorio astronomico di INAF – Istituto Nazionale di Astrofisica. Vi porterà a scoprire i luoghi di Galileo, dalla sede dell’Università in cui insegnava alla sua casa, i luoghi del tempo, come meridiane e orologi, e i luoghi del cielo, raffigurazioni cioè di volte stellate, simboli celesti, stemmi.  Potrete seguire l’itinerario per intero, scegliere un’esplorazione tematica o, ancora, creare il vostro percorso, saltando qua e là. L’importante è che ricordiate una cosa: di alzare gli occhi al cielo!</string>
     <string name="card_1_prato_della_valle">Eyes toward the sky and arm pointing at something up there: have you ever met Galileo Galilei in Padua? You will find him in the spectacular Prato della Valle, where he appears as one of the 78 statues of illustrious people that decorate the largest square of the city (maybe the largest in Europe!). The “Prato”, that’s what the locals call this square, although it actually has a elliptical shape and a green island at the centre. It’s in an area reclaimed from a swamp, which was drained at the end of the Eighteenth century. It has always been a lively place and it still hosts a busy market every Saturday.</string>
@@ -135,4 +134,26 @@
     <string name="name_card_19">San Pietro\'s church - via San Pietro 125</string>
     <string name="name_card_20">San Tomaso\'s church - via San Tomaso 3</string>
     <string name="name_card_21" translatable="false">Specola - vicolo dell’Osservatorio 5</string>
+
+    <!--hint fragment - place explanation view-->
+    <string name="skip_quiz">&lt;&lt; Skip quiz</string>
+    <string name="to_quiz">Quiz &gt;&gt;</string>
+
+    <!--hint fragment - quizzes-->
+    <string name="question_1">Question 1</string>
+    <string name="question_2">Question 2</string>
+    <string name="question_3">Question 3</string>
+
+    <!--hint fragment - quiz result-->
+    <string name="your_score">Your score is</string>
+    <string name="to_next_hint">To next hint</string>
+
+    <!--hint fragment - next hint-->
+    <string name="next_hint">Next hint</string>
+
+
+    <!--debug-->
+    <string name="lorem_ipsum_short" translatable="false">Lorem ipsum</string>
+    <string name="lorem_ipsum_medium" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</string>
+    <string name="lorem_ipsum" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</string>
 </resources>

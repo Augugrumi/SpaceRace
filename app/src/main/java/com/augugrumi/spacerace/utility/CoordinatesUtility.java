@@ -23,18 +23,25 @@ public class CoordinatesUtility {
      */
     public static double distance(Location l1, Location l2) {
 
-        double latDistance = Math.toRadians(Math.abs(l1.getLatitude() - l2.getLatitude()));
-        double lonDistance = Math.toRadians(Math.abs(l1.getLongitude() - l2.getLongitude()));
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(l1.getLatitude())) * Math.cos(Math.toRadians(l2.getLatitude()))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = EARTH_RADIUS * c * 1000; // convert to meters
+        double lat1 = l1.getLatitude(), lat2 = l2.getLatitude(),
+               lng1 = l1.getLongitude(), lng2 = l2.getLongitude();
 
-        double height = Math.abs(l1.getAltitude() - l2.getAltitude());
+        return distance(lat1, lng1, lat2, lng2);
+    }
 
-        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+    public static double distance(double lat1, double lng1, double lat2, double lng2) {
 
-        return Math.sqrt(distance);
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+
+        double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        return EARTH_RADIUS * c;
     }
 }

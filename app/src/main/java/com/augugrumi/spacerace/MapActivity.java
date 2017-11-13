@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -55,7 +54,15 @@ import java.util.Date;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
 
+
     private static final int PIECE_SIZE=80;
+
+    /************************FORDEBUG**************************/
+    private static final LatLng POI = new LatLng(45.411011, 11.887503);
+    /************************FORDEBUG**************************/
+
+    private static final double KM_DISTANCE_HINT = 0.020;
+
     /**
      * Code used in requesting runtime permissions.
      */
@@ -137,14 +144,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private boolean mLocationPermissionGranted;
     private boolean isLocationEnabled;
 
-    private LatLng mDefaultLocation = new LatLng(45.406389, 11.877778);
+    private LatLng mDefaultLocation = new LatLng(45.414380, 11.876797);
+
+    private HintFragment hf;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -173,6 +180,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else {
             startLocationUpdates();
         }
+
+        hf = new HintFragment();
     }
 
     /**
@@ -363,6 +372,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 marker.setVisible(true);
             }
+            showHintIfNear();
         }
         if (mCurrentLocation != null) {
             map.moveCamera(CameraUpdateFactory.newLatLng(
@@ -539,6 +549,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private boolean hintShown = false;
+    private void showHintIfNear() {
+        Log.i("FRAG_", "" + CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
+                POI.latitude, POI.longitude));
+        if (CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
+                POI.latitude, POI.longitude)<KM_DISTANCE_HINT && !hintShown) {
+            stopLocationUpdates();
+            Log.i("FRAG_", "show");
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            getSupportFragmentManager().
+                    beginTransaction()
+                    .hide(mapFragment)
+                    .commit();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.hint_cont, hf)
+                    .commit();
+            hintShown = true;
+        }
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
@@ -597,6 +630,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         finish();
+    }
+
+    public void hideHintAndShowMap() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(hf)
+                .commit();
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        getSupportFragmentManager().
+                beginTransaction()
+                .show(mapFragment)
+                .commit();
+
     }
 }
