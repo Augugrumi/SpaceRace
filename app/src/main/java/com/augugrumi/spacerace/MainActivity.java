@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
 
+    private boolean alreadySignIn = false;
+
     // Are we currently resolving a connection failure?
     private boolean mResolvingConnectionFailure = false;
 
@@ -74,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements
 
     // Are we playing in multiplayer mode?
     boolean mMultiplayer = false;
-
-    private boolean alreadySignIn = false;
 
     // The participants in the currently active game
     ArrayList<Participant> mParticipants = null;
@@ -163,16 +163,37 @@ public class MainActivity extends AppCompatActivity implements
         switchToScreen(R.id.screen_wait);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfigBuilder.build());
-        if (alreadySignIn){
-
-            //setUpGoogleApi();
-            alreadySignIn = false;
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+        if (! alreadySignIn) {
+
+            OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+            if (opr.isDone()) {
+                // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+                // and the GoogleSignInResult will be available instantly.
+                Log.d("INTRO", "Got cached sign-in");
+                GoogleSignInResult result = opr.get();
+                handleSignInResult(result);
+            } else {
+                // If the user has not previously signed in on this device or the sign-in has expired,
+                // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+                // single sign-on will occur in this branch.
+                showProgressDialog();
+                opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                    @Override
+                    public void onResult(GoogleSignInResult googleSignInResult) {
+                        hideProgressDialog();
+                        handleSignInResult(googleSignInResult);
+                    }
+                });
+            }
+            alreadySignIn = true;
+        }
+
 
         if (!mGoogleApiClient.isConnected()) {
             Log.d("INTRO","Connecting client.");
@@ -182,30 +203,6 @@ public class MainActivity extends AppCompatActivity implements
             Log.w("INTRO",
                     "GameHelper: client was already connected on onStart()");
         }
-        super.onStart();
-
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
-            Log.d("INTRO", "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-        } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
-            showProgressDialog();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    hideProgressDialog();
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }
-        alreadySignIn = false;
-
     }
 
     void showWaitingRoom(Room room) {
@@ -333,7 +330,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onClickCredits(View view) {
         Intent i = new Intent(MainActivity.this, CreditsActivity.class);
         startActivity(i);
-        finish();
     }
 
     @OnClick(R.id.new_match)
