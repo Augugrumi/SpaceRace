@@ -152,7 +152,7 @@
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_settings_white_18dp" />
+        app:srcCompat="@drawable/ic_settings_white_24dp" />
 
     <ImageView
         android:id="@+id/imageView"
