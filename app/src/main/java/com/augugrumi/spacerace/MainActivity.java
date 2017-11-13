@@ -105,12 +105,6 @@ public class MainActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        if (alreadySignIn){
-
-            //setUpGoogleApi();
-            alreadySignIn = false;
-        }
-
         mGoogleApiClient = GoogleApiClientManager.setUpGoogleApi(this,
                 new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -175,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onStart() {
         super.onStart();
 
-        if (alreadySignIn) {
+        if (! alreadySignIn) {
 
             OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
             if (opr.isDone()) {
@@ -197,9 +191,9 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
             }
+            alreadySignIn = true;
         }
 
-        alreadySignIn = false;
 
         if (!mGoogleApiClient.isConnected()) {
             Log.d("INTRO","Connecting client.");
@@ -337,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onClickCredits(View view) {
         Intent i = new Intent(MainActivity.this, CreditsActivity.class);
         startActivity(i);
-        finish();
     }
 
     @OnClick(R.id.new_match)
