@@ -10,6 +10,8 @@
 
 
     <application
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:name=".SpaceRace"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
