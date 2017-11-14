@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements
         RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener {
 
     final static int[] SCREENS = {
-            R.id.screen_main, R.id.screen_wait
+            //R.id.screen_main,
+            R.id.screen_wait
     };
 
     // Request codes for the UIs that we show with startActivityForResult:
@@ -375,7 +377,8 @@ public class MainActivity extends AppCompatActivity implements
         ((TextView) findViewById(R.id.incoming_invitation_text)).setText(
                 invitation.getInviter().getDisplayName() + " " +
                         getString(R.string.is_inviting_you));
-        switchToScreen(mCurScreen);
+        //switchToScreen(mCurScreen);
+        ((ViewGroup)findViewById(R.id.invitation_popup)).setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -497,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     void switchToScreen(int screenId) {
-        /*// make the requested screen visible; hide all others.
+        // make the requested screen visible; hide all others.
         for (int id : SCREENS) {
             findViewById(id).setVisibility(screenId == id ? View.VISIBLE : View.GONE);
         }
@@ -515,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements
             // single-player: show on main screen and gameplay screen
             showInvPopup = (mCurScreen == R.id.screen_main || mCurScreen == R.id.screen_game);
         }
-        findViewById(R.id.invitation_popup).setVisibility(showInvPopup ? View.VISIBLE : View.GONE);*/
+        findViewById(R.id.invitation_popup).setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
     }
 
     @Override
