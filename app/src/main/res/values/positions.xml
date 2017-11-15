@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="prato_valle">
+        <item>45.3988129</item>
+        <item>11.8756055</item>
+    </string-array>
+    
+    <string-array name="basilica_sant_antonio">
+        <item>45.4013978</item>
+        <item>11.8785844</item>
+    </string-array>
+    
+    <string-array name="casa_galileo">
+        <item>45.3863555</item>
+        <item>11.8574948</item>
+    </string-array>
+    
+    <string-array name="chiesa_san_francesco">
+        <item>45.4048849</item>
+        <item>11.8787972</item>
+    </string-array>
+    
+    <string-array name="chiesa_santa_sofia">
+        <item>45.4072275</item>
+        <item>11.8821707</item>
+    </string-array>
+    
+    <string-array name="borgo_altinate">
+        <item>45.4082788</item>
+        <item>11.8795842</item>
+    </string-array>
+    
+    <string-array name="chiesa_degli_eremitani">
+        <item>45.4101425</item>
+        <item>11.877933</item>
+    </string-array>
+
+    <string-array name="cappella_degli_scrovegni">
+        <item>45.4116696</item>
+        <item>11.8769395</item>
+    </string-array>
+    
+    <string-array name="caffe_pedrocchi">
+        <item>45.4073697</item>
+        <item>11.8749353</item>
+    </string-array>
+
+    <string-array name="orologio_civile">
+        <item>0</item>
+        <item>0</item>
+    </string-array>
+    
+    <string-array name="bo">
+        <item>45.4067795</item>
+        <item>11.8750883</item>
+    </string-array>
+    
+    <string-array name="palazzo_della_ragione">
+        <item>45.4067927</item>
+        <item>11.8726683</item>
+    </string-array>
+    
+    <string-array name="verso_santa_lucia">
+        <item>0</item>
+        <item>0</item>
+    </string-array>
+    
+    <string-array name="oratorio_san_rocco">
+        <item>45.4086444</item>
+        <item>11.8733343</item>
+    </string-array>
+    
+    <string-array name="piazza_dei_signori">
+        <item>45.407544</item>
+        <item>11.8714289</item>
+    </string-array>
+    
+    <string-array name="chiesa_san_nicolo">
+        <item>45.408864</item>
+        <item>11.8703153</item>
+    </string-array>
+    
+    <string-array name="battistero_duomo">
+        <item>45.4066827</item>
+        <item>11.8702959</item>
+    </string-array>
+    
+    <string-array name="piazza_capitaniato">
+        <item>45.4075288</item>
+        <item>11.8686772</item>
+    </string-array>
+    
+    <string-array name="chiesa_san_pietro">
+        <item>45.4087296</item>
+        <item>11.8664117</item>
+    </string-array>
+    
+    <string-array name="chiesa_san_tommaso">
+        <item>45.4032479</item>
+        <item>11.867147</item>
+    </string-array>
+</resources>
