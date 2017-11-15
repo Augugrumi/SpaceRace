@@ -429,8 +429,10 @@ public class MainActivity extends AppCompatActivity implements
         mMyId = room.getParticipantId(Games.Players.getCurrentPlayerId(mGoogleApiClient));
 
         // save room ID if its not initialized in onRoomCreated() so we can leave cleanly before the game starts.
-        if(mRoomId==null)
+        if(mRoomId==null) {
             mRoomId = room.getRoomId();
+
+        }
     }
 
     @Override
@@ -466,6 +468,7 @@ public class MainActivity extends AppCompatActivity implements
             showWaitingRoom(room);
             switchToScreen(R.id.screen_main);
         }
+
     }
 
     @Override
@@ -485,6 +488,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onRoomConnected(int statusCode, Room room) {
         Log.i("ROOM", "on room connected");
+        Intent i = new Intent(MainActivity.this, MapActivity.class);
+        startActivity(i);
         if (statusCode != GamesStatusCodes.STATUS_OK) {
             BaseGameUtils.makeSimpleDialog(this, getString(R.string.game_problem));
             return;
