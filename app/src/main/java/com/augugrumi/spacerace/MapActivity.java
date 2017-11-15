@@ -355,8 +355,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
      * Updates all UI fields.
      */
     private void updateUI(final Location oldLocation) {
-        if (marker!=null)
-            marker.setVisible(false);
         if (!isLocationEnabled && map != null) {
             mRequestingLocationUpdates = true;
             zoom = map.getCameraPosition().zoom;
@@ -374,17 +372,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                         mCurrentLocation.getLongitude()))
                         .width(30)
                         .color(Color.CYAN));
+                if (marker == null) {
+                    PieceShape markerPic = new PieceSquareShape(PIECE_SIZE);
+                    marker = map.addMarker(new MarkerOptions()
+                            .position(new LatLng(
+                                    mCurrentLocation.getLatitude() - 15,
+                                    mCurrentLocation.getLongitude()))
+                            .icon(PiecePicker.pickPieceBitMap(markerPic, piece)));
+                }
                 marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
             }
             showHintIfNear();
         }
         if (mCurrentLocation != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLng(
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mCurrentLocation.getLatitude(),
-                            mCurrentLocation.getLongitude())));
+                            mCurrentLocation.getLongitude()), zoom));
         }
-        if (marker!=null)
-            marker.setVisible(true);
     }
 
     /**
@@ -581,7 +585,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
-        this.map.setMinZoomPreference(DEFAULT_ZOOM);
         if (mLocationPermissionGranted) {
             showCurrentPlace();
         }

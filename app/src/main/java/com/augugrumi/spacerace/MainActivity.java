@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.augugrumi.spacerace.intro.IntroActivity;
 import com.augugrumi.spacerace.utility.GoogleApiClientManager;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.augugrumi.spacerace.utility.gameutility.BaseGameActivity;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -40,12 +41,15 @@ import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, RealTimeMessageReceivedListener,
         RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener {
+
+    @BindView(R.id.invitation_popup) ViewGroup invitationPopUp;
 
     final static int[] SCREENS = {
             //R.id.screen_main,
@@ -109,21 +113,6 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-/*
-        Glide.with(this)
-                .load(R.drawable.rocket2)
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                )
-                .into(activityBg);
-
-
-
-        activityBg.setBackgroundResource(R.drawable.main_activity_animation);
-        AnimationDrawable animationBg = (AnimationDrawable) activityBg.getBackground();
-        animationBg.start();
-*/
 
         mGoogleApiClient = GoogleApiClientManager.setUpGoogleApi(this,
                 new GoogleApiClient.ConnectionCallbacks() {
@@ -143,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements
                                 return;
                             }
                         }
-                        switchToScreen(R.id.screen_main);
                     }
 
                     @Override
@@ -157,11 +145,7 @@ public class MainActivity extends AppCompatActivity implements
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    @OnClick(R.id.button_accept_popup_invitation)
-    public void onClickAcceptPopUpInvitation(View view) {
-        acceptInviteToRoom(mIncomingInvitationId);
-        mIncomingInvitationId = null;
-    }
+
 
     @Override
     public void onStop() {
@@ -180,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
         roomConfigBuilder.setInvitationIdToAccept(invId)
                 .setMessageReceivedListener(this)
                 .setRoomStatusUpdateListener(this);
-        switchToScreen(R.id.screen_wait);
+        showPopUpNotification(false);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Games.RealTimeMultiplayer.join(mGoogleApiClient, roomConfigBuilder.build());
     }
@@ -188,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-
+        alreadySignIn = mGoogleApiClient.isConnected();
         if (! alreadySignIn) {
 
             OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
@@ -212,14 +196,17 @@ public class MainActivity extends AppCompatActivity implements
                 });
             }
             alreadySignIn = true;
-        }
+        } else
+            Games.Invitations.registerInvitationListener(mGoogleApiClient,
+                    MainActivity.this);
 
 
         if (!mGoogleApiClient.isConnected()) {
             Log.d("INTRO","Connecting client.");
-            switchToScreen(R.id.screen_wait);
             mGoogleApiClient.connect();
         } else {
+            Games.Invitations.registerInvitationListener(mGoogleApiClient,
+                    MainActivity.this);
             Log.w("INTRO",
                     "GameHelper: client was already connected on onStart()");
         }
@@ -319,11 +306,12 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
+    private void handleSignInResult(@NonNull GoogleSignInResult result) {
         Log.d("INTRO", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            mGoogleApiClient.connect();
             Log.i("INTRO", acct.getDisplayName());
         } else {
             Log.i("INTRO", "account not connected");
@@ -346,29 +334,9 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @OnClick(R.id.credits)
-    public void onClickCredits(View view) {
-        Intent i = new Intent(MainActivity.this, CreditsActivity.class);
-        startActivity(i);
-    }
 
-    @OnClick(R.id.new_match)
-    public void onClickNewMatch(View view) {
-        backOnNewMatch = true;
-        Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 1);
-        startActivityForResult(intent, RC_SELECT_PLAYERS);
-        switchToScreen(R.id.screen_wait);
-    }
 
-    @OnClick(R.id.join)
-    public void onClickJoin(View view) {
-        findViewById(R.id.invitation_popup).setVisibility(View.GONE);
-        backOnNewMatch = true;
-        Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
-        switchToScreen(R.id.screen_wait);
-        startActivityForResult(intent, RC_INVITATION_INBOX);
-        switchToScreen(R.id.screen_main);
-    }
+
 
     @Override
     public void onInvitationReceived(Invitation invitation) {
@@ -377,15 +345,14 @@ public class MainActivity extends AppCompatActivity implements
         ((TextView) findViewById(R.id.incoming_invitation_text)).setText(
                 invitation.getInviter().getDisplayName() + " " +
                         getString(R.string.is_inviting_you));
-        //switchToScreen(mCurScreen);
-        ((ViewGroup)findViewById(R.id.invitation_popup)).setVisibility(View.VISIBLE);
+        showPopUpNotification(true);
     }
 
     @Override
     public void onInvitationRemoved(String invitationId) {
         if (mIncomingInvitationId!=null && mIncomingInvitationId.equals(invitationId)) {
             mIncomingInvitationId = null;
-            switchToScreen(mCurScreen); // This will hide the invitation popup
+            showPopUpNotification(false); // This will hide the invitation popup
         }
     }
 
@@ -466,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             mRoomId = room.getRoomId();
             showWaitingRoom(room);
-            switchToScreen(R.id.screen_main);
+            showPopUpNotification(false);
         }
 
     }
@@ -504,36 +471,59 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    void switchToScreen(int screenId) {
-        // make the requested screen visible; hide all others.
-        for (int id : SCREENS) {
-            findViewById(id).setVisibility(screenId == id ? View.VISIBLE : View.GONE);
-        }
-        mCurScreen = screenId;
 
-        // should we show the invitation popup?
-        boolean showInvPopup;
-        if (mIncomingInvitationId == null) {
-            // no invitation, so no popup
-            showInvPopup = false;
-        } else if (mMultiplayer) {
-            // if in multiplayer, only show invitation on main screen
-            showInvPopup = (mCurScreen == R.id.screen_main);
-        } else {
-            // single-player: show on main screen and gameplay screen
-            showInvPopup = (mCurScreen == R.id.screen_main || mCurScreen == R.id.screen_game);
-        }
-        findViewById(R.id.invitation_popup).setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
+
+
+
+
+
+
+
+
+
+
+
+    private void showPopUpNotification(boolean showInvPopup) {
+        invitationPopUp.setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    @OnClick(R.id.button_accept_popup_invitation)
+    public void onClickAcceptPopUpInvitation(View view) {
+        //FIXME ?????
+        acceptInviteToRoom(mIncomingInvitationId);
+        mIncomingInvitationId = null;
     }
 
+    @OnClick(R.id.new_match)
+    public void onClickNewMatch(View view) {
+        //FIXME ?????
+        backOnNewMatch = true;
+        showPopUpNotification(false);
+        Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mGoogleApiClient, 1, 1);
+        startActivityForResult(intent, RC_SELECT_PLAYERS);
+    }
+
+    @OnClick(R.id.join)
+    public void onClickJoin(View view) {
+        //FIXME ?????
+        findViewById(R.id.invitation_popup).setVisibility(View.GONE);
+        backOnNewMatch = true;
+        showPopUpNotification(false);
+        Intent intent = Games.Invitations.getInvitationInboxIntent(mGoogleApiClient);
+        startActivityForResult(intent, RC_INVITATION_INBOX);
+    }
+
+    @OnClick(R.id.credits)
+    public void onClickCredits(View view) {
+        Intent i = new Intent(MainActivity.this, CreditsActivity.class);
+        startActivity(i);
+    }
+
+    //DEBUG
     @OnClick(R.id.debug_btn)
     public void onClickSeeMap(View view) {
         Intent i = new Intent(MainActivity.this, MapActivity.class);
         startActivity(i);
     }
+
 }
