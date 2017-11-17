@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.augugrumi.spacerace.R;
 import com.augugrumi.spacerace.SpaceRace;
+import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonSyntaxException;
 
@@ -152,32 +153,26 @@ public class PathCreator {
         position to the next node, since all the places are static and we can already write it down,
         saving computational time.
          */
-        Resources r = SpaceRace.getAppContext().getResources();
+        final double MAX_DISTANCE_FIRST_HOP = 0.700;
+        final double MIN_DISTANCE_FIRST_HOP = 0.200;
 
+        Resources r = SpaceRace.getAppContext().getResources();
 
         // FIXME I don't need the distance of all the points!
         List<LatLng> buildingsPositions = new ArrayList<>();
-        buildingsPositions.add(new LatLng(
-                Double.parseDouble(r.getStringArray(R.array.prato_valle)[0]),
-                Double.parseDouble(r.getStringArray(R.array.prato_valle)[1])
-        ));
-        buildingsPositions.add(new LatLng(
-                Double.parseDouble(r.getStringArray(R.array.basilica_sant_antonio)[0]),
-                Double.parseDouble(r.getStringArray(R.array.basilica_sant_antonio)[1])
-        ));
-        buildingsPositions.add(new LatLng(
-                Double.parseDouble(r.getStringArray(R.array.battistero_duomo)[0]),
-                Double.parseDouble(r.getStringArray(R.array.battistero_duomo)[1])
-        ));
-        buildingsPositions.add(new LatLng(
-                Double.parseDouble(r.getStringArray(R.array.bo)[0]),
-                Double.parseDouble(r.getStringArray(R.array.bo)[1])
-        ));
-        buildingsPositions.add(new LatLng(
-                Double.parseDouble(r.getStringArray(R.array.borgo_altinate)[0]),
-                Double.parseDouble(r.getStringArray(R.array.borgo_altinate)[1])
-        ));
+        for (LatLng position : PositionsLoader.getPositions()) {
+            double distance = CoordinatesUtility.distance(
+                    position.latitude,
+                    position.longitude,
+                    initialPosition.latitude,
+                    initialPosition.longitude);
 
+            if (distance < MAX_DISTANCE_FIRST_HOP && distance > MIN_DISTANCE_FIRST_HOP) {
+
+                Log.d("POS_FINDER_MATCH", "ADDING CANDIDATE: " + position.toString());
+                buildingsPositions.add(position);
+            }
+        }
 
         for (FutureTask<DistanceFrom> distanceFromFutureTask : calculateDistanceFromStart(buildingsPositions)) {
 
@@ -187,9 +182,7 @@ public class PathCreator {
 
                 // TODO finish the calculations
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException  e) {
                 e.printStackTrace();
             }
         }
