@@ -21,6 +21,6 @@ public class PathRetrival {
                 .build();
 
         MapsDirections directions = request.create(MapsDirections.class);
-        return directions.travelInformations(origin, destination, "WALKING", "metric");
+        return directions.travelInformations(origin, destination, "walking", "metric");
     }
 }

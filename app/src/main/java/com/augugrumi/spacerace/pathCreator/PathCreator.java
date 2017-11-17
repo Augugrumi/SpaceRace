@@ -1,18 +1,16 @@
 package com.augugrumi.spacerace.pathCreator;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.augugrumi.spacerace.R;
-import com.augugrumi.spacerace.SpaceRace;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonSyntaxException;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -132,6 +130,7 @@ public class PathCreator {
                     return new DistanceFrom(initialPosition, destination, -1);
                 }
             });
+            res.add(task);
             threadManager.execute(task);
         }
 
@@ -139,7 +138,7 @@ public class PathCreator {
         return res;
     }
 
-    public Queue<LatLng> generatePath() {
+    public ArrayList<Deque<LatLng>> generatePaths() {
 
         /* TODO write something able to find a suitable path for the gamers
         I'll just try to briefly explain the idea:
@@ -156,29 +155,21 @@ public class PathCreator {
         final double MAX_DISTANCE_FIRST_HOP = 0.700;
         final double MIN_DISTANCE_FIRST_HOP = 0.200;
 
-        Resources r = SpaceRace.getAppContext().getResources();
+        for (FutureTask<DistanceFrom> distanceFromFutureTask :
+                calculateDistanceFromStart(getInRange(
+                        initialPosition,
+                        MIN_DISTANCE_FIRST_HOP,
+                        MAX_DISTANCE_FIRST_HOP
+                ))) {
 
-        // FIXME I don't need the distance of all the points!
-        List<LatLng> buildingsPositions = new ArrayList<>();
-        for (LatLng position : PositionsLoader.getPositions()) {
-            double distance = CoordinatesUtility.distance(
-                    position.latitude,
-                    position.longitude,
-                    initialPosition.latitude,
-                    initialPosition.longitude);
-
-            if (distance < MAX_DISTANCE_FIRST_HOP && distance > MIN_DISTANCE_FIRST_HOP) {
-
-                Log.d("POS_FINDER_MATCH", "ADDING CANDIDATE: " + position.toString());
-                buildingsPositions.add(position);
-            }
-        }
-
-        for (FutureTask<DistanceFrom> distanceFromFutureTask : calculateDistanceFromStart(buildingsPositions)) {
+            Deque<DistanceFrom> path = new ArrayDeque<>();
 
             try {
                 DistanceFrom distance = distanceFromFutureTask.get();
-                Log.d("POS_FINDER", distance.end + " " + distance.distance);
+                Log.d("POS_FINDER", "RESULT: " + distance.end + " " + distance.distance);
+
+                path.addLast(distance);
+                path.addAll(deepSearch(distance, maxDistance - distance.distance));
 
                 // TODO finish the calculations
 
@@ -186,6 +177,34 @@ public class PathCreator {
                 e.printStackTrace();
             }
         }
+
+        return null;
+    }
+
+    private List<LatLng> getInRange (@NonNull LatLng pos, double min, double max) {
+        List<LatLng> buildingsPositions = new ArrayList<>();
+        for (LatLng position : PositionsLoader.getPositions()) {
+            double distance = CoordinatesUtility.distance(
+                    position.latitude,
+                    position.longitude,
+                    pos.latitude,
+                    pos.longitude);
+
+            if (distance < max && distance > min) {
+
+                Log.d("POS_FINDER_MATCH", "ADDING CANDIDATE: " + position.toString());
+                buildingsPositions.add(position);
+            }
+        }
+
+        return buildingsPositions;
+    }
+
+    private Deque<DistanceFrom> deepSearch(@NonNull DistanceFrom d, double remainingDistance) {
+
+        List<LatLng> candidates = getInRange(d.end, minDistance, remainingDistance);
+
+        // FIXME I need to hardcode all the distances between nodes!
 
         return null;
     }
