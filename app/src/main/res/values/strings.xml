@@ -25,7 +25,7 @@
     <string name="invite_players_explanation">Invite friends to play a game.</string>
     <string name="see_invitations_explanation">See who is inviting you right now.</string>
     <string name="inv_popup_text">Incoming invitation!</string>
-    <string name="accept_popup_invite">Accept!</string>
+    <string name="accept_popup_invite">Accept</string>
     <string name="sign_out">Sign Out</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="instructions">Click the button as fast as you can!</string>
