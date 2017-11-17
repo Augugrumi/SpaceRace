@@ -44,7 +44,14 @@ public class PiecePicker {
     @NonNull
     public static BitmapDescriptor pickRandomPieceBitMap (@NonNull PieceShape shape) {
 
-        Bitmap toScale = BitmapFactory.decodeResource(SpaceRace.getAppContext().getResources(), pickRandomPieceResource());
+        return pickPieceBitMap(shape, pickRandomPieceResource());
+    }
+
+    @NonNull
+    public static BitmapDescriptor pickPieceBitMap (@NonNull PieceShape shape,
+                                                          int pieceId) {
+
+        Bitmap toScale = BitmapFactory.decodeResource(SpaceRace.getAppContext().getResources(), pieceId);
         toScale = Bitmap.createScaledBitmap(toScale, shape.getWidth(), shape.getLength(), false);
 
         return BitmapDescriptorFactory.fromBitmap(toScale);

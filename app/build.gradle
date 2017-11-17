@@ -37,14 +37,13 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Play services
-    compile 'com.google.android.gms:play-services-auth:11.4.2'
-    compile 'com.google.android.gms:play-services-games:11.4.2'
-    compile 'com.google.firebase:firebase-core:11.4.2'
-    compile 'com.google.firebase:firebase-auth:11.4.2'
-    compile 'com.google.android.gms:play-services-maps:11.4.2'
-    compile 'com.google.android.gms:play-services-location:11.4.2'
-    compile 'com.google.android.gms:play-services-places:11.4.2'
-
+    compile 'com.google.android.gms:play-services-auth:11.6.0'
+    compile 'com.google.android.gms:play-services-games:11.6.0'
+    compile 'com.google.firebase:firebase-core:11.6.0'
+    compile 'com.google.firebase:firebase-auth:11.6.0'
+    compile 'com.google.android.gms:play-services-maps:11.6.0'
+    compile 'com.google.android.gms:play-services-location:11.6.0'
+    compile 'com.google.android.gms:play-services-places:11.6.0'
 
     // Main activity UI
     compile 'nl.psdcompany:duo-navigation-drawer:2.0.6'
@@ -57,6 +56,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.3.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
 }
+
 
 
 
