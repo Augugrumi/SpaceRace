@@ -36,6 +36,8 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationCallback;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.Participant;
+import com.google.android.gms.games.multiplayer.realtime.OnRealTimeMessageReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateCallback;
@@ -104,6 +106,15 @@ public class MainActivity extends AppCompatActivity implements
 
     private final RoomUpdateCallbackImpl mRoomUpdateCallbackImpl = new RoomUpdateCallbackImpl();
     private final RoomStatusUpdateCallbackImp mRoomStatusUpdateCallback = new RoomStatusUpdateCallbackImp();
+
+
+    OnRealTimeMessageReceivedListener mOnRealTimeMessageReceivedListener = new OnRealTimeMessageReceivedListener() {
+        @Override
+        public void onRealTimeMessageReceived(@NonNull RealTimeMessage realTimeMessage) {
+            byte[] buf = realTimeMessage.getMessageData();
+            String sender = realTimeMessage.getSenderParticipantId();
+        }
+    };
     /**************************************************************************/
 
     // Are we currently resolving a connection failure?
@@ -144,7 +155,16 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         hideProgressDialog();
-        signInSilently();
+
+        /*if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
+            Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
+        }
+
+        // start the sign-in flow
+        Log.d("SIGNIN", "Sign-in button clicked");
+        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);*/
+
+
         if (!SharedPreferencesManager.getFirstApplicationRun()) {
 
             Log.d("INTRO", "First run detected, launching sliders...");
@@ -153,6 +173,12 @@ public class MainActivity extends AppCompatActivity implements
             startActivity(intent);
 
             SharedPreferencesManager.setFirstApplicationRun(true);
+        } else {
+            if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
+                Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
+            }
+            Log.d("SIGNIN", "Sign-in silently");
+            signInSilently();
         }
     }
 
@@ -184,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mRoomConfig = RoomConfig.builder(mRoomUpdateCallbackImpl)
                 .setInvitationIdToAccept(invitationId)
-                //.setOnMessageReceivedListener(mOnRealTimeMessageReceivedListener)
+                .setOnMessageReceivedListener(mOnRealTimeMessageReceivedListener)
                 .setRoomStatusUpdateCallback(mRoomStatusUpdateCallback)
                 .build();
 
@@ -202,7 +228,14 @@ public class MainActivity extends AppCompatActivity implements
     /*@Override
     public void onStart() {
         super.onStart();
-        alreadySignIn = mGoogleApiClient.isConnected();
+        if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
+            Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
+        }
+
+        // start the sign-in flow
+        Log.d("SIGNIN", "Sign-in button clicked");
+        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
+    }/*    alreadySignIn = mGoogleApiClient.isConnected();
         if (! alreadySignIn) {
 
             OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
@@ -376,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements
                 onDisconnected();
 
                 new AlertDialog.Builder(this)
-                        .setMessage(message)
+                        .setMessage(message + apiException.toString())
                         .setNeutralButton(android.R.string.ok, null)
                         .show();
             }
@@ -437,9 +470,10 @@ public class MainActivity extends AppCompatActivity implements
 
         mRoomConfig = RoomConfig.builder(mRoomUpdateCallbackImpl)
                 .addPlayersToInvite(invitees)
-                //.setOnMessageReceivedListener(mOnRealTimeMessageReceivedListener)
+                .setOnMessageReceivedListener(mOnRealTimeMessageReceivedListener)
                 .setRoomStatusUpdateCallback(mRoomStatusUpdateCallback)
-                .setAutoMatchCriteria(autoMatchCriteria).build();
+                .setAutoMatchCriteria(autoMatchCriteria)
+                .build();
         mRealTimeMultiplayerClient.create(mRoomConfig);
         Log.d("SELECT_PLAYERS_RESULT", "Room created, waiting for it to be ready...");
     }
