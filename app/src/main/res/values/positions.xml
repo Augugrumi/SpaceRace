@@ -41,13 +41,13 @@
     </string-array>
     
     <string-array name="caffe_pedrocchi">
-        <item>45.4073697</item>
-        <item>11.8749353</item>
+        <item>45.407463</item>
+        <item>11.8753303</item>
     </string-array>
 
     <string-array name="orologio_civile">
-        <item>0</item>
-        <item>0</item>
+        <item>45.4077389</item>
+        <item>11.8773198</item>
     </string-array>
     
     <string-array name="bo">
@@ -60,10 +60,10 @@
         <item>11.8726683</item>
     </string-array>
     
-    <string-array name="verso_santa_lucia">
+    <!--<string-array name="verso_santa_lucia">
         <item>0</item>
         <item>0</item>
-    </string-array>
+    </string-array> -->
     
     <string-array name="oratorio_san_rocco">
         <item>45.4086444</item>
