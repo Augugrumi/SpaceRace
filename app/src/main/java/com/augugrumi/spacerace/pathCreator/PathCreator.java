@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -26,31 +27,41 @@ import retrofit2.Response;
 
 public class PathCreator {
 
-    private class DistanceFrom {
+    public class DistanceFrom {
 
         private LatLng start;
         private LatLng end;
         private double distance;
 
-        public DistanceFrom(@NonNull LatLng start, @NonNull LatLng end, double distance) {
+        DistanceFrom(@NonNull LatLng start, @NonNull LatLng end, double distance) {
 
             this.start = start;
             this.end = end;
             this.distance = distance;
+        }
+
+        public LatLng getStart() {
+            return start;
+        }
+        public LatLng getEnd() {
+            return end;
+        }
+        public double getDistance() {
+            return distance;
         }
     }
 
     /**
      * Max distance in meters
      */
-    private int maxDistance = 5000;
+    private double maxDistance = 5;
     /**
      * Min distance in meters
      */
-    private int minDistance = 500;
+    private double minDistance = 0.5;
     private LatLng initialPosition = null;
 
-    public PathCreator(@NonNull LatLng initialPosition, int minDistance, int maxDistance) {
+    public PathCreator(@NonNull LatLng initialPosition, double minDistance, double maxDistance) {
 
         this.initialPosition = initialPosition;
 
@@ -64,25 +75,25 @@ public class PathCreator {
         return initialPosition;
     }
 
-    public int getMaxDistance () {
+    public double getMaxDistance () {
         return maxDistance;
     }
 
-    public int getMinDistance () {
+    public double getMinDistance () {
         return minDistance;
     }
 
-    private List<FutureTask<DistanceFrom>> calculateDistanceFromStart(List<LatLng> points) {
+    private List<FutureTask<DistanceFrom>> calculateDistanceFromStart(@NonNull LatLng start, @NonNull List<LatLng> points) {
 
         final String toMatch = "legs=[{distance={text=";
         List<FutureTask<DistanceFrom>> res = new ArrayList<>();
         final ExecutorService threadManager = Executors.newCachedThreadPool();
-        final String init = this.initialPosition.latitude + "," + this.initialPosition.longitude;
+        final String init = start.latitude + "," + start.longitude;
 
         for (final LatLng destination : points) {
 
             final String dest = destination.latitude + "," + destination.longitude;
-            final Call<Object> path = new PathRetrival().getDirections(init, dest);
+            final Call<Object> path = new PathRetrieval().getDirections(init, dest);
 
             FutureTask<DistanceFrom> task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
                 @Override
@@ -138,7 +149,26 @@ public class PathCreator {
         return res;
     }
 
-    public ArrayList<Deque<LatLng>> generatePaths() {
+    public void getDistanceBetweenPoints() {
+
+        for (LatLng init : PositionsLoader.getPositions()) {
+
+            for (FutureTask<DistanceFrom> f : calculateDistanceFromStart(
+                    init,
+                    PositionsLoader.getPositions()
+            )) {
+                try {
+                    DistanceFrom df = f.get();
+
+                    Log.d("DISTANCE_FROM", df.start + " " + df.end + ". Distance: " + df.distance + " meters");
+                } catch (InterruptedException | ExecutionException  e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public List<Deque<DistanceFrom>> generatePaths() {
 
         /* TODO write something able to find a suitable path for the gamers
         I'll just try to briefly explain the idea:
@@ -155,30 +185,36 @@ public class PathCreator {
         final double MAX_DISTANCE_FIRST_HOP = 0.700;
         final double MIN_DISTANCE_FIRST_HOP = 0.200;
 
-        for (FutureTask<DistanceFrom> distanceFromFutureTask :
-                calculateDistanceFromStart(getInRange(
+        List<Deque<DistanceFrom>> res = new ArrayList<>();
+
+        List<FutureTask<DistanceFrom>> effectiveDistanceFromStart = calculateDistanceFromStart(
+                initialPosition,
+                getInRange(
                         initialPosition,
                         MIN_DISTANCE_FIRST_HOP,
                         MAX_DISTANCE_FIRST_HOP
-                ))) {
+                ));
+        Collections.shuffle(effectiveDistanceFromStart); // Randomizing the points...
+
+
+        for (FutureTask<DistanceFrom> distanceFromFutureTask : effectiveDistanceFromStart) {
 
             Deque<DistanceFrom> path = new ArrayDeque<>();
 
             try {
                 DistanceFrom distance = distanceFromFutureTask.get();
-                Log.d("POS_FINDER", "RESULT: " + distance.end + " " + distance.distance);
 
                 path.addLast(distance);
-                path.addAll(deepSearch(distance, maxDistance - distance.distance));
+                path.addAll(pathChooser(distance, maxDistance - (distance.distance/1000)));
 
-                // TODO finish the calculations
+                res.add(path);
 
             } catch (InterruptedException | ExecutionException  e) {
                 e.printStackTrace();
             }
         }
 
-        return null;
+        return res;
     }
 
     private List<LatLng> getInRange (@NonNull LatLng pos, double min, double max) {
@@ -190,7 +226,7 @@ public class PathCreator {
                     pos.latitude,
                     pos.longitude);
 
-            if (distance < max && distance > min) {
+            if (distance <= max && distance >= min) {
 
                 Log.d("POS_FINDER_MATCH", "ADDING CANDIDATE: " + position.toString());
                 buildingsPositions.add(position);
@@ -200,12 +236,40 @@ public class PathCreator {
         return buildingsPositions;
     }
 
-    private Deque<DistanceFrom> deepSearch(@NonNull DistanceFrom d, double remainingDistance) {
+    private Deque<DistanceFrom> pathChooser (@NonNull DistanceFrom d, double remainingDistance) throws ExecutionException, InterruptedException {
 
-        List<LatLng> candidates = getInRange(d.end, minDistance, remainingDistance);
+        /* FIXME I need to hardcode all the distances between nodes!
+        There is a problem tho: it's not easy to calculate all the distances without having the
+        application crashing...
+         */
+        Deque<DistanceFrom> res = new ArrayDeque<>();
 
-        // FIXME I need to hardcode all the distances between nodes!
+        if (remainingDistance >= minDistance) {
 
-        return null;
+            List<FutureTask<DistanceFrom>> effectiveDistance = calculateDistanceFromStart(
+                    d.end,
+                    getInRange(d.end, 0.200, 0.700)
+            );
+
+            Collections.shuffle(effectiveDistance); // Randomizing the points...
+
+            Log.d("PATH_CHOOSER", "effectiveDistance size: " + effectiveDistance.size());
+
+            for (FutureTask<DistanceFrom> d2 : effectiveDistance) {
+
+                DistanceFrom calculation = d2.get();
+
+                if (calculation.start != d.end && calculation.distance >= 0 && (calculation.distance/1000) <= remainingDistance) {
+
+                    Log.d("PATH_CHOOSER", "adding new node into the list");
+
+                    res.addLast(calculation);
+                    res.addAll(pathChooser(calculation, remainingDistance - (calculation.distance/1000)));
+                    return res;
+                }
+            }
+        }
+
+        return res;
     }
 }

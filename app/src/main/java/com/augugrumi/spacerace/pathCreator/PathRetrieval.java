@@ -2,6 +2,9 @@ package com.augugrumi.spacerace.pathCreator;
 
 import android.support.annotation.NonNull;
 
+import com.augugrumi.spacerace.R;
+import com.augugrumi.spacerace.SpaceRace;
+
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by dpolonio on 16/11/17.
  */
 
-class PathRetrival {
+class PathRetrieval {
 
     private final static String GOOGLE_MAPS_API_URL = "https://maps.googleapis.com";
 
@@ -26,6 +29,6 @@ class PathRetrival {
                 destination,
                 "walking",
                 "metric",
-                null);
+                SpaceRace.getAppContext().getString(R.string.google_maps_directions_api_key));
     }
 }
