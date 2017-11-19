@@ -31,7 +31,6 @@ public class PiecePicker {
             R.drawable.piece_sleuth_or_spy,
             R.drawable.piece_telescope,
             R.drawable.piece_unicorn_face
-
     };
 
     private final static int FINAL_GOAL = R.drawable.piece_direct_hit;
@@ -39,13 +38,13 @@ public class PiecePicker {
     private final static int MIDDLE_GOAL = R.drawable.piece_gem_stone;
     private final static int HINT = R.drawable.piece_scroll;
 
-    private static int pickRandomPieceResource () {
+    private static int pickRandomPieceResource() {
 
         return LIST_OF_PIECES[(int)(Math.random() * (LIST_OF_PIECES.length - 1))];
     }
 
     @NonNull
-    private static BitmapDescriptor getPiece (@NonNull PieceShape shape, int id) {
+    private static BitmapDescriptor getPiece(@NonNull PieceShape shape, int id) {
 
         Bitmap toScale = BitmapFactory.decodeResource(SpaceRace.getAppContext().getResources(), id);
         toScale = Bitmap.createScaledBitmap(toScale, shape.getWidth(), shape.getLength(), false);
@@ -54,31 +53,31 @@ public class PiecePicker {
     }
 
     @NonNull
-    public static BitmapDescriptor pickRandomPieceBitMap (@NonNull PieceShape shape) {
+    public static BitmapDescriptor pickRandomPieceBitMap(@NonNull PieceShape shape) {
 
         return getPiece(shape, pickRandomPieceResource());
     }
 
     @NonNull
-    public static BitmapDescriptor getFinalGoal (@NonNull PieceShape shape) {
+    public static BitmapDescriptor getFinalGoal(@NonNull PieceShape shape) {
 
         return getPiece(shape, FINAL_GOAL);
     }
 
     @NonNull
-    public static BitmapDescriptor getStartGoal (@NonNull PieceShape shape) {
+    public static BitmapDescriptor getStartGoal(@NonNull PieceShape shape) {
 
         return getPiece(shape, START);
     }
 
     @NonNull
-    public static BitmapDescriptor getMiddleGoal (@NonNull PieceShape shape) {
+    public static BitmapDescriptor getMiddleGoal(@NonNull PieceShape shape) {
 
         return getPiece(shape, MIDDLE_GOAL);
     }
 
     @NonNull
-    public static BitmapDescriptor getHint (@NonNull PieceShape shape) {
+    public static BitmapDescriptor getHint(@NonNull PieceShape shape) {
 
         return getPiece(shape, HINT);
     }

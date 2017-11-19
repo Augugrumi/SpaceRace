@@ -27,6 +27,9 @@ import retrofit2.Response;
 
 public class PathCreator {
 
+    private final static double MAX_DISTANCE_FIRST_HOP = 0.700;
+    private final static double MIN_DISTANCE_FIRST_HOP = 0.200;
+
     public class DistanceFrom {
 
         private LatLng start;
@@ -71,15 +74,15 @@ public class PathCreator {
         }
     }
 
-    public LatLng getInitialPosition () {
+    public LatLng getInitialPosition() {
         return initialPosition;
     }
 
-    public double getMaxDistance () {
+    public double getMaxDistance() {
         return maxDistance;
     }
 
-    public double getMinDistance () {
+    public double getMinDistance() {
         return minDistance;
     }
 
@@ -182,11 +185,8 @@ public class PathCreator {
         position to the next node, since all the places are static and we can already write it down,
         saving computational time.
          */
-        final double MAX_DISTANCE_FIRST_HOP = 0.700;
-        final double MIN_DISTANCE_FIRST_HOP = 0.200;
 
         List<Deque<DistanceFrom>> res = new ArrayList<>();
-
         List<FutureTask<DistanceFrom>> effectiveDistanceFromStart = calculateDistanceFromStart(
                 initialPosition,
                 getInRange(
@@ -194,13 +194,12 @@ public class PathCreator {
                         MIN_DISTANCE_FIRST_HOP,
                         MAX_DISTANCE_FIRST_HOP
                 ));
-        Collections.shuffle(effectiveDistanceFromStart); // Randomizing the points...
 
+        Collections.shuffle(effectiveDistanceFromStart); // Randomizing the points...
 
         for (FutureTask<DistanceFrom> distanceFromFutureTask : effectiveDistanceFromStart) {
 
             Deque<DistanceFrom> path = new ArrayDeque<>();
-
             try {
                 DistanceFrom distance = distanceFromFutureTask.get();
 
@@ -217,7 +216,7 @@ public class PathCreator {
         return res;
     }
 
-    private List<LatLng> getInRange (@NonNull LatLng pos, double min, double max) {
+    private List<LatLng> getInRange(@NonNull LatLng pos, double min, double max) {
         List<LatLng> buildingsPositions = new ArrayList<>();
         for (LatLng position : PositionsLoader.getPositions()) {
             double distance = CoordinatesUtility.distance(
@@ -236,7 +235,7 @@ public class PathCreator {
         return buildingsPositions;
     }
 
-    private Deque<DistanceFrom> pathChooser (@NonNull DistanceFrom d, double remainingDistance) throws ExecutionException, InterruptedException {
+    private Deque<DistanceFrom> pathChooser(@NonNull DistanceFrom d, double remainingDistance) throws ExecutionException, InterruptedException {
 
         /* FIXME I need to hardcode all the distances between nodes!
         There is a problem tho: it's not easy to calculate all the distances without having the
@@ -248,7 +247,7 @@ public class PathCreator {
 
             List<FutureTask<DistanceFrom>> effectiveDistance = calculateDistanceFromStart(
                     d.end,
-                    getInRange(d.end, 0.200, 0.700)
+                    getInRange(d.end, MIN_DISTANCE_FIRST_HOP, MAX_DISTANCE_FIRST_HOP)
             );
 
             Collections.shuffle(effectiveDistance); // Randomizing the points...
