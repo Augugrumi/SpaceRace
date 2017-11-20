@@ -551,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onClickLeaderboard(View view) {
         Log.d("LEADERBOARD", "on click");
         Games.getLeaderboardsClient(this, mSignedInAccount)
-                .getLeaderboardIntent("CgkI6vn-hvYMEAIQAQ")
+                .getLeaderboardIntent(getString(R.string.leaderboard_id))
                 .addOnSuccessListener(new OnSuccessListener<Intent>() {
                     @Override
                     public void onSuccess(Intent intent) {
