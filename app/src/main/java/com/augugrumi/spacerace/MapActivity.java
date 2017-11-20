@@ -64,10 +64,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final int piece = PiecePicker.pickRandomPieceResource();
 
     /************************FORDEBUG**************************/
-    private static final LatLng POI = new LatLng(45.4108011, 11.8880358);
+    private LatLng poi = new LatLng(45.4108011, 11.8880358);
     /************************FORDEBUG**************************/
 
-    private static final double KM_DISTANCE_HINT = 0.020;
+    private static final double KM_DISTANCE_HINT = 0.02;
 
     /**
      * Code used in requesting runtime permissions.
@@ -278,6 +278,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 new LatLng(initialPosition.getLatitude(),
                                         initialPosition.getLongitude()), DEFAULT_ZOOM));
 
+                        Log.d("INITIAL_POSITION", initialPosition.getLatitude() + " " + initialPosition.getLongitude());
+
                         PathCreator p = new PathCreator(
                                 new LatLng(
                                         initialPosition.getLatitude(),
@@ -313,6 +315,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         if (drawer.hasNext()) {
                             drawer.drawNext();
                         }
+                        popPoi();
                     }
 
                     mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
@@ -637,13 +640,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void popPoi () {
+
+        poi = path.pop().getEnd();
+    }
+
     private boolean hintShown = false;
     private void showHintIfNear() {
+
         Log.i("FRAG_", "" + CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                POI.latitude, POI.longitude));
+                poi.latitude, poi.longitude));
         if (CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                POI.latitude, POI.longitude)<KM_DISTANCE_HINT && !hintShown) {
+                poi.latitude, poi.longitude)<KM_DISTANCE_HINT && !hintShown) {
             stopLocationUpdates();
+
             Log.i("FRAG_", "show");
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -656,6 +666,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .beginTransaction()
                     .add(R.id.hint_cont, hf)
                     .commit();
+            popPoi();
             hintShown = true;
         }
     }

@@ -29,8 +29,8 @@ import retrofit2.Response;
 
 public class PathCreator {
 
-    private final static double MAX_DISTANCE_FIRST_HOP = 0.700;
-    private final static double MIN_DISTANCE_FIRST_HOP = 0.200;
+    private final static double MAX_DISTANCE_FIRST_HOP = 1;
+    private final static double MIN_DISTANCE_FIRST_HOP = 0.500;
 
     public class DistanceFrom {
 
@@ -150,6 +150,8 @@ public class PathCreator {
             threadManager.execute(task);
         }
 
+
+        threadManager.shutdown();
 
         return res;
     }
