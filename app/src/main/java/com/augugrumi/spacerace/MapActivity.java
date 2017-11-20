@@ -38,6 +38,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -53,7 +54,6 @@ import java.util.Date;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
-
 
     private static final int PIECE_SIZE=95;
     private static final int piece = PiecePicker.pickRandomPieceResource();
@@ -94,6 +94,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private final static String KEY_REQUESTING_LOCATION_UPDATES = "requesting-location-updates";
     private final static String KEY_LOCATION = "location";
     private final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
+
+    private Location initialPosition = null;
 
     private GoogleMap map;
 
@@ -258,13 +260,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     Log.i(TAG, "update event");
                     Location oldLocation = mCurrentLocation;
+
                     mCurrentLocation = locationResult.getLastLocation();
+
+                    if (initialPosition == null) {
+                        initialPosition = mCurrentLocation;
+                        placeMarker(PiecePicker.getStartGoal(
+                                new PieceSquareShape(125)),
+                                initialPosition);
+                    }
+
                     mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
                     updateUI(oldLocation);
                 }
 
             }
         };
+    }
+
+    @NonNull
+    private Marker placeMarker(@NonNull BitmapDescriptor draw, @NonNull LatLng pos) {
+        return map.addMarker(new MarkerOptions()
+                .position(pos)
+                .icon(draw));
+    }
+
+    @NonNull
+    private Marker placeMarker(@NonNull BitmapDescriptor draw, @NonNull Location pos) {
+        return placeMarker(draw, new LatLng(
+                pos.getLatitude(),
+                pos.getLongitude()
+        ));
     }
 
     /**
@@ -612,21 +638,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     mCurrentLocation = (Location) task.getResult();
                     PieceShape markerPic = new PieceSquareShape(PIECE_SIZE);
                     if (mCurrentLocation!=null) {
-                        marker = map.addMarker(new MarkerOptions()
-                                .position(new LatLng(
-                                        mCurrentLocation.getLatitude() - 15,
-                                        mCurrentLocation.getLongitude()))
-                                .icon(PiecePicker.pickPieceBitMap(markerPic, piece)));
+                        marker = placeMarker(PiecePicker.pickRandomPieceBitMap(markerPic), mCurrentLocation);
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
                                         mCurrentLocation.getLongitude()), zoom));
                     } else {
-                        marker = map.addMarker(new MarkerOptions().position(
-                                mDefaultLocation)
-                                .icon(PiecePicker.pickPieceBitMap(markerPic, piece)));
-                        /*map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(mCurrentLocation.getLatitude(),
-                                        mCurrentLocation.getLongitude()), 50));*/
+                        marker = placeMarker(PiecePicker.pickRandomPieceBitMap(markerPic), mDefaultLocation);
                     }
                 } else {
                     Log.d("MAP", "Current location is null. Using defaults.");
