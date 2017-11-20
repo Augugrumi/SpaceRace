@@ -46,7 +46,6 @@
 
         <activity
             android:name=".StartingActivity"
-            android:label="@string/title_activity_starting"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
