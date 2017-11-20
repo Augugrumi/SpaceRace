@@ -1,8 +1,10 @@
 package com.augugrumi.spacerace.intro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.augugrumi.spacerace.MainActivity;
 import com.augugrumi.spacerace.R;
 import com.augugrumi.spacerace.intro.slides.SlideOneFragment;
 import com.github.paolorotolo.appintro.AppIntro;
@@ -56,6 +58,9 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
+        Intent intent;
+        intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
         finish();
     }
 }

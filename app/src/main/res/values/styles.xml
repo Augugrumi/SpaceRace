@@ -99,7 +99,7 @@
     </style>
 
     <style name="InvPopupButton" parent="@style/GameButton">
-        <item name="android:background">@color/ButtonTextColor</item>
+        <item name="android:background" >@color/ButtonTextColor</item>
         <item name="android:textColor">@color/AccentColor</item>
     </style>
 
@@ -190,4 +190,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
 </resources>
