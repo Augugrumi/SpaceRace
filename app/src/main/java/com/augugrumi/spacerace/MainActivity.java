@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.augugrumi.spacerace.intro.IntroActivity;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.invitation_popup) ViewGroup invitationPopUp;
     @BindView(R.id.incoming_invitation_text) TextView incomingInvitationText;
 
+    private boolean invitationPopupIsShowing;
 
     /**************************************************************************/
     // Request codes for the UIs that we show with startActivityForResult:
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements
     private final static int RC_INVITATION_INBOX = 10001;
     private final static int RC_WAITING_ROOM = 10002;
 
+    private static final int RC_LEADERBOARD_UI = 9004;
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
 
@@ -164,22 +167,12 @@ public class MainActivity extends AppCompatActivity implements
         Log.d("SIGNIN", "Sign-in button clicked");
         startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);*/
 
-
-        if (!SharedPreferencesManager.getFirstApplicationRun()) {
-
-            Log.d("INTRO", "First run detected, launching sliders...");
-
-            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
-            startActivity(intent);
-
-            SharedPreferencesManager.setFirstApplicationRun(true);
-        } else {
             if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
                 Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
             }
             Log.d("SIGNIN", "Sign-in silently");
             signInSilently();
-        }
+
     }
 
     @Override
@@ -500,39 +493,71 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void showPopUpNotification(boolean showInvPopup, String message) {
-        incomingInvitationText.setText(message + " " + getString(R.string.is_inviting_you));
+        invitationPopupIsShowing = showInvPopup;
+        incomingInvitationText.setText(message + "\n" + getString(R.string.is_inviting_you));
         invitationPopUp.setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.button_accept_popup_invitation)
     public void onClickAcceptPopUpInvitation(View view) {
-        acceptInviteToRoom(mIncomingInvitationId);
-        mIncomingInvitationId = null;
+
+            acceptInviteToRoom(mIncomingInvitationId);
+            mIncomingInvitationId = null;
+    }
+
+    @OnClick(R.id.button_decline_popup_invitation)
+    public void onClickDeclinePopUpInvitation(View view) {
+        MainActivity.this.showPopUpNotification(false, "");
     }
 
     @OnClick(R.id.new_match)
     public void onClickNewMatch(View view) {
-        showPopUpNotification(false, "");
-        mRealTimeMultiplayerClient.getSelectOpponentsIntent(1, 3).addOnSuccessListener(
-                new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_SELECT_PLAYERS);
+        if (!invitationPopupIsShowing) {
+            showPopUpNotification(false, "");
+            mRealTimeMultiplayerClient.getSelectOpponentsIntent(1, 3).addOnSuccessListener(
+                    new OnSuccessListener<Intent>() {
+                        @Override
+                        public void onSuccess(Intent intent) {
+                            startActivityForResult(intent, RC_SELECT_PLAYERS);
+                        }
                     }
-                }
-        ).addOnFailureListener(createFailureListener("There was a problem selecting opponents."));
+            ).addOnFailureListener(createFailureListener("There was a problem selecting opponents."));
+        }
     }
 
     @OnClick(R.id.join)
     public void onClickJoin(View view) {
-        acceptInviteToRoom(mIncomingInvitationId);
-        showPopUpNotification(false, "");
+        if (!invitationPopupIsShowing) {
+            /*acceptInviteToRoom(mIncomingInvitationId);
+            showPopUpNotification(false, "");*/
+            mInvitationsClient.getInvitationInboxIntent().addOnCompleteListener(new OnCompleteListener<Intent>() {
+                @Override
+                public void onComplete(@NonNull Task<Intent> task) {
+                    startActivityForResult(task.getResult(), RC_INVITATION_INBOX);
+                }
+            });
+        }
     }
 
     @OnClick(R.id.credits)
     public void onClickCredits(View view) {
-        Intent i = new Intent(MainActivity.this, CreditsActivity.class);
-        startActivity(i);
+        if (!invitationPopupIsShowing) {
+            Intent i = new Intent(MainActivity.this, CreditsActivity.class);
+            startActivity(i);
+        }
+    }
+
+    @OnClick(R.id.leaderboard)
+    public void onClickLeaderboard(View view) {
+        Log.d("LEADERBOARD", "on click");
+        Games.getLeaderboardsClient(this, mSignedInAccount)
+                .getLeaderboardIntent(getString(R.string.leaderboard_id))
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_LEADERBOARD_UI);
+                    }
+                });
     }
 
     //DEBUG
