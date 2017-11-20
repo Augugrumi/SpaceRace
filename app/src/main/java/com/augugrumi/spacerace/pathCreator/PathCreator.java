@@ -11,7 +11,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -202,9 +204,12 @@ public class PathCreator {
             Deque<DistanceFrom> path = new ArrayDeque<>();
             try {
                 DistanceFrom distance = distanceFromFutureTask.get();
+                Map<LatLng, Boolean> visitedTable = new HashMap<>();
+
+                visitedTable.put(distance.end, true);
 
                 path.addLast(distance);
-                path.addAll(pathChooser(distance, maxDistance - (distance.distance/1000)));
+                path.addAll(pathChooser(distance, maxDistance - (distance.distance/1000), visitedTable));
 
                 res.add(path);
 
@@ -237,7 +242,10 @@ public class PathCreator {
         return buildingsPositions;
     }
 
-    private Deque<DistanceFrom> pathChooser(@NonNull DistanceFrom d, double remainingDistance) throws ExecutionException, InterruptedException {
+    private Deque<DistanceFrom> pathChooser(@NonNull DistanceFrom d,
+                                            double remainingDistance,
+                                            @NonNull Map<LatLng, Boolean> visitedTable)
+            throws ExecutionException, InterruptedException {
 
         /* FIXME I need to hardcode all the distances between nodes!
         There is a problem tho: it's not easy to calculate all the distances without having the
@@ -263,12 +271,17 @@ public class PathCreator {
                 if (calculation.start == d.end &&
                         calculation.start != d.start &&
                         calculation.distance >= 0 &&
-                        (calculation.distance/1000) <= remainingDistance) {
+                        (calculation.distance/1000) <= remainingDistance &&
+                        visitedTable.get(calculation.end) == null) {
 
                     Log.d("PATH_CHOOSER", "adding new node into the list");
 
+                    visitedTable.put(calculation.end, true);
+
                     res.addLast(calculation);
-                    res.addAll(pathChooser(calculation, remainingDistance - (calculation.distance/1000)));
+                    res.addAll(pathChooser(calculation,
+                            remainingDistance - (calculation.distance/1000),
+                            visitedTable));
                     return res;
                 }
             }
