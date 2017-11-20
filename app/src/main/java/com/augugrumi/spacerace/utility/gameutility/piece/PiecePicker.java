@@ -38,13 +38,13 @@ public class PiecePicker {
     private final static int MIDDLE_GOAL = R.drawable.piece_gem_stone;
     private final static int HINT = R.drawable.piece_scroll;
 
-    private static int pickRandomPieceResource() {
+    public static int pickRandomPieceResource() {
 
         return LIST_OF_PIECES[(int)(Math.random() * (LIST_OF_PIECES.length - 1))];
     }
 
     @NonNull
-    private static BitmapDescriptor getPiece(@NonNull PieceShape shape, int id) {
+    public static BitmapDescriptor getPiece(@NonNull PieceShape shape, int id) {
 
         Bitmap toScale = BitmapFactory.decodeResource(SpaceRace.getAppContext().getResources(), id);
         toScale = Bitmap.createScaledBitmap(toScale, shape.getWidth(), shape.getLength(), false);
