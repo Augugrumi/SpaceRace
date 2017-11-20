@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements
     private final static int RC_INVITATION_INBOX = 10001;
     private final static int RC_WAITING_ROOM = 10002;
 
+    private static final int RC_LEADERBOARD_UI = 9004;
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
 
@@ -544,6 +545,19 @@ public class MainActivity extends AppCompatActivity implements
             Intent i = new Intent(MainActivity.this, CreditsActivity.class);
             startActivity(i);
         }
+    }
+
+    @OnClick(R.id.leaderboard)
+    public void onClickLeaderboard(View view) {
+        Log.d("LEADERBOARD", "on click");
+        Games.getLeaderboardsClient(this, mSignedInAccount)
+                .getLeaderboardIntent("CgkI6vn-hvYMEAIQAQ")
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_LEADERBOARD_UI);
+                    }
+                });
     }
 
     //DEBUG
