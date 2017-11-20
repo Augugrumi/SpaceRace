@@ -85,7 +85,7 @@ public class PathDrawer {
 
             Bitmap toScale = BitmapFactory.decodeResource(
                     SpaceRace.getAppContext().getResources(),
-                    R.drawable.ic_account_balance_black_24dp);
+                    R.drawable.ic_account_balance_black_48dp);
             toScale = Bitmap.createScaledBitmap(toScale,
                     ICON_DIMENSION,
                     ICON_DIMENSION,
