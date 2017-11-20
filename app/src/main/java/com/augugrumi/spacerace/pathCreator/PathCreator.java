@@ -86,7 +86,7 @@ public class PathCreator {
         return minDistance;
     }
 
-    private List<FutureTask<DistanceFrom>> calculateDistanceFromStart(@NonNull LatLng start, @NonNull List<LatLng> points) {
+    private List<FutureTask<DistanceFrom>> calculateDistanceFromStart(@NonNull final LatLng start, @NonNull List<LatLng> points) {
 
         final String toMatch = "legs=[{distance={text=";
         List<FutureTask<DistanceFrom>> res = new ArrayList<>();
@@ -134,14 +134,14 @@ public class PathCreator {
                                 Log.d("POS_FINDER", "Res in meters is: " + distance);
                             }
 
-                            return new DistanceFrom(initialPosition, destination, distance);
+                            return new DistanceFrom(start, destination, distance);
 
                         }
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
                     }
 
-                    return new DistanceFrom(initialPosition, destination, -1);
+                    return new DistanceFrom(start, destination, -1);
                 }
             });
             res.add(task);
@@ -225,6 +225,8 @@ public class PathCreator {
                     pos.latitude,
                     pos.longitude);
 
+            Log.d("DISTANCE", "distance between " + position.toString() + " and " + pos.toString() + "= " + distance);
+
             if (distance <= max && distance >= min) {
 
                 Log.d("POS_FINDER_MATCH", "ADDING CANDIDATE: " + position.toString());
@@ -258,7 +260,10 @@ public class PathCreator {
 
                 DistanceFrom calculation = d2.get();
 
-                if (calculation.start != d.end && calculation.distance >= 0 && (calculation.distance/1000) <= remainingDistance) {
+                if (calculation.start == d.end &&
+                        calculation.start != d.start &&
+                        calculation.distance >= 0 &&
+                        (calculation.distance/1000) <= remainingDistance) {
 
                     Log.d("PATH_CHOOSER", "adding new node into the list");
 
