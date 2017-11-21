@@ -201,6 +201,9 @@ public class PathCreator {
 
         Collections.shuffle(effectiveDistanceFromStart); // Randomizing the points...
 
+        // Taking only first 3 elements...
+        effectiveDistanceFromStart = effectiveDistanceFromStart.subList(0, 3);
+
         for (FutureTask<DistanceFrom> distanceFromFutureTask : effectiveDistanceFromStart) {
 
             Deque<DistanceFrom> path = new ArrayDeque<>();
@@ -211,7 +214,10 @@ public class PathCreator {
                 visitedTable.put(distance.end, true);
 
                 path.addLast(distance);
-                path.addAll(pathChooser(distance, maxDistance - (distance.distance/1000), visitedTable));
+                path.addAll(pathChooser(distance,
+                        maxDistance - (distance.distance/1000),
+                        visitedTable,
+                        5));
 
                 res.add(path);
 
@@ -246,7 +252,8 @@ public class PathCreator {
 
     private Deque<DistanceFrom> pathChooser(@NonNull DistanceFrom d,
                                             double remainingDistance,
-                                            @NonNull Map<LatLng, Boolean> visitedTable)
+                                            @NonNull Map<LatLng, Boolean> visitedTable,
+                                            int maxNodes)
             throws ExecutionException, InterruptedException {
 
         /* FIXME I need to hardcode all the distances between nodes!
@@ -254,6 +261,10 @@ public class PathCreator {
         application crashing...
          */
         Deque<DistanceFrom> res = new ArrayDeque<>();
+
+        if (maxNodes == 0) {
+            return res;
+        }
 
         if (remainingDistance >= minDistance) {
 
@@ -283,7 +294,8 @@ public class PathCreator {
                     res.addLast(calculation);
                     res.addAll(pathChooser(calculation,
                             remainingDistance - (calculation.distance/1000),
-                            visitedTable));
+                            visitedTable,
+                            maxNodes - 1));
                     return res;
                 }
             }
