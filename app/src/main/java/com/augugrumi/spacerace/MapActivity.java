@@ -276,7 +276,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 new LatLng(initialPosition.getLatitude(),
                                         initialPosition.getLongitude()), DEFAULT_ZOOM));
 
-                        Log.d("INITIAL_POSITION", initialPosition.getLatitude() + " " + initialPosition.getLongitude());
+                        Log.d("INITIAL_POSITION", initialPosition.getLatitude() + " " +
+                                initialPosition.getLongitude());
 
                         PathCreator p = new PathCreator(
                                 new LatLng(
@@ -291,7 +292,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         double sum = 0;
                         for (PathCreator.DistanceFrom d : path) {
 
-                            Log.d("PATH_RESULT", d.getStart() + " " + d.getEnd() + " " + d.getDistance());
+                            Log.d("PATH_RESULT", d.toString());
                             sum += d.getDistance();
                         }
 
