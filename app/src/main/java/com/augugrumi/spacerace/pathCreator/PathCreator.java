@@ -54,6 +54,11 @@ public class PathCreator {
         public double getDistance() {
             return distance;
         }
+
+        @Override
+        public String toString() {
+            return start.toString() + " " + end.toString() + " " + "distance: " + distance;
+        }
     }
 
     /**
@@ -120,7 +125,6 @@ public class PathCreator {
                             sanitized = sanitized.replaceAll(" ", "");
 
                             double distance = -1;
-
                             if (sanitized.indexOf("km") != 0) {
                                 Log.d("POS_FINDER", "DISTANCE IN KM");
 
@@ -149,46 +153,11 @@ public class PathCreator {
             res.add(task);
             threadManager.execute(task);
         }
-
-
         threadManager.shutdown();
-
         return res;
     }
 
-    public void getDistanceBetweenPoints() {
-
-        for (LatLng init : PositionsLoader.getPositions()) {
-
-            for (FutureTask<DistanceFrom> f : calculateDistanceFromStart(
-                    init,
-                    PositionsLoader.getPositions()
-            )) {
-                try {
-                    DistanceFrom df = f.get();
-
-                    Log.d("DISTANCE_FROM", df.start + " " + df.end + ". Distance: " + df.distance + " meters");
-                } catch (InterruptedException | ExecutionException  e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public Deque<DistanceFrom> generatePath() {
-
-        /* TODO write something able to find a suitable path for the gamers
-        I'll just try to briefly explain the idea:
-        The idea is to find nodes inside a certain range, in a way that the sum of all the ranges
-        is less than maxDistance but greater than minDistance. In order to achieve that we need to
-        have the distance (the path between two nodes) with Google Maps API
-        (https://developers.google.com/maps/documentation/directions/intro#Waypoints) of the
-        possible candidates for the next "hop".
-
-        Another thought: we need to calculate at runtime only the distance from the current user
-        position to the next node, since all the places are static and we can already write it down,
-        saving computational time.
-         */
 
         List<FutureTask<DistanceFrom>> effectiveDistanceFromStart = calculateDistanceFromStart(
                 initialPosition,
@@ -212,11 +181,9 @@ public class PathCreator {
                         maxDistance - (distance.distance/1000),
                         visitedTable,
                         5));
-
                 if (path.size() >= 3) {
                     return path;
                 }
-
             } catch (InterruptedException | ExecutionException  e) {
                 e.printStackTrace();
             }
@@ -241,7 +208,6 @@ public class PathCreator {
                 buildingsPositions.add(position);
             }
         }
-
         return buildingsPositions;
     }
 
@@ -250,32 +216,22 @@ public class PathCreator {
                                             @NonNull Map<LatLng, Boolean> visitedTable,
                                             int maxNodes)
             throws ExecutionException, InterruptedException {
-
-        /* FIXME I need to hardcode all the distances between nodes!
-        There is a problem tho: it's not easy to calculate all the distances without having the
-        application crashing...
-         */
         Deque<DistanceFrom> res = new ArrayDeque<>();
 
         if (maxNodes == 0) {
             return res;
         }
-
         if (remainingDistance >= minDistance) {
 
             List<FutureTask<DistanceFrom>> effectiveDistance = calculateDistanceFromStart(
                     d.end,
-                    getInRange(d.end, MIN_DISTANCE_FIRST_HOP, MAX_DISTANCE_FIRST_HOP)
-            );
-
+                    getInRange(d.end, MIN_DISTANCE_FIRST_HOP, MAX_DISTANCE_FIRST_HOP));
             Collections.shuffle(effectiveDistance); // Randomizing the points...
 
             Log.d("PATH_CHOOSER", "effectiveDistance size: " + effectiveDistance.size());
 
             for (FutureTask<DistanceFrom> d2 : effectiveDistance) {
-
                 DistanceFrom calculation = d2.get();
-
                 if (calculation.start == d.end &&
                         calculation.start != d.start &&
                         calculation.distance >= 0 &&
@@ -295,7 +251,6 @@ public class PathCreator {
                 }
             }
         }
-
         return res;
     }
 }
