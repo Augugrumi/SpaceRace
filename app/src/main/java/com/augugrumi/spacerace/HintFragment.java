@@ -71,6 +71,14 @@ public class HintFragment extends Fragment {
 
     private MapActivity parent;
 
+    private int idNum;
+    private String idName;
+    private int correctAnswer1;
+    private int correctAnswer2;
+    private int correctAnswer3;
+    private int questionNum;
+    private int score;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,8 +99,16 @@ public class HintFragment extends Fragment {
         layouts.add(nextHintView);
         showView(explanationView);
 
+        questionNum = 0;
+        score = 0;
+        correctAnswer1 = 0;
+        correctAnswer2 = 0;
+        correctAnswer3 = 0;
+
         return mainView;
     }
+
+    //informazioni sul luogo -> domande -> next hint
 
 
     @Override
@@ -105,36 +121,162 @@ public class HintFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    public void setHint(int hintId) {
-        nextHintText.setText(hintId);
-    }
-
-    public void setHint(String hintString) {
-        nextHintText.setText(hintString);
-    }
-
     @OnClick(R.id.to_quiz_btn)
     public void onClickStartQuiz() {
+
+        questionNum++;
+
+        int questionID = getQuestionID(questionNum);
+
+        question1Text.setText(questionID);
+
+        //todo: sort answers
+        int aNumber = 1;
+        int answerID = getAnswerID(questionNum, aNumber);
+
+        quiz1Rx1Btn.setText(answerID);
+
+        aNumber++;
+        answerID = getAnswerID(questionNum, aNumber);
+
+        quiz1Rx2Btn.setText(answerID);
+
+        aNumber++;
+        answerID = getAnswerID(questionNum, aNumber);
+
+        quiz1Rx3Btn.setText(answerID);
+
         showView(question1View);
     }
 
     @OnClick({R.id.quiz1_rx1_btn, R.id.quiz1_rx2_btn, R.id.quiz1_rx3_btn})
-    public void onClickRxQuestion1() {
+    public void onClickRxQuestion1(View view) {
+
+        int givenAnswerNum = 0;
+        switch (view.getId()){
+            case R.id.quiz1_rx1_btn:
+                givenAnswerNum = 1;
+                break;
+            case R.id.quiz1_rx2_btn:
+                givenAnswerNum = 2;
+                break;
+            case R.id.quiz1_rx3_btn:
+                givenAnswerNum = 3;
+                break;
+        }
+
+        if(correctAnswer1 == givenAnswerNum)
+            score++;
+
+        questionNum++;
+
+        int questionID = getQuestionID(questionNum);
+
+        question2Text.setText(questionID);
+
+        //todo: sort answers
+        int aNumber = 1;
+        int answerID = getAnswerID(questionNum, aNumber);
+
+        quiz2Rx1Btn.setText(answerID);
+
+        aNumber++;
+        answerID = getAnswerID(questionNum, aNumber);
+
+        quiz2Rx2Btn.setText(answerID);
+
+        aNumber++;
+        answerID = getAnswerID(questionNum, aNumber);
+
+        quiz2Rx3Btn.setText(answerID);
+
         showView(question2View);
     }
 
     @OnClick({R.id.quiz2_rx1_btn, R.id.quiz2_rx2_btn, R.id.quiz2_rx3_btn})
-    public void onClickRxQuestion2() {
+    public void onClickRxQuestion2(View view) {
+
+        int givenAnswerNum = 0;
+        switch (view.getId()){
+            case R.id.quiz1_rx1_btn:
+                givenAnswerNum = 1;
+                break;
+            case R.id.quiz1_rx2_btn:
+                givenAnswerNum = 2;
+                break;
+            case R.id.quiz1_rx3_btn:
+                givenAnswerNum = 3;
+                break;
+        }
+
+        if(correctAnswer2 == givenAnswerNum)
+            score++;
+
+        questionNum++;
+
+        int questionID = getQuestionID(questionNum);
+
+        question3Text.setText(questionID);
+
+        //todo: sort answers
+        int aNumber = 1;
+        int answerID = getAnswerID(questionNum, aNumber);
+
+        quiz3Rx1Btn.setText(answerID);
+
+        aNumber++;
+        answerID = getAnswerID(questionNum, aNumber);
+
+        quiz3Rx2Btn.setText(answerID);
+
+        aNumber++;
+        answerID = getAnswerID(questionNum, aNumber);
+
+        quiz3Rx3Btn.setText(answerID);
+
         showView(question3View);
     }
 
     @OnClick({R.id.quiz3_rx1_btn, R.id.quiz3_rx2_btn, R.id.quiz3_rx3_btn})
-    public void onClickRxQuestion3() {
+    public void onClickRxQuestion3(View view) {
+
+        int givenAnswerNum = 0;
+        switch (view.getId()){
+            case R.id.quiz1_rx1_btn:
+                givenAnswerNum = 1;
+                break;
+            case R.id.quiz1_rx2_btn:
+                givenAnswerNum = 2;
+                break;
+            case R.id.quiz1_rx3_btn:
+                givenAnswerNum = 3;
+                break;
+        }
+
+        if(correctAnswer3 == givenAnswerNum)
+            score++;
+
+        questionNum = 0;
+
+        scoreText.setText(score+"/3");
+
+        //todo: save the score somewhere over the rainbow
+
+        score = 0;
+        correctAnswer3 = 0;
+        correctAnswer2 = 0;
+        correctAnswer1 = 0;
+
         showView(quizResultView);
     }
 
     @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn})
-    public void onClickSkipOrFinishedQuiz() {
+    public void onClickSkipOrFinishedQuiz(View v) {
+
+        idNum++;
+
+                
+
         showView(nextHintView);
     }
 
@@ -149,4 +291,15 @@ public class HintFragment extends Fragment {
         }
         view.setVisibility(View.VISIBLE);
     }
+
+    private int getAnswerID(int qNumber, int aNumber){
+        return getResources().getIdentifier("answer_"+idNum+"_"+qNumber+"_"+aNumber,
+                "string", "com.augugrumi.spacerace");
+    }
+
+    private int getQuestionID(int qNumber){
+        return getResources().getIdentifier("question_"+idNum+"_"+qNumber,
+                "string", "com.augugrumi.spacerace");
+    }
+
 }
