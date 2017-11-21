@@ -57,7 +57,18 @@ public class PathCreator {
 
         @Override
         public String toString() {
-            return start.toString() + " " + end.toString() + " " + "distance: " + distance;
+
+            return "{" +
+                    "start: [" +
+                    start.latitude + "," +
+                    start.longitude +
+                    "]," +
+                    "end: [" +
+                    end.latitude + "," +
+                    end.longitude +
+                    "]," +
+                    "distance: " + distance +
+                    "}";
         }
     }
 
