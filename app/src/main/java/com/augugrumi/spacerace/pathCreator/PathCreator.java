@@ -175,7 +175,7 @@ public class PathCreator {
         }
     }
 
-    public List<Deque<DistanceFrom>> generatePaths() {
+    public Deque<DistanceFrom> generatePath() {
 
         /* TODO write something able to find a suitable path for the gamers
         I'll just try to briefly explain the idea:
@@ -190,7 +190,6 @@ public class PathCreator {
         saving computational time.
          */
 
-        List<Deque<DistanceFrom>> res = new ArrayList<>();
         List<FutureTask<DistanceFrom>> effectiveDistanceFromStart = calculateDistanceFromStart(
                 initialPosition,
                 getInRange(
@@ -198,14 +197,9 @@ public class PathCreator {
                         MIN_DISTANCE_FIRST_HOP,
                         MAX_DISTANCE_FIRST_HOP
                 ));
-
         Collections.shuffle(effectiveDistanceFromStart); // Randomizing the points...
 
-        // Taking only first 3 elements...
-        effectiveDistanceFromStart = effectiveDistanceFromStart.subList(0, 3);
-
         for (FutureTask<DistanceFrom> distanceFromFutureTask : effectiveDistanceFromStart) {
-
             Deque<DistanceFrom> path = new ArrayDeque<>();
             try {
                 DistanceFrom distance = distanceFromFutureTask.get();
@@ -219,14 +213,15 @@ public class PathCreator {
                         visitedTable,
                         5));
 
-                res.add(path);
+                if (path.size() >= 3) {
+                    return path;
+                }
 
             } catch (InterruptedException | ExecutionException  e) {
                 e.printStackTrace();
             }
         }
-
-        return res;
+        return new ArrayDeque<>();
     }
 
     private List<LatLng> getInRange(@NonNull LatLng pos, double min, double max) {

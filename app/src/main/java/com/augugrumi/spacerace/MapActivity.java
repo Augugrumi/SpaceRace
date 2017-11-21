@@ -51,11 +51,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.text.DateFormat;
-import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
-import java.util.List;
 
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -289,7 +286,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 0.3,
                                 2.5);
 
-                        path = pickRandomPath(p.generatePaths());
+                        path = p.generatePath();
 
                         double sum = 0;
                         for (PathCreator.DistanceFrom d : path) {
@@ -322,31 +319,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         };
-    }
-
-    @NonNull
-    private Deque<PathCreator.DistanceFrom> pickRandomPath (@NonNull List<Deque<PathCreator.DistanceFrom>> dequeList) {
-
-        Deque<PathCreator.DistanceFrom> res = new ArrayDeque<>();
-
-        Collections.shuffle(dequeList);
-
-        boolean flag = true;
-
-        for (int i = 0; i < dequeList.size() && flag; i++) {
-
-            Deque<PathCreator.DistanceFrom> possiblePath = dequeList.get(i);
-
-            if (possiblePath.size() >= 3) {
-
-                Log.d("PATH_RESULT", "Path found");
-
-                res = possiblePath;
-                flag = false;
-            }
-        }
-
-        return res;
     }
 
 
