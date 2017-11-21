@@ -15,5 +15,6 @@ interface MapsDirections {
                                       @Query("destination") String dest,
                                       @Query("mode") String mode,
                                       @Query("units") String unit,
-                                      @Query("key") String apiKey);
+                                      @Query("key") String apiKey
+    );
 }

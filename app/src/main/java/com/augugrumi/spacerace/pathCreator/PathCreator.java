@@ -32,7 +32,7 @@ public class PathCreator {
     private final static double MAX_DISTANCE_FIRST_HOP = 1;
     private final static double MIN_DISTANCE_FIRST_HOP = 0.500;
 
-    public class DistanceFrom {
+    public static class DistanceFrom {
 
         private LatLng start;
         private LatLng end;

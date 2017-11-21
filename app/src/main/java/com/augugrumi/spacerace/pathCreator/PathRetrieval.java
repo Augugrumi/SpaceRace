@@ -29,6 +29,7 @@ class PathRetrieval {
                 destination,
                 "walking",
                 "metric",
-                SpaceRace.getAppContext().getString(R.string.google_maps_directions_api_key));
+                SpaceRace.getAppContext().getString(R.string.google_maps_directions_api_key)
+        );
     }
 }

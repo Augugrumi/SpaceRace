@@ -19,8 +19,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
+import com.augugrumi.spacerace.pathCreator.PathManger;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
@@ -50,12 +52,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Deque;
 
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
+        PathReceiver {
     private static final String TAG = MapActivity.class.getSimpleName();
 
     private static final int PIECE_SIZE=95;
@@ -158,6 +164,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Deque<PathCreator.DistanceFrom> path;
     private PathDrawer drawer;
 
+    private boolean hasToCreatePath;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +200,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         hf = new HintFragment();
+
+        hasToCreatePath = getIntent().getBooleanExtra(MainActivity.CREATOR_INTENT_EXTRA, false);
+        Log.d("MEXX", "has to create:" + hasToCreatePath);
+        if (!hasToCreatePath)
+            SpaceRace.messageManager.registerForReceivePaths(this);
     }
 
     /**
@@ -279,39 +292,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Log.d("INITIAL_POSITION", initialPosition.getLatitude() + " " +
                                 initialPosition.getLongitude());
 
-                        PathCreator p = new PathCreator(
-                                new LatLng(
-                                        initialPosition.getLatitude(),
-                                        initialPosition.getLongitude()
-                                ),
-                                0.3,
-                                2.5);
-
-                        path = p.generatePath();
-
-                        double sum = 0;
-                        for (PathCreator.DistanceFrom d : path) {
-
-                            Log.d("PATH_RESULT", d.toString());
-                            sum += d.getDistance();
-                        }
-
-                        Log.d("PATH_RESULT", "Distance: " + sum);
-
-                        PieceShape ps = new PieceSquareShape(125);
-
-                        drawer = new PathDrawer.Builder()
-                                .setMap(map)
-                                .setStartIcon(PiecePicker.getStartGoal(ps))
-                                .setMiddleIcon(PiecePicker.getPiece(ps, R.drawable.piece_gem_stone))
-                                .setEndIcon(PiecePicker.getPiece(ps, R.drawable.piece_direct_hit))
-                                .setPath(path)
-                                .build();
-
-                        if (drawer.hasNext()) {
-                            drawer.drawNext();
-                        }
-                        popPoi();
+                        createAndDrawPath();
                     }
 
                     mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
@@ -735,4 +716,58 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         startLocationUpdates();
     }
+
+    private void createAndDrawPath() {
+        if (hasToCreatePath) {
+            PathCreator p = new PathCreator(
+                    new LatLng(
+                            initialPosition.getLatitude(),
+                            initialPosition.getLongitude()
+                    ),
+                    0.3,
+                    2.5);
+
+            path = p.generatePath();
+
+            sendPath(path);
+
+            drawPath();
+        }
+    }
+
+    private void drawPath() {
+        PieceShape ps = new PieceSquareShape(125);
+
+        drawer = new PathDrawer.Builder()
+                .setMap(map)
+                .setStartIcon(PiecePicker.getStartGoal(ps))
+                .setMiddleIcon(PiecePicker.getPiece(ps, R.drawable.piece_gem_stone))
+                .setEndIcon(PiecePicker.getPiece(ps, R.drawable.piece_direct_hit))
+                .setPath(path)
+                .build();
+
+
+        if (drawer.hasNext()) {
+            drawer.drawNext();
+        }
+        popPoi();
+    }
+
+    private void sendPath(Deque<PathCreator.DistanceFrom> path) {
+        PathManger pathManger = new PathManger(path);
+        SpaceRace.messageManager.sendToAllReliably(pathManger.toJson());
+    }
+
+    @Override
+    public void receivePath(String jsonPath) {
+        try {
+            PathManger pathManger = new PathManger(new JSONArray(jsonPath));
+            path = pathManger.getPath();
+            Log.d("MEXX", "decoded:" + pathManger.toJson());
+            drawPath();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
