@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.augugrumi.spacerace.pathCreator.PathCreator;
+import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,19 +52,20 @@ import com.google.android.gms.tasks.Task;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Deque;
 
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
 
-
     private static final int PIECE_SIZE=95;
+    private static final int piece = PiecePicker.pickRandomPieceResource();
 
     /************************FORDEBUG**************************/
-    private static final LatLng POI = new LatLng(45.411011, 11.887503);
+    private LatLng poi = new LatLng(45.4108011, 11.8880358);
     /************************FORDEBUG**************************/
 
-    private static final double KM_DISTANCE_HINT = 0.020;
+    private static final double KM_DISTANCE_HINT = 0.02;
 
     /**
      * Code used in requesting runtime permissions.
@@ -85,13 +89,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
-    private static final int DEFAULT_ZOOM = 80;
+    private static final float DEFAULT_ZOOM = 18.0F;
+    private float zoom = DEFAULT_ZOOM;
     private static final int MAX_DIFFERENCE_UPDATE_POLYLINE = 15;
 
     // Keys for storing activity state in the Bundle.
     private final static String KEY_REQUESTING_LOCATION_UPDATES = "requesting-location-updates";
     private final static String KEY_LOCATION = "location";
     private final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
+
+    private Location initialPosition = null;
 
     private GoogleMap map;
 
@@ -147,6 +154,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LatLng mDefaultLocation = new LatLng(45.414380, 11.876797);
 
     private HintFragment hf;
+
+    private Deque<PathCreator.DistanceFrom> path;
+    private PathDrawer drawer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -256,13 +266,83 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     Log.i(TAG, "update event");
                     Location oldLocation = mCurrentLocation;
+
                     mCurrentLocation = locationResult.getLastLocation();
+
+                    if (initialPosition == null) {
+                        initialPosition = mCurrentLocation;
+
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(initialPosition.getLatitude(),
+                                        initialPosition.getLongitude()), DEFAULT_ZOOM));
+
+                        Log.d("INITIAL_POSITION", initialPosition.getLatitude() + " " +
+                                initialPosition.getLongitude());
+
+                        PathCreator p = new PathCreator(
+                                new LatLng(
+                                        initialPosition.getLatitude(),
+                                        initialPosition.getLongitude()
+                                ),
+                                0.3,
+                                2.5);
+
+                        path = p.generatePath();
+
+                        double sum = 0;
+                        for (PathCreator.DistanceFrom d : path) {
+
+                            Log.d("PATH_RESULT", d.toString());
+                            sum += d.getDistance();
+                        }
+
+                        Log.d("PATH_RESULT", "Distance: " + sum);
+
+                        PieceShape ps = new PieceSquareShape(125);
+
+                        drawer = new PathDrawer.Builder()
+                                .setMap(map)
+                                .setStartIcon(PiecePicker.getStartGoal(ps))
+                                .setMiddleIcon(PiecePicker.getPiece(ps, R.drawable.piece_gem_stone))
+                                .setEndIcon(PiecePicker.getPiece(ps, R.drawable.piece_direct_hit))
+                                .setPath(path)
+                                .build();
+
+                        if (drawer.hasNext()) {
+                            drawer.drawNext();
+                        }
+                        popPoi();
+                    }
+
                     mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
                     updateUI(oldLocation);
                 }
 
             }
         };
+    }
+
+
+    @NonNull
+    private Marker placeMarker(@NonNull BitmapDescriptor draw, @NonNull LatLng pos) {
+        if (marker == null) {
+
+            return map.addMarker(new MarkerOptions()
+                    .position(pos)
+                    .icon(draw));
+        } else {
+
+            marker.setPosition(pos);
+            return marker;
+        }
+    }
+
+    @NonNull
+    private Marker placeMarker(@NonNull BitmapDescriptor draw, @NonNull Location pos) {
+        return placeMarker(draw, new LatLng(
+                pos.getLatitude(),
+                pos.getLongitude()
+        ));
     }
 
     /**
@@ -355,29 +435,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void updateUI(final Location oldLocation) {
         if (!isLocationEnabled && map != null) {
             mRequestingLocationUpdates = true;
-            showCurrentPlace();
-        }
-        if (mCurrentLocation != null && oldLocation!=null) {
-            // refresh ogni 2 sec -> record mondiale 8,33m/s => ~16 ogni 2 sec => 15
-            // per essere sicuri
-            if (CoordinatesUtility.distance(mCurrentLocation, oldLocation)<MAX_DIFFERENCE_UPDATE_POLYLINE) {
-                map.addPolyline(new PolylineOptions()
-                        .add(new LatLng(oldLocation.getLatitude(),
-                                        oldLocation.getLongitude()),
-                                new LatLng(mCurrentLocation.getLatitude(),
-                                        mCurrentLocation.getLongitude()))
-                        .width(30)
-                        .color(Color.CYAN));
-                marker.setVisible(false);
-                marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
-                marker.setVisible(true);
+            zoom = map.getCameraPosition().zoom;
+            Log.i("CAMERA_ZOOM", "zoom:" + zoom);
+            if (mCurrentLocation != null) {
+
+                marker = placeMarker(PiecePicker.getPiece(new PieceSquareShape(PIECE_SIZE), piece), mCurrentLocation);
             }
-            showHintIfNear();
         }
+
         if (mCurrentLocation != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLng(
+            if (oldLocation!=null) {
+                // refresh ogni 2 sec -> record mondiale 8,33m/s => ~16 ogni 2 sec => 15
+                // per essere sicuri
+                if (CoordinatesUtility.distance(mCurrentLocation, oldLocation)<MAX_DIFFERENCE_UPDATE_POLYLINE) {
+                    map.addPolyline(new PolylineOptions()
+                            .add(new LatLng(oldLocation.getLatitude(),
+                                            oldLocation.getLongitude()),
+                                    new LatLng(mCurrentLocation.getLatitude(),
+                                            mCurrentLocation.getLongitude()))
+                            .width(30)
+                            .color(Color.CYAN));
+                    if (marker == null) {
+                        PieceShape markerPic = new PieceSquareShape(PIECE_SIZE);
+                        marker = placeMarker(PiecePicker.getPiece(markerPic, piece), mCurrentLocation);
+                    }
+                    marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+                }
+                showHintIfNear();
+            }
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mCurrentLocation.getLatitude(),
-                            mCurrentLocation.getLongitude())));
+                            mCurrentLocation.getLongitude()), zoom));
         }
     }
 
@@ -549,13 +637,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void popPoi () {
+
+        poi = path.pop().getEnd();
+    }
+
     private boolean hintShown = false;
     private void showHintIfNear() {
+
         Log.i("FRAG_", "" + CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                POI.latitude, POI.longitude));
+                poi.latitude, poi.longitude));
         if (CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                POI.latitude, POI.longitude)<KM_DISTANCE_HINT && !hintShown) {
+                poi.latitude, poi.longitude)<KM_DISTANCE_HINT && !hintShown) {
             stopLocationUpdates();
+
             Log.i("FRAG_", "show");
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -568,6 +663,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .beginTransaction()
                     .add(R.id.hint_cont, hf)
                     .commit();
+            popPoi();
             hintShown = true;
         }
     }
@@ -575,9 +671,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
-        if (mLocationPermissionGranted) {
-            showCurrentPlace();
-        }
     }
 
     private void showCurrentPlace() {
@@ -585,8 +678,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (map == null) {
             return;
         }
+
         if (!mLocationPermissionGranted)
             return;
+
         @SuppressLint("MissingPermission") Task locationResult =
                 mFusedLocationClient.getLastLocation();
         locationResult.addOnCompleteListener(this, new OnCompleteListener() {
@@ -600,26 +695,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     mCurrentLocation = (Location) task.getResult();
                     PieceShape markerPic = new PieceSquareShape(PIECE_SIZE);
                     if (mCurrentLocation!=null) {
-                        marker = map.addMarker(new MarkerOptions()
-                                .position(new LatLng(
-                                        mCurrentLocation.getLatitude() - 15,
-                                        mCurrentLocation.getLongitude()))
-                                .icon(PiecePicker.pickRandomPieceBitMap(markerPic)));
+                        marker = placeMarker(PiecePicker.getPiece(markerPic, piece), mCurrentLocation);
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(mCurrentLocation.getLatitude(),
-                                        mCurrentLocation.getLongitude()), DEFAULT_ZOOM));
+                                        mCurrentLocation.getLongitude()), zoom));
                     } else {
-                        marker = map.addMarker(new MarkerOptions().position(
-                                mDefaultLocation)
-                                .icon(PiecePicker.pickRandomPieceBitMap(markerPic)));
-                        /*map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(mCurrentLocation.getLatitude(),
-                                        mCurrentLocation.getLongitude()), 50));*/
+                        marker = placeMarker(PiecePicker.getPiece(markerPic, piece), mDefaultLocation);
                     }
                 } else {
                     Log.d("MAP", "Current location is null. Using defaults.");
                     Log.e("MAP", "Exception: %s", task.getException());
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, zoom));
                     map.getUiSettings().setMyLocationButtonEnabled(false);
                 }
 
@@ -647,5 +733,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .show(mapFragment)
                 .commit();
 
+        startLocationUpdates();
     }
 }

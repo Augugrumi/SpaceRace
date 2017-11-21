@@ -12,6 +12,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.RealTimeMultiplayerClient;
+import com.google.android.gms.games.multiplayer.realtime.OnRealTimeMessageReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
+import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import java.util.HashSet;
 
 /**
  * @author Marco Zanella
@@ -92,4 +100,66 @@ public class SpaceRace extends Application {
         SpaceRace.gAPIClient = client;
     }
 
+    public static MessageManager messageManager = new MessageManager();
+
+    public static class MessageManager implements OnRealTimeMessageReceivedListener,
+            RealTimeMultiplayerClient.ReliableMessageSentCallback{
+
+        private Room mRoom = null;
+        private String mMyParticipantId = null;
+        private RealTimeMultiplayerClient mRealTimeMultiplayerClient = null;
+        private HashSet<Integer> pendingMessageSet = new HashSet<>();
+
+        private MessageManager(){}
+
+        public void setRealTimeMultiplayerClient(RealTimeMultiplayerClient client) {
+            mRealTimeMultiplayerClient = client;
+        }
+
+        public void setRoom(Room room) {
+            mRoom = room;
+        }
+
+        public void setParticipantId(String participantId) {
+            mMyParticipantId = participantId;
+        }
+
+        public void sendToAllReliably(final String messageString) {
+            byte [] message = messageString.getBytes();
+            for (final String participantId : mRoom.getParticipantIds()) {
+                if (!participantId.equals(mMyParticipantId)) {
+                    mRealTimeMultiplayerClient.sendReliableMessage(message,
+                            mRoom.getRoomId(), participantId,
+                            this).addOnCompleteListener(
+                            new OnCompleteListener<Integer>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Integer> task) {
+                                    // Keep track of which messages are sent, if desired.
+                                    Log.d("MEXX", "Message '" + messageString + "' to " + participantId);
+                                    recordMessageToken(task.getResult());
+                                }
+                            });
+                }
+            }
+        }
+
+        private synchronized void recordMessageToken(int tokenId) {
+            pendingMessageSet.add(tokenId);
+        }
+
+        @Override
+        public void onRealTimeMessageReceived(@NonNull RealTimeMessage realTimeMessage) {
+            // Handle messages received here.
+            byte[] message = realTimeMessage.getMessageData();
+            Log.d("MEXX", "Received" + new String(message));
+        }
+
+        @Override
+        public void onRealTimeMessageSent(int statusCode, int tokenId, String recipientId) {
+            // handle the message being sent.
+            synchronized (this) {
+                pendingMessageSet.remove(tokenId);
+            }
+        }
+    }
 }
