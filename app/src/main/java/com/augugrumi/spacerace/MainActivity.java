@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.augugrumi.spacerace.intro.IntroActivity;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements
     private String mPlayerId;
     private String mRoomId = null;
     private RoomConfig mRoomConfig;
-    private ArrayList<Participant> mParticipants = null;
+    private List<Participant> mParticipants;
     private String mIncomingInvitationId = null;
     // My participant ID in the currently active game
     private String mMyId = null;
@@ -111,13 +112,6 @@ public class MainActivity extends AppCompatActivity implements
     private final RoomStatusUpdateCallbackImp mRoomStatusUpdateCallback = new RoomStatusUpdateCallbackImp();
 
 
-    OnRealTimeMessageReceivedListener mOnRealTimeMessageReceivedListener = new OnRealTimeMessageReceivedListener() {
-        @Override
-        public void onRealTimeMessageReceived(@NonNull RealTimeMessage realTimeMessage) {
-            byte[] buf = realTimeMessage.getMessageData();
-            String sender = realTimeMessage.getSenderParticipantId();
-        }
-    };
     /**************************************************************************/
 
     // Are we currently resolving a connection failure?
@@ -201,9 +195,11 @@ public class MainActivity extends AppCompatActivity implements
     void acceptInviteToRoom(String invitationId) {
         Log.d("ROOM", "Accepting invitation: " + invitationId);
 
+
+
         mRoomConfig = RoomConfig.builder(mRoomUpdateCallbackImpl)
                 .setInvitationIdToAccept(invitationId)
-                .setOnMessageReceivedListener(mOnRealTimeMessageReceivedListener)
+                .setOnMessageReceivedListener(SpaceRace.messageManager)
                 .setRoomStatusUpdateCallback(mRoomStatusUpdateCallback)
                 .build();
 
@@ -218,59 +214,6 @@ public class MainActivity extends AppCompatActivity implements
                 });
     }
 
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
-            Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
-        }
-
-        // start the sign-in flow
-        Log.d("SIGNIN", "Sign-in button clicked");
-        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
-    }/*    alreadySignIn = mGoogleApiClient.isConnected();
-        if (! alreadySignIn) {
-
-            OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-            if (opr.isDone()) {
-                // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-                // and the GoogleSignInResult will be available instantly.
-                Log.d("INTRO", "Got cached sign-in");
-                GoogleSignInResult result = opr.get();
-                handleSignInResult(result);
-            } else {
-                // If the user has not previously signed in on this device or the sign-in has expired,
-                // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-                // single sign-on will occur in this branch.
-                showProgressDialog();
-                opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                    @Override
-                    public void onResult(GoogleSignInResult googleSignInResult) {
-                        hideProgressDialog();
-                        handleSignInResult(googleSignInResult);
-                    }
-                });
-            }
-            alreadySignIn = true;
-        } else
-            Games.Invitations.registerInvitationListener(mGoogleApiClient,
-                    mRoomUpdateCallbackImpl);
-
-
-        if (!mGoogleApiClient.isConnected()) {
-            Log.d("INTRO","Connecting client.");
-            mGoogleApiClient.connect();
-        } else {
-            Games.Invitations.registerInvitationListener(mGoogleApiClient,
-                    mRoomUpdateCallbackImpl);
-            Log.w("INTRO",
-                    "GameHelper: client was already connected on onStart()");
-        }
-    }*/
-
-
-
-
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
         Log.d("SIGNIN", "onConnected(): connected to Google APIs");
         if (mSignedInAccount != googleSignInAccount) {
@@ -279,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements
 
             // update the clients
             mRealTimeMultiplayerClient = Games.getRealTimeMultiplayerClient(this, googleSignInAccount);
+            SpaceRace.messageManager.setRealTimeMultiplayerClient(mRealTimeMultiplayerClient);
             mInvitationsClient = Games.getInvitationsClient(MainActivity.this, googleSignInAccount);
 
             // get the playerId from the PlayersClient
@@ -288,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements
                         @Override
                         public void onSuccess(Player player) {
                             mPlayerId = player.getPlayerId();
+                            SpaceRace.messageManager.setParticipantId(mPlayerId);
                         }
                     }
             );
@@ -352,11 +297,6 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
     }
-
-
-
-
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -463,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mRoomConfig = RoomConfig.builder(mRoomUpdateCallbackImpl)
                 .addPlayersToInvite(invitees)
-                .setOnMessageReceivedListener(mOnRealTimeMessageReceivedListener)
+                .setOnMessageReceivedListener(SpaceRace.messageManager)
                 .setRoomStatusUpdateCallback(mRoomStatusUpdateCallback)
                 .setAutoMatchCriteria(autoMatchCriteria)
                 .build();
@@ -580,6 +520,7 @@ public class MainActivity extends AppCompatActivity implements
 
             // save room ID so we can leave cleanly before the game starts.
             mRoomId = room.getRoomId();
+            SpaceRace.messageManager.setRoom(room);
 
             // show the waiting room UI
             showWaitingRoom(room);
@@ -593,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements
                 showGameError();
                 return;
             }
-
+            SpaceRace.messageManager.setRoom(room);
             // show the waiting room UI
             showWaitingRoom(room);
         }
@@ -747,8 +688,9 @@ public class MainActivity extends AppCompatActivity implements
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
+    //TODO put at the end on the match or when exit the game
     void leaveRoom() {
-        Log.d("ROOM", "Leaving room.");
+        /*Log.d("ROOM", "Leaving room.");
         stopKeepingScreenOn();
         if (mRoomId != null) {
             mRealTimeMultiplayerClient.leave(mRoomConfig, mRoomId)
@@ -759,6 +701,6 @@ public class MainActivity extends AppCompatActivity implements
                             mRoomConfig = null;
                         }
                     });
-        }
+        }*/
     }
 }
