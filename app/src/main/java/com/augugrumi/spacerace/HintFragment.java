@@ -73,7 +73,6 @@ public class HintFragment extends Fragment {
     private MapActivity parent;
 
     private int idNum;
-    private String idName;
     private int correctAnswer1;
     private int correctAnswer2;
     private int correctAnswer3;
@@ -142,6 +141,7 @@ public class HintFragment extends Fragment {
         question1Text.setText(questionID);
 
         //todo: sort answers
+        correctAnswer1 = 1;
         int aNumber = 1;
         int answerID = getAnswerID(questionNum, aNumber);
 
@@ -186,6 +186,7 @@ public class HintFragment extends Fragment {
         question2Text.setText(questionID);
 
         //todo: sort answers
+        correctAnswer2 = 1;
         int aNumber = 1;
         int answerID = getAnswerID(questionNum, aNumber);
 
@@ -230,6 +231,7 @@ public class HintFragment extends Fragment {
         question3Text.setText(questionID);
 
         //todo: sort answers
+        correctAnswer3 = 1;
         int aNumber = 1;
         int answerID = getAnswerID(questionNum, aNumber);
 
