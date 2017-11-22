@@ -29,10 +29,12 @@ import retrofit2.Response;
 
 public class PathCreator {
 
+    private static final String MODE = "DEBUG";
+
     private final static double MAX_DISTANCE_FIRST_HOP = 1;
     private final static double MIN_DISTANCE_FIRST_HOP = 0.500;
 
-    public class DistanceFrom {
+    public static class DistanceFrom {
 
         private LatLng start;
         private LatLng end;
@@ -57,7 +59,18 @@ public class PathCreator {
 
         @Override
         public String toString() {
-            return start.toString() + " " + end.toString() + " " + "distance: " + distance;
+
+            return "{" +
+                    "start: [" +
+                    start.latitude + "," +
+                    start.longitude +
+                    "]," +
+                    "end: [" +
+                    end.latitude + "," +
+                    end.longitude +
+                    "]," +
+                    "distance: " + distance +
+                    "}";
         }
     }
 
@@ -105,51 +118,63 @@ public class PathCreator {
             final String dest = destination.latitude + "," + destination.longitude;
             final Call<Object> path = new PathRetrieval().getDirections(init, dest);
 
-            FutureTask<DistanceFrom> task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
-                @Override
-                public DistanceFrom call() throws Exception {
-                    Response<Object> response = path.execute();
-                    try {
+            FutureTask<DistanceFrom> task;
+            if (MODE!="DEBUG") {
+                task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
+                    @Override
+                    public DistanceFrom call() throws Exception {
+                        Response<Object> response = path.execute();
+                        try {
 
-                        Log.d("POS_FINDER", "ORIGINAL JSON: " + response.body().toString());
+                            Log.d("POS_FINDER", "ORIGINAL JSON: " + response.body().toString());
 
-                        int pos = response.body().toString().indexOf(toMatch);
-                        if (pos >= 0) {
+                            int pos = response.body().toString().indexOf(toMatch);
+                            if (pos >= 0) {
 
-                            pos += toMatch.length();
+                                pos += toMatch.length();
 
-                            String semiSanitized = response.body().toString().substring(pos, pos + 10);
-                            pos = semiSanitized.indexOf('m');
-                            String sanitized = semiSanitized.substring(0, pos + 1);
-                            sanitized = sanitized.trim();
-                            sanitized = sanitized.replaceAll(" ", "");
+                                String semiSanitized = response.body().toString().substring(pos, pos + 10);
+                                pos = semiSanitized.indexOf('m');
+                                String sanitized = semiSanitized.substring(0, pos + 1);
+                                sanitized = sanitized.trim();
+                                sanitized = sanitized.replaceAll(" ", "");
 
-                            double distance = -1;
-                            if (sanitized.indexOf("km") != 0) {
-                                Log.d("POS_FINDER", "DISTANCE IN KM");
+                                double distance = -1;
+                                if (sanitized.indexOf("km") != 0) {
+                                    Log.d("POS_FINDER", "DISTANCE IN KM");
 
-                                distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 2));
+                                    distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 2));
 
-                                Log.d("POS_FINDER", "Res in kilometers is: " + distance);
-                                distance *= 1000; // We need the distance in meters
-                            } else if (sanitized.indexOf('m') != 0) {
-                                Log.d("POS_FINDER", "DISTANCE IN METERS");
+                                    Log.d("POS_FINDER", "Res in kilometers is: " + distance);
+                                    distance *= 1000; // We need the distance in meters
+                                } else if (sanitized.indexOf('m') != 0) {
+                                    Log.d("POS_FINDER", "DISTANCE IN METERS");
 
-                                distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 1));
+                                    distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 1));
 
-                                Log.d("POS_FINDER", "Res in meters is: " + distance);
+                                    Log.d("POS_FINDER", "Res in meters is: " + distance);
+                                }
+
+                                return new DistanceFrom(start, destination, distance);
+
                             }
-
-                            return new DistanceFrom(start, destination, distance);
-
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JsonSyntaxException e) {
-                        e.printStackTrace();
-                    }
 
-                    return new DistanceFrom(start, destination, -1);
-                }
-            });
+                        return new DistanceFrom(start, destination, -1);
+                    }
+                });
+            } else {
+                task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
+                    @Override
+                    public DistanceFrom call() throws Exception {
+                        return new DistanceFrom(start, destination,
+                                CoordinatesUtility.distance(start.latitude, start.longitude,
+                                        destination.latitude, destination.longitude));
+                    }
+                });
+            }
             res.add(task);
             threadManager.execute(task);
         }

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.augugrumi.spacerace.listener.PathReceiver;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -109,6 +110,7 @@ public class SpaceRace extends Application {
         private String mMyParticipantId = null;
         private RealTimeMultiplayerClient mRealTimeMultiplayerClient = null;
         private HashSet<Integer> pendingMessageSet = new HashSet<>();
+        private PathReceiver pathReceiver;
 
         private MessageManager(){}
 
@@ -135,7 +137,7 @@ public class SpaceRace extends Application {
                                 @Override
                                 public void onComplete(@NonNull Task<Integer> task) {
                                     // Keep track of which messages are sent, if desired.
-                                    Log.d("MEXX", "Message '" + messageString + "' to " + participantId);
+                                    Log.d("MEXX", "Sent '" + messageString + "' to " + participantId);
                                     recordMessageToken(task.getResult());
                                 }
                             });
@@ -151,7 +153,9 @@ public class SpaceRace extends Application {
         public void onRealTimeMessageReceived(@NonNull RealTimeMessage realTimeMessage) {
             // Handle messages received here.
             byte[] message = realTimeMessage.getMessageData();
-            Log.d("MEXX", "Received" + new String(message));
+            Log.d("MEXX", "Received:" + new String(message));
+            if (pathReceiver!=null)
+                pathReceiver.receivePath(new String(message));
         }
 
         @Override
@@ -160,6 +164,10 @@ public class SpaceRace extends Application {
             synchronized (this) {
                 pendingMessageSet.remove(tokenId);
             }
+        }
+
+        public void registerForReceivePaths(PathReceiver pathReceiver) {
+            this.pathReceiver = pathReceiver;
         }
     }
 }

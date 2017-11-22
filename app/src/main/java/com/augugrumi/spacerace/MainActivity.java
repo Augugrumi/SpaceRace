@@ -59,6 +59,8 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
+    public static final String CREATOR_INTENT_EXTRA = "isCreator";
+
     @BindView(R.id.invitation_popup) ViewGroup invitationPopUp;
     @BindView(R.id.incoming_invitation_text) TextView incomingInvitationText;
 
@@ -130,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements
     // Client used to sign in with Google APIs
     private GoogleSignInClient mGoogleSignInClient = null;
 
+    private boolean creator = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements
     void acceptInviteToRoom(String invitationId) {
         Log.d("ROOM", "Accepting invitation: " + invitationId);
 
-
+        creator = false;
 
         mRoomConfig = RoomConfig.builder(mRoomUpdateCallbackImpl)
                 .setInvitationIdToAccept(invitationId)
@@ -318,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements
 
     void startGame() {
         Intent i = new Intent(this, MapActivity.class);
+        i.putExtra(CREATOR_INTENT_EXTRA, creator);
         startActivity(i);
     }
 
@@ -518,6 +523,8 @@ public class MainActivity extends AppCompatActivity implements
                 return;
             }
 
+            creator = true;
+
             // save room ID so we can leave cleanly before the game starts.
             mRoomId = room.getRoomId();
             SpaceRace.messageManager.setRoom(room);
@@ -552,6 +559,7 @@ public class MainActivity extends AppCompatActivity implements
                 updateRoom(room);
             }
             Intent i = new Intent(MainActivity.this, MapActivity.class);
+            i.putExtra(CREATOR_INTENT_EXTRA, creator);
             MainActivity.this.startActivity(i);
         }
 
