@@ -1,6 +1,7 @@
 package com.augugrumi.spacerace;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
@@ -78,6 +79,7 @@ public class HintFragment extends Fragment {
     private int correctAnswer3;
     private int questionNum;
     private int score;
+    SharedPreferences sharedPref;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,6 +106,15 @@ public class HintFragment extends Fragment {
         correctAnswer1 = 0;
         correctAnswer2 = 0;
         correctAnswer3 = 0;
+
+
+        sharedPref = getActivity().getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor e = sharedPref.edit();
+        e.remove("score");
+        e.putInt("score",0);
+        e.apply();
 
         return mainView;
     }
@@ -260,7 +271,14 @@ public class HintFragment extends Fragment {
 
         scoreText.setText(score+"/3");
 
-        //todo: save the score somewhere over the rainbow
+        SharedPreferences.Editor e = sharedPref.edit();
+
+        int prevScore = sharedPref.getInt("score", 0);
+
+        int newScore = prevScore + score;
+
+        e.putInt("score", newScore);
+        e.apply();
 
         score = 0;
         correctAnswer3 = 0;
@@ -274,9 +292,6 @@ public class HintFragment extends Fragment {
     public void onClickSkipOrFinishedQuiz(View v) {
 
         idNum++;
-
-                
-
         showView(nextHintView);
     }
 
@@ -301,5 +316,6 @@ public class HintFragment extends Fragment {
         return getResources().getIdentifier("question_"+idNum+"_"+qNumber,
                 "string", "com.augugrumi.spacerace");
     }
+
 
 }
