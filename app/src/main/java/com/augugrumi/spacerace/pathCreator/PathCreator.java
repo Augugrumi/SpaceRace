@@ -7,6 +7,10 @@ import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonSyntaxException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,6 +75,30 @@ public class PathCreator {
                     "]," +
                     "distance: " + distance +
                     "}";
+        }
+
+        @NonNull
+        public String toJson() throws JSONException {
+
+            JSONObject res = new JSONObject();
+
+            JSONArray a1 = new JSONArray();
+
+            a1.put(start.latitude);
+            a1.put(start.longitude);
+
+            JSONArray a2 = new JSONArray();
+
+            a2.put(end.latitude);
+            a2.put(end.longitude);
+
+
+
+            res.put("start", a1);
+            res.put("end", a2);
+            res.put("distance", distance);
+
+            return res.toString();
         }
     }
 

@@ -57,7 +57,11 @@ public class PathManger {
         JSONArray array = new JSONArray();
 
         for (PathCreator.DistanceFrom f : path) {
-            array.put(f.toString());
+            try {
+                array.put(f.toJson());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         return array.toString();
