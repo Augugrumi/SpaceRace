@@ -116,4 +116,5 @@
 
     <!-- Invitation -->
     <string name="preamble_invitation">Abbiamo captato un segnale radio proveniente da</string>
+    <string name="decline_popup_button">Non ora</string>
 </resources>
