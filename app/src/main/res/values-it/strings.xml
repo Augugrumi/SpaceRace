@@ -104,4 +104,7 @@
     <string name="name_card_18">Piazza Capitaniato - Accademia galileiana</string>
     <string name="name_card_19">Chiesa di San Pietro - via San Pietro 125</string>
     <string name="name_card_20">Chiesa di San Tomaso - via San Tomaso 3</string>
+
+    <string name="map_style">Stile della mappa</string>
+    <string name="map_style_summary">Scegli lo stile della mappa</string>
 </resources>

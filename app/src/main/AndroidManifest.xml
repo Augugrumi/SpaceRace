@@ -19,38 +19,36 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".intro.IntroActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".RoomActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_room"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".CreditsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_credits"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".StartingActivity"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,11 +60,11 @@
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".SpaceRacePreferenceActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:title="Your Name"
+        android:key="username"
+        android:summary="Please provide your username"></EditTextPreference>
+
+    <CheckBoxPreference
+        android:title="Application Updates"
+        android:defaultValue="false"
+        android:summary="This option if selected will allow the application to check for latest versions."
+        android:key="applicationUpdates" />
+
+    <ListPreference
+        android:title="@string/map_style"
+        android:summary="@string/map_style_summary"
+        android:key="mapStyleKey"
+        android:defaultValue="@raw/dark_side_of_the_moon"
+        android:entries="@array/mapNamesArray"
+        android:entryValues="@array/mapValues" />
+</PreferenceScreen>

@@ -151,6 +151,13 @@
     <!--hint fragment - next hint-->
     <string name="next_hint">Next hint</string>
 
+    <!--Preferences - maps-->
+    <string name="map_style">Map style</string>
+    <string name="map_style_summary">Choose the style of the map displayed</string>
+    <string name="mars_map" translatable="false">Bloody mars</string>
+    <string name="dark_moon_map" translatable="false">The dark side of the moon</string>
+    <string name="light_moon_map" translatable="false">The light side of the moon</string>
+    <string name="uranus" translatable="false">Uranus</string>
 
     <!--debug-->
     <string name="lorem_ipsum_short" translatable="false">Lorem ipsum</string>

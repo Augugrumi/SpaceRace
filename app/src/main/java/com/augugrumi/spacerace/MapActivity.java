@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
@@ -674,7 +675,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.map = googleMap;
         map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.light_side_of_the_moon));
+                        this, SharedPreferencesManager.getMapStyle()));
     }
 
     private void showCurrentPlace() {
