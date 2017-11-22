@@ -433,7 +433,15 @@ public class MainActivity extends AppCompatActivity implements
 
     public void showPopUpNotification(boolean showInvPopup, String message) {
         invitationPopupIsShowing = showInvPopup;
-        incomingInvitationText.setText(message + "\n" + getString(R.string.is_inviting_you));
+
+        StringBuilder toPrint = new StringBuilder()
+                .append(getString(R.string.preamble_invitation))
+                .append(" ")
+                .append(message)
+                .append(", ")
+                .append(getString(R.string.is_inviting_you));
+
+        incomingInvitationText.setText(toPrint.toString());
         invitationPopUp.setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
     }
 
