@@ -19,4 +19,8 @@
         android:defaultValue="@raw/dark_side_of_the_moon"
         android:entries="@array/mapNamesArray"
         android:entryValues="@array/mapValues" />
+
+    <Preference android:title="Title"
+        android:key="signInOut"
+        android:summary="Summary"/>
 </PreferenceScreen>

@@ -159,6 +159,12 @@
     <string name="light_moon_map" translatable="false">The light side of the moon</string>
     <string name="uranus" translatable="false">Uranus</string>
 
+    <!--Preferences - Sign-in/Sign-out-->
+    <string name="sign_in_button">Sign in</string>
+    <string name="sign_out_button">Sign out</string>
+    <string name="sign_in_summary_button">Access with your Google Play account</string>
+    <string name="sign_out_summary_button">Disconnect your account </string>
+
     <!--debug-->
     <string name="lorem_ipsum_short" translatable="false">Lorem ipsum</string>
     <string name="lorem_ipsum_medium" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</string>

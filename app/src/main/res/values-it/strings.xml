@@ -105,6 +105,13 @@
     <string name="name_card_19">Chiesa di San Pietro - via San Pietro 125</string>
     <string name="name_card_20">Chiesa di San Tomaso - via San Tomaso 3</string>
 
+    <!--Preferences - maps-->
     <string name="map_style">Stile della mappa</string>
     <string name="map_style_summary">Scegli lo stile della mappa</string>
+
+    <!--Preferences - Sign-in/Sign-out-->
+    <string name="sign_in_button">Accedi</string>
+    <string name="sign_out_button">Disconnetti</string>
+    <string name="sign_in_summary_button">Accedi con il tuo account Google Play</string>
+    <string name="sign_out_summary_button">Disconnetti il tuo account </string>
 </resources>
