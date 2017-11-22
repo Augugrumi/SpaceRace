@@ -168,28 +168,44 @@
         android:id="@+id/invitation_popup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="200dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginBottom="180dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/custom_border"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/rocketWallpaper"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/custom_border">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/incoming_invitation_text_title"
+            style="@style/InvPopupText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/inv_popup_text"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/incoming_invitation_text"
             style="@style/InvPopupText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:textSize="8pt"
-            android:paddingTop="10dp"
+            android:padding="10dp"
+            android:paddingBottom="20dp"
             android:textAlignment="center"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="italic" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -208,6 +224,7 @@
                 android:paddingEnd="25dp"
                 android:paddingStart="25dp"
                 android:text="@string/accept_popup_invite"
+                android:textAllCaps="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -216,7 +233,6 @@
                 fancy:mfb_defaultColor="@android:color/white"
                 fancy:mfb_focusColor="@color/AccentColor"
                 fancy:mfb_radius="30dp"
-                android:textAllCaps="true"
                 fancy:mfb_textColor="@color/AccentColor" />
 
             <com.rilixtech.materialfancybutton.MaterialFancyButton
@@ -231,6 +247,7 @@
                 android:paddingEnd="25dp"
                 android:paddingStart="25dp"
                 android:text="@android:string/cancel"
+                android:textAllCaps="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -239,7 +256,6 @@
                 fancy:mfb_defaultColor="@android:color/white"
                 fancy:mfb_focusColor="@color/AccentColor"
                 fancy:mfb_radius="30dp"
-                android:textAllCaps="true"
                 fancy:mfb_textColor="@color/AccentColor" />
 
             <!--<Button
