@@ -54,13 +54,13 @@ public class SharedPreferencesManager {
                 style = R.raw.mars;
                 break;
             case "res/raw/dark_side_of_the_moon.json":
-                style = R.raw.mars;
+                style = R.raw.dark_side_of_the_moon;
                 break;
             case "res/raw/light_side_of_the_moon.json":
-                style = R.raw.mars;
+                style = R.raw.light_side_of_the_moon;
                 break;
             case "res/raw/uranus.json":
-                style = R.raw.mars;
+                style = R.raw.uranus;
                 break;
             default:
                 style = DEFAULT_MAP_ID;
