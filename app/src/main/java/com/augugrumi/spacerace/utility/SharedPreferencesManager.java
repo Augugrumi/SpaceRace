@@ -21,6 +21,8 @@ public class SharedPreferencesManager {
     private static final String FIRST_RUN = "first_application_run";
     private static final int DEFAULT_MAP_ID = R.raw.dark_side_of_the_moon;
     private static final String MAP_STYLE_KEY = "mapStyleKey";
+    private static final String DEFAULT_LANGUAGE = "en";
+    private static final String LANGUAGE_KEY = "languageKey";
 
 
     public static boolean getFirstApplicationRun() {
@@ -68,4 +70,11 @@ public class SharedPreferencesManager {
         }
         return style;
     }
+
+    public static String getLanguagePreference() {
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(SpaceRace.getAppContext());
+        return sharedPref.getString(LANGUAGE_KEY, DEFAULT_LANGUAGE);
+    }
+
 }

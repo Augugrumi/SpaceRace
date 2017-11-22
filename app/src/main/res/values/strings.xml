@@ -152,8 +152,8 @@
     <string name="next_hint">Next hint</string>
 
     <!--Preferences - maps-->
-    <string name="map_style">Map style</string>
-    <string name="map_style_summary">Choose the style of the map displayed</string>
+    <string name="map_style">Map theme</string>
+    <string name="map_style_summary">Choose the theme of the map displayed</string>
     <string name="mars_map" translatable="false">Bloody mars</string>
     <string name="dark_moon_map" translatable="false">The dark side of the moon</string>
     <string name="light_moon_map" translatable="false">The light side of the moon</string>
@@ -164,6 +164,12 @@
     <string name="sign_out_button">Sign out</string>
     <string name="sign_in_summary_button">Access with your Google Play account</string>
     <string name="sign_out_summary_button">Disconnect your account </string>
+
+    <!--Preferences - languages-->
+    <string name="language_title">Application language</string>
+    <string name="language_summary">Change the application language</string>
+    <string name="italian">Italian</string>
+    <string name="english">English</string>
 
     <!--debug-->
     <string name="lorem_ipsum_short" translatable="false">Lorem ipsum</string>

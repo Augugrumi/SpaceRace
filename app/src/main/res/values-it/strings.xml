@@ -106,8 +106,14 @@
     <string name="name_card_20">Chiesa di San Tomaso - via San Tomaso 3</string>
 
     <!--Preferences - maps-->
-    <string name="map_style">Stile della mappa</string>
-    <string name="map_style_summary">Scegli lo stile della mappa</string>
+    <string name="map_style">Tema della mappa</string>
+    <string name="map_style_summary">Scegli il tema della mappa</string>
+
+    <!--Preferences - languages-->
+    <string name="language_title">Lingua dell\'applicazione</string>
+    <string name="language_summary">Cambia lingua dell\'applicazione</string>
+    <string name="italian">Italiano</string>
+    <string name="english">Inglese</string>
 
     <!--Preferences - Sign-in/Sign-out-->
     <string name="sign_in_button">Accedi</string>

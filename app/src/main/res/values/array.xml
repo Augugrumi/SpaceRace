@@ -13,4 +13,14 @@
         <item>@raw/light_side_of_the_moon</item>
         <item>@raw/uranus</item>
     </string-array>
+
+    <string-array name="languageNamesArray">
+        <item>@string/italian</item>
+        <item>@string/english</item>
+    </string-array>
+
+    <string-array name="languageValues">
+        <item>it</item>
+        <item>en</item>
+    </string-array>
 </resources>
