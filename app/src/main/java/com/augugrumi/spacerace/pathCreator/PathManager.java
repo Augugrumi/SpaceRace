@@ -74,4 +74,8 @@ public class PathManager {
 
         return path;
     }
+
+    public boolean isEmpty() {
+        return path.isEmpty();
+    }
 }

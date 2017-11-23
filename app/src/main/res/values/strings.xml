@@ -171,6 +171,10 @@
     <string name="italian">Italian</string>
     <string name="english">English</string>
 
+    <!--Dialog no path-->
+    <string name="path_problem">Path problem</string>
+    <string name="path_not_found">No path for the game found in your area</string>
+
     <!--debug-->
     <string name="lorem_ipsum_short" translatable="false">Lorem ipsum</string>
     <string name="lorem_ipsum_medium" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</string>

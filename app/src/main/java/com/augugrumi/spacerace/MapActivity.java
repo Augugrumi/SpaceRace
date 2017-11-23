@@ -2,6 +2,7 @@ package com.augugrumi.spacerace;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -764,22 +766,48 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         if (drawer.hasNext()) {
             drawer.drawNext();
+            popPoi();
         }
-        popPoi();
+    }
+
+    private void checkIfValidPathOrDie() {
+
+        if (path == null || path.isEmpty()) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                    android.R.style.Theme_Material_Dialog_Alert);
+            builder.setTitle(R.string.path_problem)
+                    .setMessage(R.string.path_not_found)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent i = new Intent(MapActivity.this, MainActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     private void sendPath(Deque<PathCreator.DistanceFrom> path) {
         PathManager pathManager = new PathManager(path);
         SpaceRace.messageManager.sendToAllReliably(pathManager.toJson());
+        checkIfValidPathOrDie();
     }
 
     @Override
     public void receivePath(String jsonPath) {
         try {
-            PathManager pathManager = new PathManager(new JSONArray(jsonPath));
-            path = pathManager.getPath();
-            Log.d("MEXX", "decoded:" + path.toString());
-            drawPath();
+            if (jsonPath.isEmpty() || jsonPath.equals("[]")) {
+                checkIfValidPathOrDie();
+            } else {
+
+                PathManager pathManager = new PathManager(new JSONArray(jsonPath));
+                path = pathManager.getPath();
+                Log.d("MEXX", "decoded:" + path.toString());
+                drawPath();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
