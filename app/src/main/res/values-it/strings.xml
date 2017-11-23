@@ -19,14 +19,14 @@
     <string name="quick_game_explanation">Sfida un utente casuale</string>
     <string name="invite_players_explanation">Invita amici a giocare al gioco</string>
     <string name="see_invitations_explanation">Vedi chi ti sta invitando adesso</string>
-    <string name="inv_popup_text">Invito ricevuto!</string>
+    <string name="inv_popup_text">Trasmissione in arrivo</string>
     <string name="accept_popup_invite">Accetta</string>
     <string name="sign_out">Disconnettiti</string>
     <string name="please_wait">Attendi&#8230;</string>
     <string name="instructions">Premi il bottone il più velocemente possibile!</string>
     <string name="game_problem">Si è verificato un errore nell\'avvio del gioco. Per favore riprova di nuovo.</string>
     <string name="click_me">Cliccami!</string>
-    <string name="is_inviting_you">ti sta sfidando in una partita!</string>
+    <string name="is_inviting_you">accetti la sfida?</string>
     <string name="signin_other_error">C\'è stato un problema durante il sign in. Per favore riprova più tardi.</string>
     <string name="gamehelper_sign_in_failed">Errore nel sign in. Per favore controlla la tua connessione di rete e prova di nuovo.</string>
     <string name="gamehelper_app_misconfigured">L\'applicazione è configurata scorrettamente. Controlla che il nome del package e la firma del certificato corrispondano all\'ID creato nella Developer Console.</string>
@@ -104,4 +104,24 @@
     <string name="name_card_18">Piazza Capitaniato - Accademia galileiana</string>
     <string name="name_card_19">Chiesa di San Pietro - via San Pietro 125</string>
     <string name="name_card_20">Chiesa di San Tomaso - via San Tomaso 3</string>
+
+    <!--Preferences - maps-->
+    <string name="map_style">Tema della mappa</string>
+    <string name="map_style_summary">Scegli il tema della mappa</string>
+
+    <!--Preferences - languages-->
+    <string name="language_title">Lingua dell\'applicazione</string>
+    <string name="language_summary">Cambia lingua dell\'applicazione</string>
+    <string name="italian">Italiano</string>
+    <string name="english">Inglese</string>
+
+    <!--Preferences - Sign-in/Sign-out-->
+    <string name="sign_in_button">Accedi</string>
+    <string name="sign_out_button">Disconnetti</string>
+    <string name="sign_in_summary_button">Accedi con il tuo account Google Play</string>
+    <string name="sign_out_summary_button">Disconnetti il tuo account </string>
+
+    <!-- Invitation -->
+    <string name="preamble_invitation">Abbiamo captato un segnale radio proveniente da</string>
+    <string name="decline_popup_button">Non ora</string>
 </resources>

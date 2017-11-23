@@ -3,7 +3,9 @@ package com.augugrumi.spacerace;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Space;
 import android.widget.TextView;
 
-import com.augugrumi.spacerace.intro.IntroActivity;
-import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,8 +36,6 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationCallback;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.google.android.gms.games.multiplayer.realtime.OnRealTimeMessageReceivedListener;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateCallback;
@@ -155,6 +151,9 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Log.d("PREFERENCES", SP.getString("mapStyleKey", "NA"));
+
         hideProgressDialog();
 
         /*if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
@@ -439,7 +438,15 @@ public class MainActivity extends AppCompatActivity implements
 
     public void showPopUpNotification(boolean showInvPopup, String message) {
         invitationPopupIsShowing = showInvPopup;
-        incomingInvitationText.setText(message + "\n" + getString(R.string.is_inviting_you));
+
+        StringBuilder toPrint = new StringBuilder()
+                .append(getString(R.string.preamble_invitation))
+                .append(" ")
+                .append(message)
+                .append(", ")
+                .append(getString(R.string.is_inviting_you));
+
+        incomingInvitationText.setText(toPrint.toString());
         invitationPopUp.setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
     }
 
@@ -503,6 +510,12 @@ public class MainActivity extends AppCompatActivity implements
                         startActivityForResult(intent, RC_LEADERBOARD_UI);
                     }
                 });
+    }
+
+    @OnClick(R.id.main_settings)
+    public void onClickSettings(View view) {
+        Intent i = new Intent(MainActivity.this, SpaceRacePreferenceActivity.class);
+        startActivity(i);
     }
 
     //DEBUG

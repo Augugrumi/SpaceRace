@@ -24,6 +24,7 @@ import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.pathCreator.PathManger;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
@@ -44,6 +45,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -654,6 +656,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
+        map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                        this, SharedPreferencesManager.getMapStyle()));
     }
 
     private void showCurrentPlace() {
