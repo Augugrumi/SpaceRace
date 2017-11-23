@@ -215,6 +215,8 @@ public class MainActivity extends AppCompatActivity implements
                         Log.d("ROOM", "Room Joined Successfully!");
                     }
                 });
+
+
     }
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
@@ -452,9 +454,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @OnClick(R.id.button_accept_popup_invitation)
     public void onClickAcceptPopUpInvitation(View view) {
-
-            acceptInviteToRoom(mIncomingInvitationId);
-            mIncomingInvitationId = null;
+        acceptInviteToRoom(mIncomingInvitationId);
+        mIncomingInvitationId = null;
+        showPopUpNotification(false, "");
     }
 
     @OnClick(R.id.button_decline_popup_invitation)

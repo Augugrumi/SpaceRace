@@ -124,4 +124,8 @@
     <!-- Invitation -->
     <string name="preamble_invitation">Abbiamo captato un segnale radio proveniente da</string>
     <string name="decline_popup_button">Non ora</string>
+
+    <!--Dialog no path-->
+    <string name="path_problem">Problema nella ricerca del percorso</string>
+    <string name="path_not_found">Non sono stati trovati percorsi utilizzabili dal gioco nella tua area</string>
 </resources>
