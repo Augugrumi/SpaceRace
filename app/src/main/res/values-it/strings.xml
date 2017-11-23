@@ -124,4 +124,5 @@
     <!-- Invitation -->
     <string name="preamble_invitation">Abbiamo captato un segnale radio proveniente da</string>
     <string name="decline_popup_button">Non ora</string>
+    <string name="single_player_button">Esplora Padova da solo</string>
 </resources>
