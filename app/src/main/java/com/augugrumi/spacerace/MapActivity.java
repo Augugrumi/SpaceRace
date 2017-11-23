@@ -22,8 +22,9 @@ import android.widget.Toast;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
-import com.augugrumi.spacerace.pathCreator.PathManger;
+import com.augugrumi.spacerace.pathCreator.PathManager;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
@@ -44,6 +45,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -620,7 +622,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void popPoi () {
 
-        poi = path.pop().getEnd();
+         poi = path.pop().getEnd();
     }
 
     private boolean hintShown = false;
@@ -652,6 +654,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
+        map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                        this, SharedPreferencesManager.getMapStyle()));
     }
 
     private void showCurrentPlace() {
@@ -754,16 +759,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void sendPath(Deque<PathCreator.DistanceFrom> path) {
-        PathManger pathManger = new PathManger(path);
-        SpaceRace.messageManager.sendToAllReliably(pathManger.toJson());
+        PathManager pathManager = new PathManager(path);
+        SpaceRace.messageManager.sendToAllReliably(pathManager.toJson());
     }
 
     @Override
     public void receivePath(String jsonPath) {
         try {
-            PathManger pathManger = new PathManger(new JSONArray(jsonPath));
-            path = pathManger.getPath();
-            Log.d("MEXX", "decoded:" + pathManger.toJson());
+            PathManager pathManager = new PathManager(new JSONArray(jsonPath));
+            path = pathManager.getPath();
+            Log.d("MEXX", "decoded:" + path.toString());
             drawPath();
         } catch (JSONException e) {
             e.printStackTrace();
