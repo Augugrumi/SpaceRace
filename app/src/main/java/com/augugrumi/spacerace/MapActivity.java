@@ -73,7 +73,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LatLng poi = new LatLng(45.4108011, 11.8880358);
     /************************FORDEBUG**************************/
 
-    private static final double KM_DISTANCE_HINT = 0.5;
+    private static final double KM_DISTANCE_HINT = 0.50;
 
     /**
      * Code used in requesting runtime permissions.
@@ -628,10 +628,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private boolean hintShown = false;
     private void showHintIfNear() {
 
-        Log.i("FRAG_", "" + CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                poi.latitude, poi.longitude));
-        if (CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                poi.latitude, poi.longitude)<KM_DISTANCE_HINT && !hintShown) {
+        Log.i("FRAG_", "" + CoordinatesUtility.get2DDistanceInKm(
+                new LatLng(
+                        mCurrentLocation.getLatitude(),
+                        mCurrentLocation.getLongitude()
+                ),
+                poi));
+        if (CoordinatesUtility.get2DDistanceInKm(
+                new LatLng(
+                        mCurrentLocation.getLatitude(),
+                        mCurrentLocation.getLongitude()
+                ),
+                poi) < KM_DISTANCE_HINT
+                && !hintShown) {
+
             stopLocationUpdates();
 
             Log.i("FRAG_", "show");
