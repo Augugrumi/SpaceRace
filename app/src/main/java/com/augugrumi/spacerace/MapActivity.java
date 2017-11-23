@@ -622,7 +622,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void popPoi () {
 
-        poi = path.pop().getEnd();
+         poi = path.pop().getEnd();
     }
 
     private boolean hintShown = false;
@@ -765,7 +765,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         try {
             PathManger pathManger = new PathManger(new JSONArray(jsonPath));
             path = pathManger.getPath();
-            Log.d("MEXX", "decoded:" + pathManger.toJson());
+            Log.d("MEXX", "decoded:" + path.toString());
             drawPath();
         } catch (JSONException e) {
             e.printStackTrace();

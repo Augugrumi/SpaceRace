@@ -1,6 +1,7 @@
 package com.augugrumi.spacerace.pathCreator;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -8,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
@@ -16,7 +18,7 @@ import java.util.Deque;
 
 public class PathManger {
 
-    Deque<PathCreator.DistanceFrom> path;
+    private Deque<PathCreator.DistanceFrom> path;
 
     public PathManger(@NonNull Deque<PathCreator.DistanceFrom> path) {
 
@@ -24,15 +26,16 @@ public class PathManger {
     }
 
     public PathManger(JSONArray fromJson) {
-
+        path = new ArrayDeque<>();
         try {
             for (int i = 0; i < fromJson.length(); i++) {
-                JSONObject element = fromJson.getJSONObject(i);
+
+                JSONObject element = new JSONObject(fromJson.getString(i));
 
                 JSONArray start = element.getJSONArray("start");
                 JSONArray end = element.getJSONArray("end");
 
-                new PathCreator.DistanceFrom(
+                path.add(new PathCreator.DistanceFrom(
                         new LatLng(
                                 start.getDouble(0),
                                 start.getDouble(1)
@@ -42,7 +45,7 @@ public class PathManger {
                                 end.getDouble(1)
                         ),
                         element.getDouble("distance")
-                );
+                ));
             }
 
         } catch (JSONException e) {
