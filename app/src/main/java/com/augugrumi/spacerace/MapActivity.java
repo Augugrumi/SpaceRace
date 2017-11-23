@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
-import com.augugrumi.spacerace.pathCreator.PathManger;
+import com.augugrumi.spacerace.pathCreator.PathManager;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
@@ -56,8 +56,6 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -761,15 +759,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void sendPath(Deque<PathCreator.DistanceFrom> path) {
-        PathManger pathManger = new PathManger(path);
-        SpaceRace.messageManager.sendToAllReliably(pathManger.toJson());
+        PathManager pathManager = new PathManager(path);
+        SpaceRace.messageManager.sendToAllReliably(pathManager.toJson());
     }
 
     @Override
     public void receivePath(String jsonPath) {
         try {
-            PathManger pathManger = new PathManger(new JSONArray(jsonPath));
-            path = pathManger.getPath();
+            PathManager pathManager = new PathManager(new JSONArray(jsonPath));
+            path = pathManager.getPath();
             Log.d("MEXX", "decoded:" + path.toString());
             drawPath();
         } catch (JSONException e) {

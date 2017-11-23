@@ -16,16 +16,16 @@ import java.util.Deque;
  * Created by dpolonio on 21/11/17.
  */
 
-public class PathManger {
+public class PathManager {
 
     private Deque<PathCreator.DistanceFrom> path;
 
-    public PathManger(@NonNull Deque<PathCreator.DistanceFrom> path) {
+    public PathManager(@NonNull Deque<PathCreator.DistanceFrom> path) {
 
         this.path = path;
     }
 
-    public PathManger(JSONArray fromJson) {
+    public PathManager(JSONArray fromJson) {
         path = new ArrayDeque<>();
         try {
             for (int i = 0; i < fromJson.length(); i++) {
