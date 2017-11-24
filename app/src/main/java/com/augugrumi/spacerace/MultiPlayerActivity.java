@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.augugrumi.spacerace.listener.AckReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathManager;
@@ -21,7 +22,7 @@ import org.json.JSONException;
 
 import java.util.Deque;
 
-public class MultiPlayerActivity extends MapActivity implements PathReceiver{
+public class MultiPlayerActivity extends MapActivity implements PathReceiver, AckReceiver{
 
     private boolean hasToCreatePath;
 
@@ -33,6 +34,8 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver{
         Log.d("MEXX", "has to create:" + hasToCreatePath);
         if (!hasToCreatePath)
             SpaceRace.messageManager.registerForReceivePaths(this);
+        else
+            SpaceRace.messageManager.registerForReceiveAck(this);
     }
 
     protected void createAndDrawPath() {
@@ -79,6 +82,10 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver{
         checkIfValidPathOrDie();
     }
 
+    protected void sendAck() {
+        SpaceRace.messageManager.sendToAllReliably(ACK);
+    }
+
     @Override
     public void receivePath(String jsonPath) {
         try {
@@ -90,9 +97,15 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver{
                 path = pathManager.getPath();
                 Log.d("MEXX", "decoded:" + path.toString());
                 drawPath();
+                sendAck();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void receiveAck() {
+        Log.d("ACK_RECEIVED", "ack");
     }
 }

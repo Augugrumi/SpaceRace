@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.augugrumi.spacerace.listener.AckReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -146,6 +147,7 @@ public class SpaceRace extends Application {
         private RealTimeMultiplayerClient mRealTimeMultiplayerClient = null;
         private HashSet<Integer> pendingMessageSet = new HashSet<>();
         private PathReceiver pathReceiver;
+        private AckReceiver ackReceiver;
 
         private MessageManager(){}
 
@@ -189,8 +191,14 @@ public class SpaceRace extends Application {
             // Handle messages received here.
             byte[] message = realTimeMessage.getMessageData();
             Log.d("MEXX", "Received:" + new String(message));
-            if (pathReceiver!=null)
-                pathReceiver.receivePath(new String(message));
+            String messageString = new String(message);
+            if (messageString.equals(AckReceiver.ACK)) {
+                if (ackReceiver!=null)
+                    ackReceiver.receiveAck();
+            } else {
+                if (pathReceiver != null)
+                    pathReceiver.receivePath(new String(message));
+            }
         }
 
         @Override
@@ -203,6 +211,10 @@ public class SpaceRace extends Application {
 
         public void registerForReceivePaths(PathReceiver pathReceiver) {
             this.pathReceiver = pathReceiver;
+        }
+
+        public void registerForReceiveAck(AckReceiver ackReceiver) {
+            this.ackReceiver = ackReceiver;
         }
     }
 }
