@@ -14,7 +14,11 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.augugrumi.spacerace.utility.QuestionAnswerManager;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,6 +83,7 @@ public class HintFragment extends Fragment {
     private int questionNum;
     private int score;
     SharedPreferences sharedPref;
+    private LatLng poi;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -319,5 +324,31 @@ public class HintFragment extends Fragment {
                 "string", "com.augugrumi.spacerace");
     }
 
+    public void setPOI(LatLng poi) {
+        this.poi = poi;
+        List<String> answers;
+        QuestionAnswerManager.QuestionAnswers qa =
+                QuestionAnswerManager.getQuestionAnswers(poi, 1);
+        question1Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        quiz1Rx1Btn.setText(answers.get(0));
+        quiz1Rx2Btn.setText(answers.get(1));
+        quiz1Rx3Btn.setText(answers.get(2));
+
+        qa = QuestionAnswerManager.getQuestionAnswers(poi, 2);
+        question2Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        quiz2Rx1Btn.setText(answers.get(0));
+        quiz2Rx2Btn.setText(answers.get(1));
+        quiz2Rx3Btn.setText(answers.get(2));
+
+        qa = QuestionAnswerManager.getQuestionAnswers(poi, 3);
+        question3Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        quiz3Rx1Btn.setText(answers.get(0));
+        quiz3Rx2Btn.setText(answers.get(1));
+        quiz3Rx3Btn.setText(answers.get(2));
+
+    }
 
 }

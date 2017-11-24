@@ -646,6 +646,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             stopLocationUpdates();
 
+            hf.setPOI(poi);
+
             Log.i("FRAG_", "show");
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
