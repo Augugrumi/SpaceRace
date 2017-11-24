@@ -1,7 +1,6 @@
 package com.augugrumi.spacerace.utility.gameutility;
 
 import android.support.annotation.NonNull;
-import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 
 import com.google.android.gms.maps.model.LatLng;
