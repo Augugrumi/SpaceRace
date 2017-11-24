@@ -66,11 +66,11 @@ public class QuestionAnswerManager {
         line = builder.toString();
         if (!line.isEmpty()) {
             try {
-                JSONArray array = new JSONArray(builder);
+                JSONArray array = new JSONArray(line);
                 JSONObject obj;
                 double lat;
                 double lng;
-                for (int i = 0; i <= array.length(); i++) {
+                for (int i = 0; i < array.length(); i++) {
                     obj = array.getJSONObject(i);
                     lat = obj.getDouble(LAT);
                     lng = obj.getDouble(LNG);
