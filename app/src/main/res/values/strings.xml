@@ -184,6 +184,7 @@
     <string name="leaderboard_id" translatable="false">CgkI6vn-hvYMEAIQAQ</string>
     <string name="preamble_invitation">We captured a radio signal coming from</string>
     <string name="decline_popup_button">Not now</string>
-    <string name="title_activity_single_player">SinglePlayerActivity</string>
-    <string name="title_activity_multi_player">MultiPlayerActivity</string>
+
+    <string name="single_player_button">Explore Padova alone</string>
+
 </resources>
