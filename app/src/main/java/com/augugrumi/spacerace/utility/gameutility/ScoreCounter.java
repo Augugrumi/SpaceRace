@@ -51,7 +51,7 @@ public class ScoreCounter {
             this.questionId = questionId;
         }
 
-        void setAnswer(int answer) {
+        void setAnswer(String answer) {
 
             // TODO get the right answer, check if it's correct and in that case set isCorrect
         }
@@ -94,7 +94,7 @@ public class ScoreCounter {
             return this;
         }
 
-        public Builder appendAnswer(LatLng POIId, int questionId, int answer) {
+        public Builder appendAnswer(LatLng POIId, int questionId, String answer) {
             pointMap.get(POIId).get(questionId).setAnswer(answer);
             score += pointMap.get(POIId).get(questionId).getScore();
 
