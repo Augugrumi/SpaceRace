@@ -3,6 +3,7 @@ package com.augugrumi.spacerace.utility.gameutility;
 import android.support.annotation.NonNull;
 import android.util.SparseBooleanArray;
 
+import com.augugrumi.spacerace.utility.QuestionAnswerManager;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -46,14 +47,16 @@ public class ScoreCounter {
 
         private boolean isCorrect;
         private int questionId;
+        private LatLng latLng;
 
-        private Score (int questionId) {
+        private Score (LatLng latLng, int questionId) {
+            this.latLng = latLng;
             this.questionId = questionId;
         }
 
         void setAnswer(String answer) {
-
-            // TODO get the right answer, check if it's correct and in that case set isCorrect
+            isCorrect = answer.equals(
+            QuestionAnswerManager.getRightAnswer(latLng, questionId));
         }
 
         boolean isCorrect () {
@@ -87,7 +90,7 @@ public class ScoreCounter {
 
             for (Integer i : questions) {
                 questionsWithScore.add(
-                        new Score(i)
+                        new Score(POIId, i)
                 );
             }
 

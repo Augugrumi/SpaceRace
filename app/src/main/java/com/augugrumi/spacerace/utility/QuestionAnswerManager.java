@@ -46,9 +46,9 @@ public class QuestionAnswerManager {
     private static final String A32 = "Answer32";
     private static final String A33 = "Answer33";
 
-    private Map<LatLng, JSONObject> qa;
+    private static Map<LatLng, JSONObject> qa;
 
-    public QuestionAnswerManager() {
+    static {
         qa = new HashMap<>();
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(SpaceRace.
@@ -82,8 +82,9 @@ public class QuestionAnswerManager {
         }
     }
 
-    //le 3 domande di un poi
-    public List<String> getQuestions(LatLng latLng) {
+    private QuestionAnswerManager(){}
+
+    public static List<String> getQuestions(LatLng latLng) {
         List<String> questions = new ArrayList<>();
 
         JSONObject obj = qa.get(latLng);
@@ -99,7 +100,7 @@ public class QuestionAnswerManager {
         return questions;
     }
 
-    public String getRightAnswer(LatLng latLng, int questionId) {
+    public static String getRightAnswer(LatLng latLng, int questionId) {
 
         JSONObject obj = qa.get(latLng);
         String key1 = "Answer" + questionId + "1";
@@ -114,7 +115,7 @@ public class QuestionAnswerManager {
         return answer;
     }
 
-    public QuestionAnswerManager.QuestionAnswers getQuestionAnswers(LatLng latLng, int qaId) {
+    public static QuestionAnswerManager.QuestionAnswers getQuestionAnswers(LatLng latLng, int qaId) {
 
         JSONObject obj = qa.get(latLng);
         String questionKey = "Question" + qaId;
