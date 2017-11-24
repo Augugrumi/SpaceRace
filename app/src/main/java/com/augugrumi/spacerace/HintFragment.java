@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import junit.framework.Assert;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,12 +80,6 @@ public class HintFragment extends Fragment {
 
     private MapActivity parent;
 
-    private int idNum;
-    private int correctAnswer1;
-    private int correctAnswer2;
-    private int correctAnswer3;
-    private int questionNum;
-    private int score;
     SharedPreferences sharedPref;
     private LatLng poi;
 
@@ -107,13 +102,6 @@ public class HintFragment extends Fragment {
         layouts.add(quizResultView);
         layouts.add(nextHintView);
         showView(explanationView);
-
-        questionNum = 0;
-        score = 0;
-        correctAnswer1 = 0;
-        correctAnswer2 = 0;
-        correctAnswer3 = 0;
-
 
         sharedPref = getActivity().getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -148,6 +136,7 @@ public class HintFragment extends Fragment {
 
         question1Text.setText(qa.getQuestion());
         answers = qa.getAnswers();
+        Collections.shuffle(answers);
         quiz1Rx1Btn.setText(answers.get(0));
         quiz1Rx2Btn.setText(answers.get(1));
         quiz1Rx3Btn.setText(answers.get(2));
@@ -179,6 +168,7 @@ public class HintFragment extends Fragment {
                 QuestionAnswerManager.getQuestionAnswers(poi, 2);
         question2Text.setText(qa.getQuestion());
         answers = qa.getAnswers();
+        Collections.shuffle(answers);
         quiz2Rx1Btn.setText(answers.get(0));
         quiz2Rx2Btn.setText(answers.get(1));
         quiz2Rx3Btn.setText(answers.get(2));
@@ -210,6 +200,7 @@ public class HintFragment extends Fragment {
                 QuestionAnswerManager.getQuestionAnswers(poi, 3);
         question3Text.setText(qa.getQuestion());
         answers = qa.getAnswers();
+        Collections.shuffle(answers);
         quiz3Rx1Btn.setText(answers.get(0));
         quiz3Rx2Btn.setText(answers.get(1));
         quiz3Rx3Btn.setText(answers.get(2));
@@ -236,33 +227,18 @@ public class HintFragment extends Fragment {
 
         builder.appendAnswer(poi, 3, givenAnswer);
 
-
-
-        questionNum = 0;
-
         scoreText.setText(builder.build().getScore()+"/3");
 
         SharedPreferences.Editor e = sharedPref.edit();
 
-        int prevScore = sharedPref.getInt("score", 0);
-
-        int newScore = prevScore + score;
-
         e.putInt("score", builder.build().getScore());
         e.apply();
-
-        score = 0;
-        correctAnswer3 = 0;
-        correctAnswer2 = 0;
-        correctAnswer1 = 0;
 
         showView(quizResultView);
     }
 
     @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn})
     public void onClickSkipOrFinishedQuiz(View v) {
-
-        idNum++;
         showView(nextHintView);
     }
 
@@ -276,16 +252,6 @@ public class HintFragment extends Fragment {
             v.setVisibility(View.GONE);
         }
         view.setVisibility(View.VISIBLE);
-    }
-
-    private int getAnswerID(int qNumber, int aNumber){
-        return getResources().getIdentifier("answer_"+idNum+"_"+qNumber+"_"+aNumber,
-                "string", "com.augugrumi.spacerace");
-    }
-
-    private int getQuestionID(int qNumber){
-        return getResources().getIdentifier("question_"+idNum+"_"+qNumber,
-                "string", "com.augugrumi.spacerace");
     }
 
     @Override
