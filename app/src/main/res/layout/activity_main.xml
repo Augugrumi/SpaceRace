@@ -93,7 +93,7 @@
         fancy:mfb_radius="30dp" />
 
     <com.rilixtech.materialfancybutton.MaterialFancyButton
-        android:id="@+id/debug_btn"
+        android:id="@+id/sigleplayer_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

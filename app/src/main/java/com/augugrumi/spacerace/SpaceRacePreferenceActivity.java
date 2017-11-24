@@ -1,21 +1,13 @@
 package com.augugrumi.spacerace;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
-import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -62,7 +54,7 @@ public class SpaceRacePreferenceActivity extends PreferenceActivity {
 
             if (account != null) {
                 button.setTitle(R.string.sign_out_button);
-                button.setSummary(getString(R.string.sign_out_summary_button)+account.getDisplayName());
+                button.setSummary(R.string.sign_out_summary_button);
                 button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {

@@ -66,14 +66,14 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".SpaceRacePreferenceActivity" />
+
         <activity
             android:name=".SinglePlayerActivity"
-            android:label="@string/title_activity_single_player"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".MultiPlayerActivity"
-            android:label="@string/title_activity_multi_player"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

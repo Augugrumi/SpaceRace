@@ -520,8 +520,7 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(i);
     }
 
-    //DEBUG
-    @OnClick(R.id.debug_btn)
+    @OnClick(R.id.sigleplayer_btn)
     public void onClickSeeMap(View view) {
         Intent i = new Intent(MainActivity.this, SinglePlayerActivity.class);
         startActivity(i);

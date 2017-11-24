@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -71,19 +72,6 @@ public class SpaceRace extends Application {
 
                         Log.d("INTRO", "Something went wrong with Google Play Games connection...\n" +
                                 connectionResult.toString());
-
-                        /*new AlertDialog.Builder(instance)
-                                .setTitle(getResources().getText(R.string.warningSlider3Title))
-                                .setMessage(getResources().getText(R.string.warningSlider3SubTitle))
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        // Nothing?
-                                    }
-                                })
-                                .show();*/
                     }
                 })
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
@@ -110,10 +98,6 @@ public class SpaceRace extends Application {
 
     public static GoogleApiClient getgAPIClient() {
         return gAPIClient;
-    }
-
-    public static void setgAPIClient(GoogleApiClient client) {
-        SpaceRace.gAPIClient = client;
     }
 
     private Locale locale;
