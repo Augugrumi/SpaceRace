@@ -29,6 +29,7 @@ public class ScoreCounter {
         return score;
     }
 
+    @NonNull
     public Map<LatLng, SparseBooleanArray> getAnswerCorrectnessMap () {
         Map<LatLng, SparseBooleanArray> res = new HashMap<>();
 
@@ -66,8 +67,8 @@ public class ScoreCounter {
 
         int getScore() {
 
-            // 1 point for correct answer
-            // 0 point for wrong answer
+            // 1 point for a correct answer
+            // 0 points for a wrong answer
             return isCorrect ? 1 : 0;
         }
     }
@@ -81,7 +82,8 @@ public class ScoreCounter {
             pointMap = new HashMap<>();
         }
 
-        public Builder appendPOIQuestions(LatLng POIId, @NonNull List<Integer> questions) {
+        @NonNull
+        public Builder appendPOIQuestions(@NonNull LatLng POIId, @NonNull List<Integer> questions) {
             List<Score> questionsWithScore = new ArrayList<>();
 
             for (Integer i : questions) {
@@ -94,13 +96,15 @@ public class ScoreCounter {
             return this;
         }
 
-        public Builder appendAnswer(LatLng POIId, int questionId, String answer) {
+        @NonNull
+        public Builder appendAnswer(@NonNull LatLng POIId, int questionId, @NonNull String answer) {
             pointMap.get(POIId).get(questionId).setAnswer(answer);
             score += pointMap.get(POIId).get(questionId).getScore();
 
             return this;
         }
 
+        @NonNull
         public ScoreCounter build () {
             return new ScoreCounter(pointMap, score);
         }
