@@ -1,6 +1,7 @@
 package com.augugrumi.spacerace.utility;
 
 import android.content.res.Resources;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.augugrumi.spacerace.R;
@@ -120,14 +121,16 @@ public class QuestionAnswerManager {
         JSONObject obj = qa.get(latLng);
         String questionKey = "Question" + qaId;
 
+        Log.d("DIOCANE", obj.toString());
+
         String question = "";
         List<String> answers = new ArrayList<>();
-        String answerKey = "Answer" + qaId + "1";
+        String answerKey = "Answer" + qaId;
 
         try {
             question = obj.getString(questionKey);
-            for (int i = 0; i < 3; i++) {
-                answers.add(obj.getString(answerKey + qaId));
+            for (int i = 1; i <= 3; i++) {
+                answers.add(obj.getString(answerKey + i));
             }
         } catch (JSONException e) {
             e.printStackTrace();

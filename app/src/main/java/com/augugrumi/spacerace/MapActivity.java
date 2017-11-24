@@ -646,7 +646,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             stopLocationUpdates();
 
-            hf.setPOI(poi);
+
 
             Log.i("FRAG_", "show");
             SupportMapFragment mapFragment =
@@ -660,6 +660,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .beginTransaction()
                     .add(R.id.hint_cont, hf)
                     .commit();
+
+            Log.d("POI", poi.toString());
+            hf.setPOI(poi);
+
             popPoi();
             hintShown = true;
         }

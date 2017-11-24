@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.augugrumi.spacerace.utility.QuestionAnswerManager;
 import com.google.android.gms.maps.model.LatLng;
 
+import junit.framework.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,28 +141,17 @@ public class HintFragment extends Fragment {
     @OnClick(R.id.to_quiz_btn)
     public void onClickStartQuiz() {
 
-        questionNum++;
-
-        int questionID = getQuestionID(questionNum);
-
-        question1Text.setText(questionID);
-
-        //todo: sort answers
-        correctAnswer1 = 1;
-        int aNumber = 1;
-        int answerID = getAnswerID(questionNum, aNumber);
-
-        quiz1Rx1Btn.setText(answerID);
-
-        aNumber++;
-        answerID = getAnswerID(questionNum, aNumber);
-
-        quiz1Rx2Btn.setText(answerID);
-
-        aNumber++;
-        answerID = getAnswerID(questionNum, aNumber);
-
-        quiz1Rx3Btn.setText(answerID);
+        List<String> answers;
+        QuestionAnswerManager.QuestionAnswers qa =
+                QuestionAnswerManager.getQuestionAnswers(poi, 1);
+        Assert.assertNotNull(question1Text);
+        Assert.assertNotNull(qa);
+        Assert.assertNotNull(poi);
+        question1Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        quiz1Rx1Btn.setText(answers.get(0));
+        quiz1Rx2Btn.setText(answers.get(1));
+        quiz1Rx3Btn.setText(answers.get(2));
 
         showView(question1View);
     }
@@ -184,28 +175,14 @@ public class HintFragment extends Fragment {
         if(correctAnswer1 == givenAnswerNum)
             score++;
 
-        questionNum++;
-
-        int questionID = getQuestionID(questionNum);
-
-        question2Text.setText(questionID);
-
-        //todo: sort answers
-        correctAnswer2 = 1;
-        int aNumber = 1;
-        int answerID = getAnswerID(questionNum, aNumber);
-
-        quiz2Rx1Btn.setText(answerID);
-
-        aNumber++;
-        answerID = getAnswerID(questionNum, aNumber);
-
-        quiz2Rx2Btn.setText(answerID);
-
-        aNumber++;
-        answerID = getAnswerID(questionNum, aNumber);
-
-        quiz2Rx3Btn.setText(answerID);
+        List<String> answers;
+        QuestionAnswerManager.QuestionAnswers qa =
+                QuestionAnswerManager.getQuestionAnswers(poi, 2);
+        question2Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        quiz2Rx1Btn.setText(answers.get(0));
+        quiz2Rx2Btn.setText(answers.get(1));
+        quiz2Rx3Btn.setText(answers.get(2));
 
         showView(question2View);
     }
@@ -229,28 +206,14 @@ public class HintFragment extends Fragment {
         if(correctAnswer2 == givenAnswerNum)
             score++;
 
-        questionNum++;
-
-        int questionID = getQuestionID(questionNum);
-
-        question3Text.setText(questionID);
-
-        //todo: sort answers
-        correctAnswer3 = 1;
-        int aNumber = 1;
-        int answerID = getAnswerID(questionNum, aNumber);
-
-        quiz3Rx1Btn.setText(answerID);
-
-        aNumber++;
-        answerID = getAnswerID(questionNum, aNumber);
-
-        quiz3Rx2Btn.setText(answerID);
-
-        aNumber++;
-        answerID = getAnswerID(questionNum, aNumber);
-
-        quiz3Rx3Btn.setText(answerID);
+        List<String> answers;
+        QuestionAnswerManager.QuestionAnswers qa =
+                QuestionAnswerManager.getQuestionAnswers(poi, 3);
+        question3Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        quiz3Rx1Btn.setText(answers.get(0));
+        quiz3Rx2Btn.setText(answers.get(1));
+        quiz3Rx3Btn.setText(answers.get(2));
 
         showView(question3View);
     }
@@ -326,29 +289,6 @@ public class HintFragment extends Fragment {
 
     public void setPOI(LatLng poi) {
         this.poi = poi;
-        List<String> answers;
-        QuestionAnswerManager.QuestionAnswers qa =
-                QuestionAnswerManager.getQuestionAnswers(poi, 1);
-        question1Text.setText(qa.getQuestion());
-        answers = qa.getAnswers();
-        quiz1Rx1Btn.setText(answers.get(0));
-        quiz1Rx2Btn.setText(answers.get(1));
-        quiz1Rx3Btn.setText(answers.get(2));
-
-        qa = QuestionAnswerManager.getQuestionAnswers(poi, 2);
-        question2Text.setText(qa.getQuestion());
-        answers = qa.getAnswers();
-        quiz2Rx1Btn.setText(answers.get(0));
-        quiz2Rx2Btn.setText(answers.get(1));
-        quiz2Rx3Btn.setText(answers.get(2));
-
-        qa = QuestionAnswerManager.getQuestionAnswers(poi, 3);
-        question3Text.setText(qa.getQuestion());
-        answers = qa.getAnswers();
-        quiz3Rx1Btn.setText(answers.get(0));
-        quiz3Rx2Btn.setText(answers.get(1));
-        quiz3Rx3Btn.setText(answers.get(2));
-
     }
 
 }
