@@ -198,13 +198,13 @@
         <string name="answer_8_2_2">Epoca medievale</string>
         <string name="answer_8_2_3">Epoca moderna</string>
         <string name="question_8_3">Una convinzione locale dice che entrando in questo luogo durante il primo anno di Università, non ci si laureerà. Di che luogo si tratta?</string>
-        <string name="answer_8_3_1">Caffé Pedrocchi</string>
+        <string name="answer_8_3_1">Caffè Pedrocchi</string>
         <string name="answer_8_3_2">Università di Padova</string>
         <string name="answer_8_3_3">Giardini dell’Arena</string>
-        <string name="question_9_1">Come viene chiamato il Caffé Pedrocchi?</string>
-        <string name="answer_9_1_1">Caffé senza porte</string>
-        <string name="answer_9_1_2">Caffé senza finestre</string>
-        <string name="answer_9_1_3">Caffé senza latte</string>
+        <string name="question_9_1">Come viene chiamato il Caffè Pedrocchi?</string>
+        <string name="answer_9_1_1">Caffè senza porte</string>
+        <string name="answer_9_1_2">Caffè senza finestre</string>
+        <string name="answer_9_1_3">Caffè senza latte</string>
         <string name="question_9_2">Chi ha progettato l’edificio?</string>
         <string name="answer_9_2_1">Giuseppe Jappelli</string>
         <string name="answer_9_2_2">Lucio Fontana</string>
@@ -229,7 +229,7 @@
         <string name="answer_11_1_1">A un commerciante di carni</string>
         <string name="answer_11_1_2">A una prostituta</string>
         <string name="answer_11_1_3">A un calzolaio</string>
-        <string name="question_11_2">Quando divenne propietario del palazzo l’Ateneo di Padova?</string>
+        <string name="question_11_2">Quando divenne proprietario del palazzo l’Ateneo di Padova?</string>
         <string name="answer_11_2_1">1539</string>
         <string name="answer_11_2_2">1654</string>
         <string name="answer_11_2_3">1245</string>
@@ -344,7 +344,7 @@
         <string name="question_20_3">Quale edificio venne utilizzato come sede dell’osservatorio astronomico dell’Università di Padova?</string>
         <string name="answer_20_3_1">Specola</string>
         <string name="answer_20_3_2">Il Bo</string>
-        <string name="answer_20_3_3">Caffé Pedrocchi</string>
+        <string name="answer_20_3_3">Caffè Pedrocchi</string>
         <string name="question_21_1">Quanti gradini ci sono nella Specola?</string>
         <string name="answer_21_1_1">252</string>
         <string name="answer_21_1_2">556</string>
