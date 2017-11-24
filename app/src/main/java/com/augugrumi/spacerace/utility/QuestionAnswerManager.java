@@ -34,6 +34,7 @@ public class QuestionAnswerManager {
     private static final String LNG = "lng";
     private static final String TITLE = "title";
     private static final String NAME = "name";
+    private static final String CARD = "card";
     private static final String Q1 = "Question1";
     private static final String Q2 = "Question2";
     private static final String Q3 = "Question3";
@@ -121,8 +122,6 @@ public class QuestionAnswerManager {
         JSONObject obj = qa.get(latLng);
         String questionKey = "Question" + qaId;
 
-        Log.d("DIOCANE", obj.toString());
-
         String question = "";
         List<String> answers = new ArrayList<>();
         String answerKey = "Answer" + qaId;
@@ -137,6 +136,28 @@ public class QuestionAnswerManager {
         }
 
         return new QuestionAnswers(question, answers);
+    }
+
+    public static String getTitle(LatLng latLng) {
+        String toReturn = "";
+        try {
+            JSONObject obj = qa.get(latLng);
+            toReturn = obj.getString(TITLE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+
+    public static String getCard(LatLng latLng) {
+        String toReturn = "";
+        try {
+            JSONObject obj = qa.get(latLng);
+            toReturn = obj.getString(CARD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
     }
 
     public static class QuestionAnswers {

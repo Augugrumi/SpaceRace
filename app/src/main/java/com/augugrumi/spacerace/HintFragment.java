@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.augugrumi.spacerace.utility.QuestionAnswerManager;
+import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.google.android.gms.maps.model.LatLng;
 
 import junit.framework.Assert;
@@ -144,9 +145,7 @@ public class HintFragment extends Fragment {
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
                 QuestionAnswerManager.getQuestionAnswers(poi, 1);
-        Assert.assertNotNull(question1Text);
-        Assert.assertNotNull(qa);
-        Assert.assertNotNull(poi);
+
         question1Text.setText(qa.getQuestion());
         answers = qa.getAnswers();
         quiz1Rx1Btn.setText(answers.get(0));
@@ -159,21 +158,21 @@ public class HintFragment extends Fragment {
     @OnClick({R.id.quiz1_rx1_btn, R.id.quiz1_rx2_btn, R.id.quiz1_rx3_btn})
     public void onClickRxQuestion1(View view) {
 
-        int givenAnswerNum = 0;
+        String givenAnswer = "";
+
         switch (view.getId()){
             case R.id.quiz1_rx1_btn:
-                givenAnswerNum = 1;
+                givenAnswer = quiz1Rx1Btn.getText().toString();
                 break;
             case R.id.quiz1_rx2_btn:
-                givenAnswerNum = 2;
+                givenAnswer = quiz1Rx2Btn.getText().toString();
                 break;
             case R.id.quiz1_rx3_btn:
-                givenAnswerNum = 3;
+                givenAnswer = quiz1Rx3Btn.getText().toString();
                 break;
         }
 
-        if(correctAnswer1 == givenAnswerNum)
-            score++;
+        builder.appendAnswer(poi, 1, givenAnswer);
 
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
@@ -190,21 +189,21 @@ public class HintFragment extends Fragment {
     @OnClick({R.id.quiz2_rx1_btn, R.id.quiz2_rx2_btn, R.id.quiz2_rx3_btn})
     public void onClickRxQuestion2(View view) {
 
-        int givenAnswerNum = 0;
+        String givenAnswer = "";
+
         switch (view.getId()){
-            case R.id.quiz1_rx1_btn:
-                givenAnswerNum = 1;
+            case R.id.quiz2_rx1_btn:
+                givenAnswer = quiz2Rx1Btn.getText().toString();
                 break;
-            case R.id.quiz1_rx2_btn:
-                givenAnswerNum = 2;
+            case R.id.quiz2_rx2_btn:
+                givenAnswer = quiz2Rx2Btn.getText().toString();
                 break;
-            case R.id.quiz1_rx3_btn:
-                givenAnswerNum = 3;
+            case R.id.quiz2_rx3_btn:
+                givenAnswer = quiz2Rx3Btn.getText().toString();
                 break;
         }
 
-        if(correctAnswer2 == givenAnswerNum)
-            score++;
+        builder.appendAnswer(poi, 2, givenAnswer);
 
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
@@ -221,25 +220,27 @@ public class HintFragment extends Fragment {
     @OnClick({R.id.quiz3_rx1_btn, R.id.quiz3_rx2_btn, R.id.quiz3_rx3_btn})
     public void onClickRxQuestion3(View view) {
 
-        int givenAnswerNum = 0;
+        String givenAnswer = "";
+
         switch (view.getId()){
-            case R.id.quiz1_rx1_btn:
-                givenAnswerNum = 1;
+            case R.id.quiz3_rx1_btn:
+                givenAnswer = quiz3Rx1Btn.getText().toString();
                 break;
-            case R.id.quiz1_rx2_btn:
-                givenAnswerNum = 2;
+            case R.id.quiz3_rx2_btn:
+                givenAnswer = quiz3Rx2Btn.getText().toString();
                 break;
-            case R.id.quiz1_rx3_btn:
-                givenAnswerNum = 3;
+            case R.id.quiz3_rx3_btn:
+                givenAnswer = quiz3Rx3Btn.getText().toString();
                 break;
         }
 
-        if(correctAnswer3 == givenAnswerNum)
-            score++;
+        builder.appendAnswer(poi, 3, givenAnswer);
+
+
 
         questionNum = 0;
 
-        scoreText.setText(score+"/3");
+        scoreText.setText(builder.build().getScore()+"/3");
 
         SharedPreferences.Editor e = sharedPref.edit();
 
@@ -247,7 +248,7 @@ public class HintFragment extends Fragment {
 
         int newScore = prevScore + score;
 
-        e.putInt("score", newScore);
+        e.putInt("score", builder.build().getScore());
         e.apply();
 
         score = 0;
@@ -287,8 +288,20 @@ public class HintFragment extends Fragment {
                 "string", "com.augugrumi.spacerace");
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        explanationTitleText.setText(QuestionAnswerManager.getTitle(poi));
+        explanationContentText.setText(QuestionAnswerManager.getCard(poi));
+    }
+
+    private ScoreCounter.Builder builder;
+
     public void setPOI(LatLng poi) {
         this.poi = poi;
+
+        builder = new ScoreCounter.Builder()
+                .appendPOIQuestions(poi);
     }
 
 }

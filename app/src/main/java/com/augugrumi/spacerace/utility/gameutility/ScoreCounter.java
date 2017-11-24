@@ -85,10 +85,10 @@ public class ScoreCounter {
         }
 
         @NonNull
-        public Builder appendPOIQuestions(@NonNull LatLng POIId, @NonNull List<Integer> questions) {
+        public Builder appendPOIQuestions(@NonNull LatLng POIId) {
             List<Score> questionsWithScore = new ArrayList<>();
 
-            for (Integer i : questions) {
+            for (int i = 1; i <= 3; i++) {
                 questionsWithScore.add(
                         new Score(POIId, i)
                 );
@@ -100,8 +100,8 @@ public class ScoreCounter {
 
         @NonNull
         public Builder appendAnswer(@NonNull LatLng POIId, int questionId, @NonNull String answer) {
-            pointMap.get(POIId).get(questionId).setAnswer(answer);
-            score += pointMap.get(POIId).get(questionId).getScore();
+            pointMap.get(POIId).get(questionId-1).setAnswer(answer);
+            score += pointMap.get(POIId).get(questionId-1).getScore();
 
             return this;
         }
