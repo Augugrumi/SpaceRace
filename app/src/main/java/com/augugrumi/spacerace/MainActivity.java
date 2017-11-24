@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -40,6 +41,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateCallback;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -136,6 +138,24 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        // ***** COORDINATES DEBUG *****
+
+        LatLng pellegrino107 = new LatLng(
+                45.415271,11.869249
+        );
+
+        LatLng pellegrino32 = new LatLng(
+                45.414098, 11.871422
+        );
+
+        double res = CoordinatesUtility.get2DDistanceInKm(pellegrino107, pellegrino32);
+
+        Log.d("DISTANCE", "The distance is: " + (res * 1000));
+
+        // ***** END COORDINATES DEBUG *****
+
+
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 
         if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {

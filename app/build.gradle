@@ -60,6 +60,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
+    // Geocalculations
+    compile 'com.github.mgavaghan:geodesy:125ea6dad8'
 }
 
 

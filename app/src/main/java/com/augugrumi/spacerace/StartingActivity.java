@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.augugrumi.spacerace.intro.IntroActivity;
+import com.augugrumi.spacerace.utility.QuestionAnswerManager;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.google.android.gms.maps.model.LatLng;
 
 public class StartingActivity extends AppCompatActivity {
 
@@ -29,6 +31,9 @@ public class StartingActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, MainActivity.class);
         }
+
+        Log.d("QAM", QuestionAnswerManager.
+                getQuestions(new LatLng(45.4085729, 11.875285)).toString());
 
         try {
             Thread.sleep(2000);

@@ -74,7 +74,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     private LatLng poi = new LatLng(45.4108011, 11.8880358);
     /************************FORDEBUG**************************/
 
-    private static final double KM_DISTANCE_HINT = 0.02;
+    private static final double KM_DISTANCE_HINT = 0.50;
 
     /**
      * Code used in requesting runtime permissions.
@@ -442,7 +442,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             }
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mCurrentLocation.getLatitude(),
-                            mCurrentLocation.getLongitude()), zoom));
+                            mCurrentLocation.getLongitude()), map.getCameraPosition().zoom));
         }
     }
 
@@ -622,11 +622,23 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     private boolean hintShown = false;
     private void showHintIfNear() {
 
-        Log.i("FRAG_", "" + CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                poi.latitude, poi.longitude));
-        if (CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                poi.latitude, poi.longitude)<KM_DISTANCE_HINT && !hintShown) {
+        Log.i("FRAG_", "" + CoordinatesUtility.get2DDistanceInKm(
+                new LatLng(
+                        mCurrentLocation.getLatitude(),
+                        mCurrentLocation.getLongitude()
+                ),
+                poi));
+        if (CoordinatesUtility.get2DDistanceInKm(
+                new LatLng(
+                        mCurrentLocation.getLatitude(),
+                        mCurrentLocation.getLongitude()
+                ),
+                poi) < KM_DISTANCE_HINT
+                && !hintShown) {
+
             stopLocationUpdates();
+
+
 
             Log.i("FRAG_", "show");
             SupportMapFragment mapFragment =
@@ -640,6 +652,10 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .beginTransaction()
                     .add(R.id.hint_cont, hf)
                     .commit();
+
+            Log.d("POI", poi.toString());
+            hf.setPOI(poi);
+
             popPoi();
             hintShown = true;
         }

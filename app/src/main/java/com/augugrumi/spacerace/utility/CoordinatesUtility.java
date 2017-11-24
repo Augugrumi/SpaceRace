@@ -2,6 +2,13 @@ package com.augugrumi.spacerace.utility;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.gavaghan.geodesy.Ellipsoid;
+import org.gavaghan.geodesy.GeodeticCalculator;
+import org.gavaghan.geodesy.GeodeticCurve;
+import org.gavaghan.geodesy.GlobalCoordinates;
+
 /**
  * @author Marco Zanella
  * @version 0.01
@@ -43,5 +50,31 @@ public class CoordinatesUtility {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         return EARTH_RADIUS * c;
+    }
+
+    public static double get2DDistanceInKm(LatLng l1, LatLng l2) {
+
+        // instantiate the calculator
+        GeodeticCalculator geoCalc = new GeodeticCalculator();
+
+        // select a reference elllipsoid
+        Ellipsoid reference = Ellipsoid.WGS84;
+
+        // set l1 coordinates
+        GlobalCoordinates l1cord;
+        l1cord = new GlobalCoordinates(l1.latitude, l1.longitude);
+
+        // set l2 coordinates
+        GlobalCoordinates l2cord;
+        l2cord = new GlobalCoordinates(l2.latitude, l2.longitude);
+
+        // calculate the geodetic curve
+        GeodeticCurve geoCurve = geoCalc.calculateGeodeticCurve(reference, l1cord, l2cord);
+        double ellipseKilometers = geoCurve.getEllipsoidalDistance() / 1000.0;
+
+        System.out.println("2-D path from Lincoln Memorial to Eiffel Tower using WGS84");
+        System.out.printf("Ellipsoidal Distance: %1.2f kilometers\n", ellipseKilometers);
+
+        return ellipseKilometers;
     }
 }

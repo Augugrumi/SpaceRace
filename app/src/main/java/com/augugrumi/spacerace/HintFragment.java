@@ -1,6 +1,7 @@
 package com.augugrumi.spacerace;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
@@ -13,7 +14,15 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.augugrumi.spacerace.utility.QuestionAnswerManager;
+import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
+import com.google.android.gms.maps.model.LatLng;
+
+import junit.framework.Assert;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +80,9 @@ public class HintFragment extends Fragment {
 
     private MapActivity parent;
 
+    SharedPreferences sharedPref;
+    private LatLng poi;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,8 +103,18 @@ public class HintFragment extends Fragment {
         layouts.add(nextHintView);
         showView(explanationView);
 
+        sharedPref = getActivity().getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor e = sharedPref.edit();
+        e.remove("score");
+        e.putInt("score",0);
+        e.apply();
+
         return mainView;
     }
+
+    //informazioni sul luogo -> domande -> next hint
 
 
     @Override
@@ -105,36 +127,118 @@ public class HintFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    public void setHint(int hintId) {
-        nextHintText.setText(hintId);
-    }
-
-    public void setHint(String hintString) {
-        nextHintText.setText(hintString);
-    }
-
     @OnClick(R.id.to_quiz_btn)
     public void onClickStartQuiz() {
+
+        List<String> answers;
+        QuestionAnswerManager.QuestionAnswers qa =
+                QuestionAnswerManager.getQuestionAnswers(poi, 1);
+
+        question1Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        Collections.shuffle(answers);
+        quiz1Rx1Btn.setText(answers.get(0));
+        quiz1Rx2Btn.setText(answers.get(1));
+        quiz1Rx3Btn.setText(answers.get(2));
+
         showView(question1View);
     }
 
     @OnClick({R.id.quiz1_rx1_btn, R.id.quiz1_rx2_btn, R.id.quiz1_rx3_btn})
-    public void onClickRxQuestion1() {
+    public void onClickRxQuestion1(View view) {
+
+        String givenAnswer = "";
+
+        switch (view.getId()){
+            case R.id.quiz1_rx1_btn:
+                givenAnswer = quiz1Rx1Btn.getText().toString();
+                break;
+            case R.id.quiz1_rx2_btn:
+                givenAnswer = quiz1Rx2Btn.getText().toString();
+                break;
+            case R.id.quiz1_rx3_btn:
+                givenAnswer = quiz1Rx3Btn.getText().toString();
+                break;
+        }
+
+        builder.appendAnswer(poi, 1, givenAnswer);
+
+        List<String> answers;
+        QuestionAnswerManager.QuestionAnswers qa =
+                QuestionAnswerManager.getQuestionAnswers(poi, 2);
+        question2Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        Collections.shuffle(answers);
+        quiz2Rx1Btn.setText(answers.get(0));
+        quiz2Rx2Btn.setText(answers.get(1));
+        quiz2Rx3Btn.setText(answers.get(2));
+
         showView(question2View);
     }
 
     @OnClick({R.id.quiz2_rx1_btn, R.id.quiz2_rx2_btn, R.id.quiz2_rx3_btn})
-    public void onClickRxQuestion2() {
+    public void onClickRxQuestion2(View view) {
+
+        String givenAnswer = "";
+
+        switch (view.getId()){
+            case R.id.quiz2_rx1_btn:
+                givenAnswer = quiz2Rx1Btn.getText().toString();
+                break;
+            case R.id.quiz2_rx2_btn:
+                givenAnswer = quiz2Rx2Btn.getText().toString();
+                break;
+            case R.id.quiz2_rx3_btn:
+                givenAnswer = quiz2Rx3Btn.getText().toString();
+                break;
+        }
+
+        builder.appendAnswer(poi, 2, givenAnswer);
+
+        List<String> answers;
+        QuestionAnswerManager.QuestionAnswers qa =
+                QuestionAnswerManager.getQuestionAnswers(poi, 3);
+        question3Text.setText(qa.getQuestion());
+        answers = qa.getAnswers();
+        Collections.shuffle(answers);
+        quiz3Rx1Btn.setText(answers.get(0));
+        quiz3Rx2Btn.setText(answers.get(1));
+        quiz3Rx3Btn.setText(answers.get(2));
+
         showView(question3View);
     }
 
     @OnClick({R.id.quiz3_rx1_btn, R.id.quiz3_rx2_btn, R.id.quiz3_rx3_btn})
-    public void onClickRxQuestion3() {
+    public void onClickRxQuestion3(View view) {
+
+        String givenAnswer = "";
+
+        switch (view.getId()){
+            case R.id.quiz3_rx1_btn:
+                givenAnswer = quiz3Rx1Btn.getText().toString();
+                break;
+            case R.id.quiz3_rx2_btn:
+                givenAnswer = quiz3Rx2Btn.getText().toString();
+                break;
+            case R.id.quiz3_rx3_btn:
+                givenAnswer = quiz3Rx3Btn.getText().toString();
+                break;
+        }
+
+        builder.appendAnswer(poi, 3, givenAnswer);
+
+        scoreText.setText(builder.build().getScore()+"/3");
+
+        SharedPreferences.Editor e = sharedPref.edit();
+
+        e.putInt("score", builder.build().getScore());
+        e.apply();
+
         showView(quizResultView);
     }
 
     @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn})
-    public void onClickSkipOrFinishedQuiz() {
+    public void onClickSkipOrFinishedQuiz(View v) {
         showView(nextHintView);
     }
 
@@ -149,4 +253,21 @@ public class HintFragment extends Fragment {
         }
         view.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        explanationTitleText.setText(QuestionAnswerManager.getTitle(poi));
+        explanationContentText.setText(QuestionAnswerManager.getCard(poi));
+    }
+
+    private ScoreCounter.Builder builder;
+
+    public void setPOI(LatLng poi) {
+        this.poi = poi;
+
+        builder = new ScoreCounter.Builder()
+                .appendPOIQuestions(poi);
+    }
+
 }
