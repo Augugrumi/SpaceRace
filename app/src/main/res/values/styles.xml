@@ -100,7 +100,7 @@
     </style>
 
     <style name="InvPopupButton" parent="@style/GameButton">
-        <item name="android:background" >@color/ButtonTextColor</item>
+        <item name="android:background">@color/ButtonTextColor</item>
         <item name="android:textColor">@color/AccentColor</item>
     </style>
 

@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     void startGame() {
-        Intent i = new Intent(this, MapActivity.class);
+        Intent i = new Intent(this, MultiPlayerActivity.class);
         i.putExtra(CREATOR_INTENT_EXTRA, creator);
         startActivity(i);
     }
@@ -523,7 +523,7 @@ public class MainActivity extends AppCompatActivity implements
     //DEBUG
     @OnClick(R.id.debug_btn)
     public void onClickSeeMap(View view) {
-        Intent i = new Intent(MainActivity.this, MapActivity.class);
+        Intent i = new Intent(MainActivity.this, SinglePlayerActivity.class);
         startActivity(i);
     }
 
@@ -573,7 +573,7 @@ public class MainActivity extends AppCompatActivity implements
             } else {
                 updateRoom(room);
             }
-            Intent i = new Intent(MainActivity.this, MapActivity.class);
+            Intent i = new Intent(MainActivity.this, MultiPlayerActivity.class);
             i.putExtra(CREATOR_INTENT_EXTRA, creator);
             MainActivity.this.startActivity(i);
         }

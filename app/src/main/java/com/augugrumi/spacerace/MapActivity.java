@@ -64,8 +64,7 @@ import java.util.Date;
 import java.util.Deque;
 
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
-        PathReceiver {
+public abstract class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
 
     private static final int PIECE_SIZE=95;
@@ -108,7 +107,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private final static String KEY_LOCATION = "location";
     private final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
 
-    private Location initialPosition = null;
+    protected Location initialPosition = null;
 
     private GoogleMap map;
 
@@ -165,10 +164,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private HintFragment hf;
 
-    private Deque<PathCreator.DistanceFrom> path;
+    protected Deque<PathCreator.DistanceFrom> path;
     private PathDrawer drawer;
-
-    private boolean hasToCreatePath;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -204,11 +201,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         hf = new HintFragment();
-
-        hasToCreatePath = getIntent().getBooleanExtra(MainActivity.CREATOR_INTENT_EXTRA, false);
-        Log.d("MEXX", "has to create:" + hasToCreatePath);
-        if (!hasToCreatePath)
-            SpaceRace.messageManager.registerForReceivePaths(this);
     }
 
     /**
@@ -724,25 +716,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         startLocationUpdates();
     }
 
-    private void createAndDrawPath() {
-        if (hasToCreatePath) {
-            PathCreator p = new PathCreator(
-                    new LatLng(
-                            initialPosition.getLatitude(),
-                            initialPosition.getLongitude()
-                    ),
-                    0.3,
-                    2.5);
+    protected abstract void createAndDrawPath();
 
-            path = p.generatePath();
-
-            sendPath(path);
-
-            drawPath();
-        }
-    }
-
-    private void drawPath() {
+    protected void drawPath() {
         PieceShape ps = new PieceSquareShape(125);
 
         drawer = new PathDrawer.Builder()
@@ -759,48 +735,4 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             popPoi();
         }
     }
-
-    private void checkIfValidPathOrDie() {
-
-        if (path == null || path.isEmpty()) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this,
-                    android.R.style.Theme_Material_Dialog_Alert);
-            builder.setTitle(R.string.path_problem)
-                    .setMessage(R.string.path_not_found)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(MapActivity.this, MainActivity.class);
-                            startActivity(i);
-                            finish();
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        }
-    }
-
-    private void sendPath(Deque<PathCreator.DistanceFrom> path) {
-        PathManager pathManager = new PathManager(path);
-        SpaceRace.messageManager.sendToAllReliably(pathManager.toJson());
-        checkIfValidPathOrDie();
-    }
-
-    @Override
-    public void receivePath(String jsonPath) {
-        try {
-            if (jsonPath.isEmpty() || jsonPath.equals("[]")) {
-                checkIfValidPathOrDie();
-            } else {
-
-                PathManager pathManager = new PathManager(new JSONArray(jsonPath));
-                path = pathManager.getPath();
-                Log.d("MEXX", "decoded:" + path.toString());
-                drawPath();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
