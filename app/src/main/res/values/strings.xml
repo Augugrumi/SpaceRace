@@ -11,6 +11,12 @@
 
     <string name="slide3Title">Challenge your friends!</string>
 
+    <string name="slide4Title">Permissions</string>
+    <string name="slide4Subtitle">Space Race uses GPS to track you on the map! Please give to the application the permission to know your location.</string>
+
+    <string name="slide5Title">Are you ready to kick off?</string>
+    <string name="slide5Subtitle">Put your spacesuit, close your helmet and explore Padova!</string>
+
 
     <string name="title_activity_room">RoomActivity</string>
 

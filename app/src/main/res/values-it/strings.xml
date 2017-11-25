@@ -388,5 +388,9 @@
     <string name="loading">Caricamento…</string>
     <string name="loading_tip_1">Lo sapevi? Ogni volta che rispondi correttamente a una domanda, guadagni un punto. Non sbagliare!</string>
     <string name="loading_action_1">Aspettando l\'allineamento dei pianeti…</string>
+    <string name="slide4Subtitle">Space Race usa il GPS per tracciarti sulla mappa! Per favore permetti all\'applicazione i permessi per conoscere la tua posizione.</string>
+    <string name="slide4Title">Permessi</string>
+    <string name="slide5Subtitle">Indossa la tuta spaziale, chiudi il casco e esplora Padova!</string>
+    <string name="slide5Title">Pronto per partire?</string>
 
 </resources>
