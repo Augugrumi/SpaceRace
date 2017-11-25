@@ -34,4 +34,16 @@ public class SinglePlayerActivity extends MapActivity {
 
         drawPath();
     }
+
+    @Override
+    public void hideHintAndShowMap() {
+        super.hideHintAndShowMap();
+
+        if(path.isEmpty())
+            endMatch();
+    }
+
+    public void endMatch() {
+        Log.d("END_MATCH", "the game is over");
+    }
 }

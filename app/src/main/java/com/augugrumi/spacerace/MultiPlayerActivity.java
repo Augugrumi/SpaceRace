@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.augugrumi.spacerace.listener.AckReceiver;
+import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathManager;
@@ -22,7 +23,8 @@ import org.json.JSONException;
 
 import java.util.Deque;
 
-public class MultiPlayerActivity extends MapActivity implements PathReceiver, AckReceiver{
+public class MultiPlayerActivity extends MapActivity
+        implements PathReceiver, AckReceiver, EndMatchReceiver{
 
     private boolean hasToCreatePath;
 
@@ -32,6 +34,7 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
 
         hasToCreatePath = getIntent().getBooleanExtra(MainActivity.CREATOR_INTENT_EXTRA, false);
         Log.d("MEXX", "has to create:" + hasToCreatePath);
+        SpaceRace.messageManager.registerForReceiveEndMatch(this);
         if (!hasToCreatePath)
             SpaceRace.messageManager.registerForReceivePaths(this);
         else
@@ -107,5 +110,19 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
     @Override
     public void receiveAck() {
         Log.d("ACK_RECEIVED", "ack");
+    }
+
+    @Override
+    public void hideHintAndShowMap() {
+        super.hideHintAndShowMap();
+
+        if (path.isEmpty()) {
+            SpaceRace.messageManager.sendToAllReliably(END_MATCH);
+        }
+    }
+
+    @Override
+    public void endMatch() {
+        Log.d("END_MATCH", "your opponent arrived to destination before you");
     }
 }

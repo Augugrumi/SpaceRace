@@ -474,11 +474,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
 
 
-        if (checkPermissions()) {
+        /*if (checkPermissions()) {
             startLocationUpdates();
         } else {
             requestPermissions();
-        }
+        }*/
         if (!isLocationEnabled && mLocationPermissionGranted && map != null) {
             if (mCurrentLocation != null) {
                 marker.setVisible(true);
