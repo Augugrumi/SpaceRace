@@ -15,6 +15,8 @@ import com.augugrumi.spacerace.listener.AckReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathManager;
+import com.augugrumi.spacerace.utility.LoadingScreenFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -25,13 +27,29 @@ import java.util.Deque;
 public class MultiPlayerActivity extends MapActivity implements PathReceiver, AckReceiver{
 
     private boolean hasToCreatePath;
+    private LoadingScreenFragment lsf;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        lsf = new LoadingScreenFragment();
         hasToCreatePath = getIntent().getBooleanExtra(MainActivity.CREATOR_INTENT_EXTRA, false);
         Log.d("MEXX", "has to create:" + hasToCreatePath);
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        getSupportFragmentManager().
+                beginTransaction()
+                .hide(mapFragment)
+                .commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.hint_cont, lsf)
+                .commit();
+
+
         if (!hasToCreatePath)
             SpaceRace.messageManager.registerForReceivePaths(this);
         else
@@ -98,6 +116,7 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
                 Log.d("MEXX", "decoded:" + path.toString());
                 drawPath();
                 sendAck();
+                hideLoadingScreen();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -107,5 +126,26 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
     @Override
     public void receiveAck() {
         Log.d("ACK_RECEIVED", "ack");
+
+        hideLoadingScreen();
+    }
+
+    private void hideLoadingScreen() {
+
+        Log.d("LOADING_SCREEN", "Stopping loading screen");
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(lsf)
+                .commit();
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        getSupportFragmentManager().
+                beginTransaction()
+                .show(mapFragment)
+                .commit();
+
+        Log.d("LOADING_SCREEN", "Loading screen stopped");
     }
 }
