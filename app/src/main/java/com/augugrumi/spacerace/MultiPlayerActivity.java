@@ -16,6 +16,8 @@ import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -118,11 +120,19 @@ public class MultiPlayerActivity extends MapActivity
 
         if (path.isEmpty()) {
             SpaceRace.messageManager.sendToAllReliably(END_MATCH);
+            Games.getLeaderboardsClient(this,
+                    GoogleSignIn.getLastSignedInAccount(this))
+                    .submitScore(getString(R.string.leaderboard_id),
+                            getTotalScore().getScore());
         }
     }
 
     @Override
     public void endMatch() {
         Log.d("END_MATCH", "your opponent arrived to destination before you");
+        Games.getLeaderboardsClient(this,
+                GoogleSignIn.getLastSignedInAccount(this))
+                .submitScore(getString(R.string.leaderboard_id),
+                getTotalScore().getScore());
     }
 }
