@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.augugrumi.spacerace.R;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +26,9 @@ public class LoadingScreenFragment extends Fragment {
     @BindView(R.id.loading_action)
     TextView action;
 
+    @BindView(R.id.fragmentloginKenBurnsView1)
+    KenBurnsView backgroundImage;
+
     public LoadingScreenFragment() {
         // Required empty public constructor
     }
@@ -40,6 +44,7 @@ public class LoadingScreenFragment extends Fragment {
         ButterKnife.bind(this, v);
         tip.setText(LoadingPhraseChooser.pickRandomTip());
         action.setText(LoadingPhraseChooser.pickRandomAction());
+        backgroundImage.setImageResource(LoadingPhraseChooser.pickRandomBackground());
 
         return v;
     }
