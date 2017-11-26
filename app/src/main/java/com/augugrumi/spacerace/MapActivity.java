@@ -27,6 +27,7 @@ import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.pathCreator.PathManager;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
@@ -750,5 +751,9 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             drawer.drawNext();
             popPoi();
         }
+    }
+
+    public ScoreCounter getTotalScore() {
+        return hf.getTotalScore();
     }
 }
