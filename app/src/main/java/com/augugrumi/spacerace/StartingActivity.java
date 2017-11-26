@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.augugrumi.spacerace.intro.IntroActivity;
+import com.augugrumi.spacerace.utility.LanguageManager;
 import com.augugrumi.spacerace.utility.QuestionAnswerManager;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.google.android.gms.maps.model.LatLng;
@@ -19,6 +20,8 @@ public class StartingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LanguageManager.languageManagement(this);
 
         Intent intent;
 

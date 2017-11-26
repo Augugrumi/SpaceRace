@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Space;
 
 import com.augugrumi.spacerace.R;
 import com.augugrumi.spacerace.SpaceRace;
+
+import java.util.Locale;
 
 
 /**
@@ -21,7 +24,7 @@ public class SharedPreferencesManager {
     private static final String FIRST_RUN = "first_application_run";
     private static final int DEFAULT_MAP_ID = R.raw.dark_side_of_the_moon;
     private static final String MAP_STYLE_KEY = "mapStyleKey";
-    private static final String DEFAULT_LANGUAGE = "en";
+    private static final String DEFAULT_LANGUAGE = "NULL";
     private static final String LANGUAGE_KEY = "languageKey";
 
 
@@ -74,7 +77,27 @@ public class SharedPreferencesManager {
     public static String getLanguagePreference() {
         SharedPreferences sharedPref =
                 PreferenceManager.getDefaultSharedPreferences(SpaceRace.getAppContext());
-        return sharedPref.getString(LANGUAGE_KEY, DEFAULT_LANGUAGE);
+
+        String lang = sharedPref.getString(LANGUAGE_KEY, DEFAULT_LANGUAGE);
+
+        if (lang.equals(DEFAULT_LANGUAGE)) {
+            Locale current = SpaceRace.getAppContext().getResources()
+                    .getConfiguration().locale;
+            lang = current.getLanguage();
+            setLanguagePreference(lang);
+        }
+
+        return lang;
+    }
+
+    public static void setLanguagePreference(String language) {
+        Context context = SpaceRace.getAppContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(LANGUAGE_KEY, language);
+        editor.apply();
     }
 
 }

@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.augugrumi.spacerace.utility.LanguageManager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,6 +29,8 @@ public class CreditsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credits);
         ButterKnife.bind(this);
+
+        LanguageManager.languageManagement(this);
     }
 
     @OnClick(R.id.facebook)

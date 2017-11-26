@@ -3,6 +3,7 @@ package com.augugrumi.spacerace;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.text.method.ScrollingMovementMethod;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.augugrumi.spacerace.utility.LanguageManager;
 import com.augugrumi.spacerace.utility.QuestionAnswerManager;
 import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.google.android.gms.maps.model.LatLng;
@@ -82,6 +84,13 @@ public class HintFragment extends Fragment {
 
     SharedPreferences sharedPref;
     private LatLng poi;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LanguageManager.languageManagement(SpaceRace.getAppContext());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

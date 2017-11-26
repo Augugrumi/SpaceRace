@@ -1,5 +1,6 @@
 package com.augugrumi.spacerace;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -17,11 +18,14 @@ import java.util.Locale;
 
 public class SpaceRacePreferenceActivity extends PreferenceActivity {
 
+    private static SpaceRacePreferenceActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new MyPreferenceFragment()).commit();
+        instance = this;
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment
@@ -35,7 +39,8 @@ public class SpaceRacePreferenceActivity extends PreferenceActivity {
             final ListPreference list = (ListPreference) findPreference("languageKey");
             list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    updateLanguage(SharedPreferencesManager.getLanguagePreference());
+                    updateLanguage((String)newValue);
+                    instance.recreate();
                     return true;
                 }
             });
@@ -79,15 +84,23 @@ public class SpaceRacePreferenceActivity extends PreferenceActivity {
     }
 
     public static void updateLanguage(String selectedLanguage) {
-        if (!"".equals(selectedLanguage)) {
+        if (!"".equals(selectedLanguage) &&
+                !selectedLanguage.equals(SharedPreferencesManager.getLanguagePreference())) {
+            SharedPreferencesManager.setLanguagePreference(selectedLanguage);
             Locale locale = new Locale(selectedLanguage);
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
             SpaceRace.getAppContext().getResources().updateConfiguration(config,
                     SpaceRace.getAppContext().getResources().getDisplayMetrics());
-
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
 }

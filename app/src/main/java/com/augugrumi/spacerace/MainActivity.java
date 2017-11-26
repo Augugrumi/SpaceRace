@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.LanguageManager;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements
         Log.d("SIGNIN", "Sign-in button clicked");
         startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
 
+        LanguageManager.languageManagement(this);
     }
 
     @Override
@@ -538,6 +540,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onClickSettings(View view) {
         Intent i = new Intent(MainActivity.this, SpaceRacePreferenceActivity.class);
         startActivity(i);
+        finish();
     }
 
     @OnClick(R.id.sigleplayer_btn)

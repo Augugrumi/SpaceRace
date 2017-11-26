@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.augugrumi.spacerace.listener.AckReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
+import com.augugrumi.spacerace.utility.LanguageManager;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -80,17 +81,7 @@ public class SpaceRace extends Application {
                 //.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        Configuration config = getBaseContext().getResources().getConfiguration();
-
-        String lang = SharedPreferencesManager.getLanguagePreference();
-        String systemLocale = getSystemLocale(config).getLanguage();
-        if (!"".equals(lang) && !systemLocale.equals(lang)) {
-            locale = new Locale(lang);
-            Locale.setDefault(locale);
-            setSystemLocale(config, locale);
-            updateConfiguration(config);
-        }
-
+        LanguageManager.languageManagement(this);
     }
 
     public static Context getAppContext() {
@@ -100,42 +91,6 @@ public class SpaceRace extends Application {
     public static GoogleApiClient getgAPIClient() {
         return gAPIClient;
     }
-
-    private Locale locale;
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (locale != null) {
-            setSystemLocale(newConfig, locale);
-            Locale.setDefault(locale);
-            updateConfiguration(newConfig);
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private static Locale getSystemLocale(Configuration config) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return config.getLocales().get(0);
-        } else {
-            return config.locale;
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private static void setSystemLocale(Configuration config, Locale locale) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            config.setLocale(locale);
-        } else {
-            config.locale = locale;
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private void updateConfiguration(Configuration config) {
-        getBaseContext().createConfigurationContext(config);
-    }
-
 
     public static MessageManager messageManager = new MessageManager();
 

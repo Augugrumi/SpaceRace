@@ -26,6 +26,7 @@ import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.pathCreator.PathManager;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.LanguageManager;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
@@ -199,6 +200,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         } else {
             startLocationUpdates();
         }
+
+        LanguageManager.languageManagement(this);
 
         hf = new HintFragment();
     }
