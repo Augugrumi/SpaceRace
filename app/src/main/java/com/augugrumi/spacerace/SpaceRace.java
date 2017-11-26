@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.augugrumi.spacerace.listener.AckReceiver;
+import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -148,6 +149,7 @@ public class SpaceRace extends Application {
         private HashSet<Integer> pendingMessageSet = new HashSet<>();
         private PathReceiver pathReceiver;
         private AckReceiver ackReceiver;
+        private EndMatchReceiver endMatchReceiver;
 
         private MessageManager(){}
 
@@ -195,6 +197,9 @@ public class SpaceRace extends Application {
             if (messageString.equals(AckReceiver.ACK)) {
                 if (ackReceiver!=null)
                     ackReceiver.receiveAck();
+            } else if(messageString.equals(EndMatchReceiver.END_MATCH)){
+                if (endMatchReceiver != null)
+                    endMatchReceiver.endMatch();
             } else {
                 if (pathReceiver != null)
                     pathReceiver.receivePath(new String(message));
@@ -215,6 +220,10 @@ public class SpaceRace extends Application {
 
         public void registerForReceiveAck(AckReceiver ackReceiver) {
             this.ackReceiver = ackReceiver;
+        }
+
+        public void registerForReceiveEndMatch(EndMatchReceiver endMatchReceiver) {
+            this.endMatchReceiver = endMatchReceiver;
         }
     }
 }
