@@ -8,5 +8,8 @@ package com.augugrumi.spacerace.listener;
 
 public interface EndMatchReceiver {
     String END_MATCH = "end-" + EndMatchReceiver.class.toString();
-    void endMatch();
+    String ACK_END_MATCH = "ack_end_match-" + EndMatchReceiver.class.toString();
+
+    void receiveEndMatch(String message);
+    void receiveAckEndMatch(String message);
 }
