@@ -27,24 +27,14 @@ import java.util.Deque;
 public class MultiPlayerActivity extends MapActivity implements PathReceiver, AckReceiver{
 
     private boolean hasToCreatePath;
-    private LoadingScreenFragment lsf;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lsf = new LoadingScreenFragment();
+
         hasToCreatePath = getIntent().getBooleanExtra(MainActivity.CREATOR_INTENT_EXTRA, false);
         Log.d("MEXX", "has to create:" + hasToCreatePath);
-
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager().
-                beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .hide(mapFragment)
-                .add(R.id.hint_cont, lsf)
-                .commit();
 
 
         if (!hasToCreatePath)
@@ -125,21 +115,5 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
         Log.d("ACK_RECEIVED", "ack");
 
         hideLoadingScreen();
-    }
-
-    private void hideLoadingScreen() {
-
-        Log.d("LOADING_SCREEN", "Stopping loading screen");
-
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .hide(lsf)
-                .show(mapFragment)
-                .commit();
-
-        Log.d("LOADING_SCREEN", "Loading screen stopped");
     }
 }

@@ -33,5 +33,6 @@ public class SinglePlayerActivity extends MapActivity {
         Log.d("PATH_CREATED", path.toString());
 
         drawPath();
+        hideLoadingScreen();
     }
 }
