@@ -78,7 +78,7 @@ public class PathCreator {
         }
 
         @NonNull
-        public String toJson() throws JSONException {
+        String toJson() throws JSONException {
 
             JSONObject res = new JSONObject();
 
