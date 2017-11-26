@@ -41,11 +41,8 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         getSupportFragmentManager().
                 beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .hide(mapFragment)
-                .commit();
-
-        getSupportFragmentManager()
-                .beginTransaction()
                 .add(R.id.hint_cont, lsf)
                 .commit();
 
@@ -134,15 +131,12 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
 
         Log.d("LOADING_SCREEN", "Stopping loading screen");
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .hide(lsf)
-                .commit();
-
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager().
-                beginTransaction()
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .hide(lsf)
                 .show(mapFragment)
                 .commit();
 
