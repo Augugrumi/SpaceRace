@@ -35,8 +35,10 @@ public class PathCreator {
 
     private static final String MODE = "DEBUG";
 
-    private final static double MAX_DISTANCE_FIRST_HOP = 1;
-    private final static double MIN_DISTANCE_FIRST_HOP = 0.500;
+    private final static double MAX_DISTANCE_FIRST_HOP = 10;
+    private final static double MIN_DISTANCE_FIRST_HOP = 0;
+
+    private static final int HOP_MIN_NUM = 1;
 
     public static class DistanceFrom {
 
@@ -234,7 +236,7 @@ public class PathCreator {
                         maxDistance - (distance.distance/1000),
                         visitedTable,
                         5));
-                if (path.size() >= 3) {
+                if (path.size() >= HOP_MIN_NUM) {
                     return path;
                 }
             } catch (InterruptedException | ExecutionException  e) {
