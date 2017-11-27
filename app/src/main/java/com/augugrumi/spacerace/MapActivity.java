@@ -2,7 +2,6 @@ package com.augugrumi.spacerace;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -15,19 +14,18 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
-import com.augugrumi.spacerace.pathCreator.PathManager;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.LanguageManager;
+import com.augugrumi.spacerace.utility.LoadingScreenFragment;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
@@ -56,9 +54,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -167,15 +162,26 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
     protected Deque<PathCreator.DistanceFrom> path;
     private PathDrawer drawer;
+    private LoadingScreenFragment lsf;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        lsf = new LoadingScreenFragment();
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .add(R.id.hint_cont, lsf)
+                .show(lsf)
+                .commit();
+
 
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
@@ -204,6 +210,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         LanguageManager.languageManagement(this);
 
         hf = new HintFragment();
+
+
     }
 
     /**
@@ -618,8 +626,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void popPoi () {
-
-         poi = path.pop().getEnd();
+        poi = path.pop().getEnd();
+        hf.setPOI(poi);
     }
 
     private boolean hintShown = false;
@@ -659,7 +667,9 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             Log.d("POI", poi.toString());
             hf.setPOI(poi);
 
-            popPoi();
+            if (path != null && !path.isEmpty())
+                popPoi();
+
             hintShown = true;
         }
     }
@@ -753,5 +763,25 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             drawer.drawNext();
             popPoi();
         }
+    }
+
+    public ScoreCounter getTotalScore() {
+        return hf.getTotalScore();
+    }
+
+    protected void hideLoadingScreen() {
+
+        Log.d("LOADING_SCREEN", "Stopping loading screen");
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .hide(lsf)
+                .show(mapFragment)
+                .commit();
+
+        Log.d("LOADING_SCREEN", "Loading screen stopped");
     }
 }

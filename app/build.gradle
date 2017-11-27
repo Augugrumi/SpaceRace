@@ -45,9 +45,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.6.0'
     compile 'com.google.android.gms:play-services-places:11.6.0'
 
-    // Main activity UI
-    compile 'nl.psdcompany:duo-navigation-drawer:2.0.6'
-
     // Buttons
     compile 'com.github.championswimmer:Android-SocialButtons:1.0'
     compile 'com.rilixtech:materialfancybuttons:1.8.7'
@@ -62,13 +59,12 @@ dependencies {
 
     // Geocalculations
     compile 'com.github.mgavaghan:geodesy:125ea6dad8'
+
+    // Loading screen
+    compile 'com.flaviofaria:kenburnsview:1.0.7'
+    compile 'com.daasuu:EasingInterpolator:1.0.0'
+    compile 'com.android.support:percent:26.1.0'
 }
-
-
-
-
-
-
 
 
 apply plugin: 'com.google.gms.google-services'

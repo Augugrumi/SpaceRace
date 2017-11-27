@@ -1,12 +1,13 @@
 package com.augugrumi.spacerace;
 
+import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,8 +16,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.listener.NetworkChangeListener;
 import com.augugrumi.spacerace.utility.LanguageManager;
+import com.augugrumi.spacerace.utility.NetworkingUtility;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -42,7 +44,6 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateCallback;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,24 +57,33 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener {
-
-    public static final String CREATOR_INTENT_EXTRA = "isCreator";
-
-    @BindView(R.id.invitation_popup) ViewGroup invitationPopUp;
-    @BindView(R.id.incoming_invitation_text) TextView incomingInvitationText;
-
-    private boolean invitationPopupIsShowing;
-
-    /**************************************************************************/
+        GoogleApiClient.OnConnectionFailedListener,
+        NetworkChangeListener {
     // Request codes for the UIs that we show with startActivityForResult:
     private final static int RC_SELECT_PLAYERS = 10000;
     private final static int RC_INVITATION_INBOX = 10001;
     private final static int RC_WAITING_ROOM = 10002;
-
     private static final int RC_LEADERBOARD_UI = 9004;
     // Request code used to invoke sign in user interactions.
     private static final int RC_SIGN_IN = 9001;
+    private static final int RC_PERMISSION_GRANTED = 15151;
+    public static final String CREATOR_INTENT_EXTRA = "isCreator";
+    public static final int [] toEnable = {
+            R.id.new_match,
+            R.id.join,
+            R.id.sigleplayer_btn,
+            R.id.button_accept_popup_invitation
+    };
+
+    @BindView(R.id.invitation_popup) ViewGroup invitationPopUp;
+    @BindView(R.id.incoming_invitation_text) TextView incomingInvitationText;
+
+    private AlertDialog noPermissionDialog;
+
+    private boolean invitationPopupIsShowing;
+
+    /**************************************************************************/
+
 
     // Client used to interact with the real time multiplayer system.
     private RealTimeMultiplayerClient mRealTimeMultiplayerClient = null;
@@ -102,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onInvitationRemoved(@NonNull String invitationId) {
 
-            if (mIncomingInvitationId.equals(invitationId) && mIncomingInvitationId != null) {
+            if (mIncomingInvitationId != null && mIncomingInvitationId.equals(invitationId)) {
                 mIncomingInvitationId = null;
                 showPopUpNotification(false, ""); // This will hide the invitation popup
             }
@@ -125,9 +135,6 @@ public class MainActivity extends AppCompatActivity implements
     // Set to false to require the user to click the button in order to sign in.
     private boolean mAutoStartSignInFlow = true;
 
-
-    private ProgressDialog mProgressDialog;
-
     // Client used to sign in with Google APIs
     private GoogleSignInClient mGoogleSignInClient = null;
 
@@ -140,22 +147,8 @@ public class MainActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        // ***** COORDINATES DEBUG *****
-
-        LatLng pellegrino107 = new LatLng(
-                45.415271,11.869249
-        );
-
-        LatLng pellegrino32 = new LatLng(
-                45.414098, 11.871422
-        );
-
-        double res = CoordinatesUtility.get2DDistanceInKm(pellegrino107, pellegrino32);
-
-        Log.d("DISTANCE", "The distance is: " + (res * 1000));
-
-        // ***** END COORDINATES DEBUG *****
-
+        NetworkingUtility.registerListener(this);
+        disablePlayButtons();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 
@@ -173,25 +166,21 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        Log.d("PREFERENCES", SP.getString("mapStyleKey", "NA"));
 
-        hideProgressDialog();
-
-        /*if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
+        if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
             Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
         }
+        Log.d("SIGNIN", "Sign-in silently");
 
-        // start the sign-in flow
-        Log.d("SIGNIN", "Sign-in button clicked");
-        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);*/
+        if (!NetworkingUtility.isNetworkAvailable() ||
+                GoogleSignIn.getLastSignedInAccount(SpaceRace.getAppContext()) == null ||
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)!=
+                        PackageManager.PERMISSION_GRANTED)
+            disablePlayButtons();
 
-            if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
-                Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
-            }
-            Log.d("SIGNIN", "Sign-in silently");
-            signInSilently();
 
+        signInSilently();
     }
 
     @Override
@@ -263,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements
                         }
                     }
             );
+
+            requestPermissionsNeeded();
         }
 
         // register listener so we are notified if we receive an invitation to play
@@ -289,6 +280,8 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 })
                 .addOnFailureListener(createFailureListener("There was a problem getting the activation hint!"));
+
+        enablePlayButtons();
     }
 
     private OnFailureListener createFailureListener(final String string) {
@@ -317,8 +310,10 @@ public class MainActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             Log.d("SIGNIN", "signInSilently(): success");
                             onConnected(task.getResult());
+                            enablePlayButtons();
                         } else {
                             Log.d("SIGNIN", "signInSilently(): failure", task.getException());
+
                             onDisconnected();
                         }
                     }
@@ -353,52 +348,54 @@ public class MainActivity extends AppCompatActivity implements
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        if (requestCode == RC_SIGN_IN) {
+        switch (requestCode) {
+            case RC_SIGN_IN:
+                Task<GoogleSignInAccount> task =
+                        GoogleSignIn.getSignedInAccountFromIntent(intent);
 
-            Task<GoogleSignInAccount> task =
-                    GoogleSignIn.getSignedInAccountFromIntent(intent);
+                try {
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    onConnected(account);
+                } catch (ApiException apiException) {
+                    String message = apiException.getMessage();
+                    message = getString(R.string.signin_other_error) + " " + "(" + message + ")";
 
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                onConnected(account);
-            } catch (ApiException apiException) {
-                String message = apiException.getMessage();
-                if (message == null || message.isEmpty()) {
-                    message = getString(R.string.signin_other_error);
+                    onDisconnected();
+
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.error_during_signin)
+                            .setMessage(message + apiException.toString())
+                            .setNeutralButton(android.R.string.ok, null)
+                            .show();
                 }
+                break;
+            case RC_SELECT_PLAYERS:
+                // we got the result from the "select players" UI -- ready to create the room
+                handleSelectPlayersResult(resultCode, intent);
+                break;
+            case RC_INVITATION_INBOX:
+                // we got the result from the "select invitation" UI (invitation inbox). We're
+                // ready to accept the selected invitation:
+                handleInvitationInboxResult(resultCode, intent);
+                break;
+            case RC_WAITING_ROOM:
+                // we got the result from the "waiting room" UI.
+                if (resultCode == Activity.RESULT_OK) {
+                    // ready to start playing
+                    Log.d("ROOM", "Starting game (waiting room returned OK).");
+                    startGame();
+                } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
+                    // player indicated that they want to leave the room
 
-                onDisconnected();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    // Dialog was cancelled (user pressed back key, for instance). In our game,
+                    // this means leaving the room too. In more elaborate games, this could mean
+                    // something else (like minimizing the waiting room UI).
 
-                new AlertDialog.Builder(this)
-                        .setMessage(message + apiException.toString())
-                        .setNeutralButton(android.R.string.ok, null)
-                        .show();
-            }
-        } else if (requestCode == RC_SELECT_PLAYERS) {
-            // we got the result from the "select players" UI -- ready to create the room
-            handleSelectPlayersResult(resultCode, intent);
-
-        } else if (requestCode == RC_INVITATION_INBOX) {
-            // we got the result from the "select invitation" UI (invitation inbox). We're
-            // ready to accept the selected invitation:
-            handleInvitationInboxResult(resultCode, intent);
-
-        } else if (requestCode == RC_WAITING_ROOM) {
-            // we got the result from the "waiting room" UI.
-            if (resultCode == Activity.RESULT_OK) {
-                // ready to start playing
-                Log.d("ROOM", "Starting game (waiting room returned OK).");
-                startGame();
-            } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-                // player indicated that they want to leave the room
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                // Dialog was cancelled (user pressed back key, for instance). In our game,
-                // this means leaving the room too. In more elaborate games, this could mean
-                // something else (like minimizing the waiting room UI).
-
-            }
+                }
+                break;
         }
+
         super.onActivityResult(requestCode, resultCode, intent);
 
     }
@@ -451,12 +448,6 @@ public class MainActivity extends AppCompatActivity implements
         // accept invitation
         if (invitation != null) {
             acceptInviteToRoom(invitation.getInvitationId());
-        }
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
         }
     }
 
@@ -547,6 +538,26 @@ public class MainActivity extends AppCompatActivity implements
     public void onClickSeeMap(View view) {
         Intent i = new Intent(MainActivity.this, SinglePlayerActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onNetworkAvailable() {
+        Log.d("NETWORKINGUTILITY", "onNetworkAvailable");
+
+        if (NetworkingUtility.isNetworkAvailable()) {
+            if (mSignedInAccount == null) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
+                    }
+                });
+            }
+            enablePlayButtons();
+        } else {
+            disablePlayButtons();
+        }
+
     }
 
     private class RoomUpdateCallbackImpl extends RoomUpdateCallback {
@@ -747,5 +758,71 @@ public class MainActivity extends AppCompatActivity implements
                         }
                     });
         }*/
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case RC_PERMISSION_GRANTED: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    enablePlayButtons();
+
+                    if (noPermissionDialog != null) {
+                        noPermissionDialog.hide();
+                        noPermissionDialog.dismiss();
+                    }
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    //TODO show pop up explaining that the application could not work
+                    noPermissionDialog = new AlertDialog.Builder(this,
+                                    android.R.style.Theme_Material_Dialog_Alert)
+                            .setTitle(R.string.permission_granted_alert_title)
+                            .setMessage(R.string.permission_granted_alert_summary)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .create();
+                    noPermissionDialog.show();
+                }
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    private void enablePlayButtons() {
+        if (NetworkingUtility.isNetworkAvailable() &&
+            ActivityCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            mSignedInAccount != null) {
+            for (int i : toEnable) {
+                findViewById(i).setEnabled(true);
+
+            }
+        }
+    }
+
+    private void disablePlayButtons() {
+        for (int i : toEnable) {
+            findViewById(i).setEnabled(false);
+        }
+    }
+
+    public void requestPermissionsNeeded() {
+        final String[] permissions = {
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+
+        ActivityCompat.requestPermissions(this, permissions, RC_PERMISSION_GRANTED);
     }
 }

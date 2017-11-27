@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.augugrumi.spacerace.pathCreator.PathCreator;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 public class SinglePlayerActivity extends MapActivity {
@@ -33,5 +34,18 @@ public class SinglePlayerActivity extends MapActivity {
         Log.d("PATH_CREATED", path.toString());
 
         drawPath();
+        hideLoadingScreen();
+    }
+
+    @Override
+    public void hideHintAndShowMap() {
+        super.hideHintAndShowMap();
+
+        if(path.isEmpty())
+            endMatch();
+    }
+
+    public void endMatch() {
+        Log.d("END_MATCH", "the game is over");
     }
 }

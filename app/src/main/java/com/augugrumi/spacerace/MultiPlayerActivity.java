@@ -3,26 +3,25 @@ package com.augugrumi.spacerace;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
-import com.augugrumi.spacerace.listener.AckReceiver;
+import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Deque;
 
-public class MultiPlayerActivity extends MapActivity implements PathReceiver, AckReceiver{
+public class MultiPlayerActivity extends MapActivity
+        implements PathReceiver, EndMatchReceiver{
 
     private boolean hasToCreatePath;
 
@@ -30,12 +29,12 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         hasToCreatePath = getIntent().getBooleanExtra(MainActivity.CREATOR_INTENT_EXTRA, false);
         Log.d("MEXX", "has to create:" + hasToCreatePath);
-        if (!hasToCreatePath)
-            SpaceRace.messageManager.registerForReceivePaths(this);
-        else
-            SpaceRace.messageManager.registerForReceiveAck(this);
+
+        SpaceRace.messageManager.registerForReceiveEndMatch(this);
+        SpaceRace.messageManager.registerPathReceiver(this);
     }
 
     protected void createAndDrawPath() {
@@ -83,7 +82,7 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
     }
 
     protected void sendAck() {
-        SpaceRace.messageManager.sendToAllReliably(ACK);
+        SpaceRace.messageManager.sendToAllReliably(PathReceiver.ACK_PATH);
     }
 
     @Override
@@ -98,6 +97,7 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
                 Log.d("MEXX", "decoded:" + path.toString());
                 drawPath();
                 sendAck();
+                hideLoadingScreen();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -107,5 +107,95 @@ public class MultiPlayerActivity extends MapActivity implements PathReceiver, Ac
     @Override
     public void receiveAck() {
         Log.d("ACK_RECEIVED", "ack");
+
+        hideLoadingScreen();
+    }
+
+    @Override
+    public void hideHintAndShowMap() {
+        super.hideHintAndShowMap();
+
+        int score = getTotalScore().getScore();
+
+        if (path.isEmpty()) {
+            SpaceRace.messageManager.sendToAllReliably(
+                    new EndMessageBuilder()
+                            .setType(END_MATCH)
+                            .setScore(score)
+                            .build()
+            );
+            Games.getLeaderboardsClient(this,
+                    GoogleSignIn.getLastSignedInAccount(this))
+                    .submitScore(getString(R.string.leaderboard_id),
+                            getTotalScore().getScore());
+        }
+    }
+
+    @Override
+    public void receiveEndMatch(String message) {
+        //TODO add check which player won
+        Log.d("END_MATCH",
+                "your opponent arrived to destination before you with score:" +
+                    EndMessageBuilder.decodeScore(message));
+
+        int score = getTotalScore().getScore();
+
+        Games.getLeaderboardsClient(this,
+                GoogleSignIn.getLastSignedInAccount(this))
+                .submitScore(getString(R.string.leaderboard_id),
+                score);
+        SpaceRace.messageManager.sendToAllReliably(
+                new EndMessageBuilder()
+                .setType(EndMatchReceiver.ACK_END_MATCH)
+                .setScore(score)
+                .build()
+        );
+    }
+
+    @Override
+    public void receiveAckEndMatch(String message) {
+        //TODO add check which player won
+        Log.d("END_MATCH",
+                "your opponent score:" +
+                        EndMessageBuilder.decodeScore(message));
+    }
+
+    private static class EndMessageBuilder {
+        private String messageType;
+        private int score;
+
+        private static int decodeScore(String message) {
+            int s = -1;
+
+            JSONObject jsonMessage;
+            try {
+                jsonMessage = new JSONObject(message);
+                s = jsonMessage.getInt("score");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return s;
+        }
+
+        private EndMessageBuilder setType(String messageType) {
+            this.messageType = messageType;
+            return this;
+        }
+
+        private EndMessageBuilder setScore(int score) {
+            this.score = score;
+            return this;
+        }
+
+        public String build() {
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("type", messageType).put("score", score);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return obj.toString();
+        }
     }
 }

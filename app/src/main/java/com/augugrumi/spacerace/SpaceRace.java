@@ -9,11 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.augugrumi.spacerace.listener.AckReceiver;
+import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.utility.LanguageManager;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -46,14 +45,6 @@ public class SpaceRace extends Application {
 
         instance = this;
 
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // [END configure_signin]
-
         gAPIClient = new GoogleApiClient.Builder(instance)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -82,6 +73,7 @@ public class SpaceRace extends Application {
                 .build();
 
         LanguageManager.languageManagement(this);
+
     }
 
     public static Context getAppContext() {
@@ -102,7 +94,7 @@ public class SpaceRace extends Application {
         private RealTimeMultiplayerClient mRealTimeMultiplayerClient = null;
         private HashSet<Integer> pendingMessageSet = new HashSet<>();
         private PathReceiver pathReceiver;
-        private AckReceiver ackReceiver;
+        private EndMatchReceiver endMatchReceiver;
 
         private MessageManager(){}
 
@@ -147,9 +139,15 @@ public class SpaceRace extends Application {
             byte[] message = realTimeMessage.getMessageData();
             Log.d("MEXX", "Received:" + new String(message));
             String messageString = new String(message);
-            if (messageString.equals(AckReceiver.ACK)) {
-                if (ackReceiver!=null)
-                    ackReceiver.receiveAck();
+            if (messageString.contains(PathReceiver.ACK_PATH)) {
+                if (pathReceiver!=null)
+                    pathReceiver.receiveAck();
+            } else if(messageString.contains(EndMatchReceiver.END_MATCH)){
+                if (endMatchReceiver != null)
+                    endMatchReceiver.receiveEndMatch(messageString);
+            } else if(messageString.contains(EndMatchReceiver.ACK_END_MATCH)){
+                if (endMatchReceiver != null)
+                    endMatchReceiver.receiveAckEndMatch(messageString);
             } else {
                 if (pathReceiver != null)
                     pathReceiver.receivePath(new String(message));
@@ -164,12 +162,12 @@ public class SpaceRace extends Application {
             }
         }
 
-        public void registerForReceivePaths(PathReceiver pathReceiver) {
+        public void registerPathReceiver(PathReceiver pathReceiver) {
             this.pathReceiver = pathReceiver;
         }
 
-        public void registerForReceiveAck(AckReceiver ackReceiver) {
-            this.ackReceiver = ackReceiver;
+        public void registerForReceiveEndMatch(EndMatchReceiver endMatchReceiver) {
+            this.endMatchReceiver = endMatchReceiver;
         }
     }
 }
