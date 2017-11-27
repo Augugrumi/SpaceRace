@@ -453,6 +453,9 @@
     <string name="permission_granted_alert_title">Error permission not granted</string>
     <string name="permission_granted_alert_summary">Application could not work without accessing the GPS position</string>
 
+    <!--alert dialog problem with signin-->
+    <string name="error_during_signin">Error during sign in</string>
+
     <string name="loading">Loading…</string>
     <string name="loading_tip_1">Do you know? Every time you answer correctly to a question, you gain one point. Get it right!</string>
     <string name="loading_action_1">Waiting for planets to be fully aligned…</string>

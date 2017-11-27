@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.augugrumi.spacerace.listener.NetworkChangeListener;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -55,7 +56,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        NetworkChangeListener {
     // Request codes for the UIs that we show with startActivityForResult:
     private final static int RC_SELECT_PLAYERS = 10000;
     private final static int RC_INVITATION_INBOX = 10001;
@@ -132,9 +134,6 @@ public class MainActivity extends AppCompatActivity implements
     // Set to false to require the user to click the button in order to sign in.
     private boolean mAutoStartSignInFlow = true;
 
-
-    private ProgressDialog mProgressDialog;
-
     // Client used to sign in with Google APIs
     private GoogleSignInClient mGoogleSignInClient = null;
 
@@ -165,22 +164,13 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-        hideProgressDialog();
-
-        /*if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
-            Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
-        }
-
-        // start the sign-in flow
-        Log.d("SIGNIN", "Sign-in button clicked");
-        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);*/
-
         if (!BaseGameUtils.verifySampleSetup(this, R.string.app_id)) {
             Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
         }
         Log.d("SIGNIN", "Sign-in silently");
         signInSilently();
-        //requestPermissionsNeeded();
+
+
     }
 
     @Override
@@ -310,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements
                             onConnected(task.getResult());
                         } else {
                             Log.d("SIGNIN", "signInSilently(): failure", task.getException());
+
                             onDisconnected();
                         }
                     }
@@ -344,52 +335,54 @@ public class MainActivity extends AppCompatActivity implements
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        if (requestCode == RC_SIGN_IN) {
+        switch (requestCode) {
+            case RC_SIGN_IN:
+                Task<GoogleSignInAccount> task =
+                        GoogleSignIn.getSignedInAccountFromIntent(intent);
 
-            Task<GoogleSignInAccount> task =
-                    GoogleSignIn.getSignedInAccountFromIntent(intent);
+                try {
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    onConnected(account);
+                } catch (ApiException apiException) {
+                    String message = apiException.getMessage();
+                    message = getString(R.string.signin_other_error) + " " + "(" + message + ")";
 
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                onConnected(account);
-            } catch (ApiException apiException) {
-                String message = apiException.getMessage();
-                if (message == null || message.isEmpty()) {
-                    message = getString(R.string.signin_other_error);
+                    onDisconnected();
+
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.error_during_signin)
+                            .setMessage(message + apiException.toString())
+                            .setNeutralButton(android.R.string.ok, null)
+                            .show();
                 }
+                break;
+            case RC_SELECT_PLAYERS:
+                // we got the result from the "select players" UI -- ready to create the room
+                handleSelectPlayersResult(resultCode, intent);
+                break;
+            case RC_INVITATION_INBOX:
+                // we got the result from the "select invitation" UI (invitation inbox). We're
+                // ready to accept the selected invitation:
+                handleInvitationInboxResult(resultCode, intent);
+                break;
+            case RC_WAITING_ROOM:
+                // we got the result from the "waiting room" UI.
+                if (resultCode == Activity.RESULT_OK) {
+                    // ready to start playing
+                    Log.d("ROOM", "Starting game (waiting room returned OK).");
+                    startGame();
+                } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
+                    // player indicated that they want to leave the room
 
-                onDisconnected();
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    // Dialog was cancelled (user pressed back key, for instance). In our game,
+                    // this means leaving the room too. In more elaborate games, this could mean
+                    // something else (like minimizing the waiting room UI).
 
-                new AlertDialog.Builder(this)
-                        .setMessage(message + apiException.toString())
-                        .setNeutralButton(android.R.string.ok, null)
-                        .show();
-            }
-        } else if (requestCode == RC_SELECT_PLAYERS) {
-            // we got the result from the "select players" UI -- ready to create the room
-            handleSelectPlayersResult(resultCode, intent);
-
-        } else if (requestCode == RC_INVITATION_INBOX) {
-            // we got the result from the "select invitation" UI (invitation inbox). We're
-            // ready to accept the selected invitation:
-            handleInvitationInboxResult(resultCode, intent);
-
-        } else if (requestCode == RC_WAITING_ROOM) {
-            // we got the result from the "waiting room" UI.
-            if (resultCode == Activity.RESULT_OK) {
-                // ready to start playing
-                Log.d("ROOM", "Starting game (waiting room returned OK).");
-                startGame();
-            } else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-                // player indicated that they want to leave the room
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                // Dialog was cancelled (user pressed back key, for instance). In our game,
-                // this means leaving the room too. In more elaborate games, this could mean
-                // something else (like minimizing the waiting room UI).
-
-            }
+                }
+                break;
         }
+
         super.onActivityResult(requestCode, resultCode, intent);
 
     }
@@ -442,12 +435,6 @@ public class MainActivity extends AppCompatActivity implements
         // accept invitation
         if (invitation != null) {
             acceptInviteToRoom(invitation.getInvitationId());
-        }
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
         }
     }
 
@@ -537,6 +524,12 @@ public class MainActivity extends AppCompatActivity implements
     public void onClickSeeMap(View view) {
         Intent i = new Intent(MainActivity.this, SinglePlayerActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onNetworkAvailable() {
+        if (mSignedInAccount == null)
+            signInSilently();
     }
 
     private class RoomUpdateCallbackImpl extends RoomUpdateCallback {
