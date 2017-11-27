@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.augugrumi.spacerace.MapActivity"
-    android:id="@+id/hint_cont">
+    android:id="@+id/hint_cont"
+    android:background="@color/mainBg">
 
     <include layout="@layout/content_map" />
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.augugrumi.spacerace.pathCreator.PathCreator;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 public class SinglePlayerActivity extends MapActivity {
