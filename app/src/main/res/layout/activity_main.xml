@@ -66,7 +66,7 @@
         android:layout_marginStart="8dp"
         android:padding="@dimen/main_buttons_padding"
         android:text="@string/new_match"
-        android:clickable="false"
+        
         app:layout_constraintBottom_toTopOf="@+id/join"
         app:layout_constraintEnd_toStartOf="@+id/credits"
         app:layout_constraintStart_toEndOf="@+id/main_settings"
@@ -84,7 +84,6 @@
         android:layout_marginStart="8dp"
         android:padding="@dimen/main_buttons_padding"
         android:text="@string/join_existing_match"
-        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/credits"
         app:layout_constraintHorizontal_bias="0.527"
@@ -103,7 +102,7 @@
         android:layout_marginTop="16dp"
         android:padding="@dimen/main_buttons_padding"
         android:text="@string/single_player_button"
-        android:clickable="false"
+        
         app:layout_constraintEnd_toStartOf="@+id/credits"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toEndOf="@+id/main_settings"
@@ -260,7 +259,7 @@
                     android:paddingStart="25dp"
                     android:text="@string/accept_popup_invite"
                     android:textAllCaps="true"
-                    android:clickable="false"
+                    
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

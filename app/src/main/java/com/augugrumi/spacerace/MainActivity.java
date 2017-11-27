@@ -1,14 +1,12 @@
 package com.augugrumi.spacerace;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -45,7 +42,6 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateCallback;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @BindView(R.id.invitation_popup) ViewGroup invitationPopUp;
     @BindView(R.id.incoming_invitation_text) TextView incomingInvitationText;
+
+    private AlertDialog noPermissionDialog;
 
     private boolean invitationPopupIsShowing;
 
@@ -149,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
+        disablePalyButtons();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 
@@ -751,15 +750,28 @@ public class MainActivity extends AppCompatActivity implements
 
                     enablePlayButtons();
 
+                    if (noPermissionDialog != null) {
+                        noPermissionDialog.hide();
+                        noPermissionDialog.dismiss();
+                    }
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    //TODO show pop up explaining that the application could not work
+                    noPermissionDialog = new AlertDialog.Builder(this,
+                                    android.R.style.Theme_Material_Dialog_Alert)
+                            .setTitle(R.string.permission_granted_alert_title)
+                            .setMessage(R.string.permission_granted_alert_summary)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .create();
+                    noPermissionDialog.show();
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -769,7 +781,13 @@ public class MainActivity extends AppCompatActivity implements
 
     private void enablePlayButtons() {
         for (int i : toEnable) {
-            findViewById(i).setClickable(true);
+            findViewById(i).setEnabled(true);
+        }
+    }
+
+    private void disablePalyButtons() {
+        for (int i : toEnable) {
+            findViewById(i).setEnabled(false);
         }
     }
 
@@ -778,12 +796,6 @@ public class MainActivity extends AppCompatActivity implements
                 Manifest.permission.ACCESS_FINE_LOCATION
         };
 
-        final List<String> permissionsToRequest = new ArrayList<>();
         ActivityCompat.requestPermissions(this, permissions, RC_PERMISSION_GRANTED);
-
-
-        if (permissionsToRequest.isEmpty()) {
-            enablePlayButtons();
-        }
     }
 }
