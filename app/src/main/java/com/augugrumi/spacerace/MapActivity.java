@@ -616,8 +616,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void popPoi () {
-
-         poi = path.pop().getEnd();
+        poi = path.pop().getEnd();
+        hf.setPOI(poi);
     }
 
     private boolean hintShown = false;
@@ -657,7 +657,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             Log.d("POI", poi.toString());
             hf.setPOI(poi);
 
-            if (!path.isEmpty())
+            if (path != null && !path.isEmpty())
                 popPoi();
 
             hintShown = true;

@@ -105,7 +105,8 @@ public class HintFragment extends Fragment {
         layouts.add(nextHintView);
         showView(explanationView);
 
-        totalScoreBuilder = new ScoreCounter.Builder();
+        if (totalScoreBuilder == null)
+            totalScoreBuilder = new ScoreCounter.Builder();
 
         return mainView;
     }
@@ -228,11 +229,6 @@ public class HintFragment extends Fragment {
 
         scoreText.setText(builder.build().getScore()+"/3");
 
-        SharedPreferences.Editor e = sharedPref.edit();
-
-        e.putInt("score", builder.build().getScore());
-        e.apply();
-
         showView(quizResultView);
     }
 
@@ -263,10 +259,14 @@ public class HintFragment extends Fragment {
     private ScoreCounter.Builder builder;
 
     public void setPOI(LatLng poi) {
+        Log.d("SET_POI", poi.toString());
         this.poi = poi;
 
         builder = new ScoreCounter.Builder()
                 .appendPOIQuestions(poi);
+
+        if (totalScoreBuilder == null)
+            totalScoreBuilder = new ScoreCounter.Builder();
         totalScoreBuilder.appendPOIQuestions(poi);
     }
 
