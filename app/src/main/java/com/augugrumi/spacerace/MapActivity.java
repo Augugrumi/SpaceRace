@@ -180,6 +180,14 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .add(R.id.hint_cont, lsf)
+                .show(lsf)
+                .commit();
+
+
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
 
@@ -206,12 +214,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
         hf = new HintFragment();
 
-        getSupportFragmentManager().
-                beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .hide(mapFragment)
-                .add(R.id.hint_cont, lsf)
-                .commit();
+
     }
 
     /**
