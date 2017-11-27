@@ -474,11 +474,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
 
 
-        /*if (checkPermissions()) {
+        if (checkPermissions()) {
             startLocationUpdates();
         } else {
             requestPermissions();
-        }*/
+        }
         if (!isLocationEnabled && mLocationPermissionGranted && map != null) {
             if (mCurrentLocation != null) {
                 marker.setVisible(true);
@@ -656,7 +656,9 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             Log.d("POI", poi.toString());
             hf.setPOI(poi);
 
-            popPoi();
+            if (!path.isEmpty())
+                popPoi();
+
             hintShown = true;
         }
     }
