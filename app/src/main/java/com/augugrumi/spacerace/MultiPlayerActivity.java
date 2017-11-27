@@ -29,8 +29,10 @@ public class MultiPlayerActivity extends MapActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         hasToCreatePath = getIntent().getBooleanExtra(MainActivity.CREATOR_INTENT_EXTRA, false);
         Log.d("MEXX", "has to create:" + hasToCreatePath);
+
         SpaceRace.messageManager.registerForReceiveEndMatch(this);
         SpaceRace.messageManager.registerPathReceiver(this);
     }
@@ -95,6 +97,7 @@ public class MultiPlayerActivity extends MapActivity
                 Log.d("MEXX", "decoded:" + path.toString());
                 drawPath();
                 sendAck();
+                hideLoadingScreen();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -104,6 +107,8 @@ public class MultiPlayerActivity extends MapActivity
     @Override
     public void receiveAck() {
         Log.d("ACK_RECEIVED", "ack");
+
+        hideLoadingScreen();
     }
 
     @Override

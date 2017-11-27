@@ -44,14 +44,6 @@ public class SpaceRace extends Application {
 
         instance = this;
 
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // [END configure_signin]
-
         gAPIClient = new GoogleApiClient.Builder(instance)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -79,7 +71,7 @@ public class SpaceRace extends Application {
                 //.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        Configuration config = getBaseContext().getResources().getConfiguration();
+        /*Configuration config = getBaseContext().getResources().getConfiguration();
 
         String lang = SharedPreferencesManager.getLanguagePreference();
         String systemLocale = getSystemLocale(config).getLanguage();
@@ -88,7 +80,7 @@ public class SpaceRace extends Application {
             Locale.setDefault(locale);
             setSystemLocale(config, locale);
             updateConfiguration(config);
-        }
+        }*/
 
     }
 
@@ -102,7 +94,7 @@ public class SpaceRace extends Application {
 
     private Locale locale;
 
-    @Override
+    /*@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (locale != null) {
@@ -133,7 +125,7 @@ public class SpaceRace extends Application {
     @SuppressWarnings("deprecation")
     private void updateConfiguration(Configuration config) {
         getBaseContext().createConfigurationContext(config);
-    }
+    }*/
 
 
     public static MessageManager messageManager = new MessageManager();

@@ -26,6 +26,7 @@ import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.pathCreator.PathManager;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.LoadingScreenFragment;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
 import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
@@ -167,15 +168,26 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
     protected Deque<PathCreator.DistanceFrom> path;
     private PathDrawer drawer;
+    private LoadingScreenFragment lsf;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        lsf = new LoadingScreenFragment();
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .add(R.id.hint_cont, lsf)
+                .show(lsf)
+                .commit();
+
 
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
@@ -202,6 +214,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         }
 
         hf = new HintFragment();
+
+
     }
 
     /**
@@ -757,5 +771,21 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
     public ScoreCounter getTotalScore() {
         return hf.getTotalScore();
+    }
+
+    protected void hideLoadingScreen() {
+
+        Log.d("LOADING_SCREEN", "Stopping loading screen");
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .hide(lsf)
+                .show(mapFragment)
+                .commit();
+
+        Log.d("LOADING_SCREEN", "Loading screen stopped");
     }
 }

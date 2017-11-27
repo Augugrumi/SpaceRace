@@ -385,4 +385,19 @@
 
     <string name="single_player_button">Esplora Padova da solo</string>
 
+    <!--alert dialog permission not granted-->
+    <string name="permission_granted_alert_title">Errore permessi non dati</string>
+    <string name="permission_granted_alert_summary">L\'applicazione non può funzionare senza l\'accesso alla tua posizione</string>
+
+    <!--alert dialog problem with signin-->
+    <string name="error_during_signin">Errore durante l\'accesso</string>
+
+    <string name="loading">Caricamento…</string>
+    <string name="loading_tip_1">Lo sapevi? Ogni volta che rispondi correttamente a una domanda, guadagni un punto. Non sbagliare!</string>
+    <string name="loading_action_1">Aspettando l\'allineamento dei pianeti…</string>
+    <string name="slide4Subtitle">Space Race usa il GPS per tracciarti sulla mappa! Per favore permetti all\'applicazione i permessi per conoscere la tua posizione</string>
+    <string name="slide4Title">Permessi</string>
+    <string name="slide5Subtitle">Indossa la tuta spaziale, chiudi il casco e esplora Padova!</string>
+    <string name="slide5Title">Pronto per partire?</string>
+
 </resources>

@@ -11,6 +11,12 @@
 
     <string name="slide3Title">Challenge your friends!</string>
 
+    <string name="slide4Title">Permissions</string>
+    <string name="slide4Subtitle">Space Race uses GPS to track you on the map! Please give to the application the permission to know your location</string>
+
+    <string name="slide5Title">Are you ready to kick off?</string>
+    <string name="slide5Subtitle">Put your spacesuit, close your helmet and explore Padova!</string>
+
 
     <string name="title_activity_room">RoomActivity</string>
 
@@ -442,5 +448,16 @@
     <string name="decline_popup_button">Not now</string>
 
     <string name="single_player_button">Explore Padova alone</string>
+
+    <!--alert dialog permission not granted-->
+    <string name="permission_granted_alert_title">Error permission not granted</string>
+    <string name="permission_granted_alert_summary">Application could not work without accessing the GPS position</string>
+
+    <!--alert dialog problem with signin-->
+    <string name="error_during_signin">Error during sign in</string>
+
+    <string name="loading">Loading…</string>
+    <string name="loading_tip_1">Do you know? Every time you answer correctly to a question, you gain one point. Get it right!</string>
+    <string name="loading_action_1">Waiting for planets to be fully aligned…</string>
 
 </resources>

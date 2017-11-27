@@ -1,5 +1,6 @@
 package com.augugrumi.spacerace.intro;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,12 +33,25 @@ public class IntroActivity extends AppIntro {
         sliderPage3.setImageDrawable(R.drawable.crossedswords);
         sliderPage3.setBgColor(getResources().getColor(R.color.slide3Bg));
 
+        SliderPage sliderPage4 = new SliderPage();
+        sliderPage4.setTitle(getResources().getString(R.string.slide4Title));
+        sliderPage4.setDescription(getResources().getString(R.string.slide4Subtitle));
+        sliderPage4.setImageDrawable(R.drawable.shield_permissions);
+        sliderPage4.setBgColor(getResources().getColor(R.color.slide4Bg));
+
+        SliderPage sliderPage5 = new SliderPage();
+        sliderPage5.setTitle(getResources().getString(R.string.slide5Title));
+        sliderPage5.setDescription(getResources().getString(R.string.slide5Subtitle));
+        sliderPage5.setImageDrawable(R.drawable.astronaut);
+        sliderPage5.setBgColor(getResources().getColor(R.color.mainBg));
 
 
         // Including slides...
         addSlide(new SlideOneFragment());
         addSlide(AppIntroFragment.newInstance(sliderPage2));
         addSlide(AppIntroFragment.newInstance(sliderPage3));
+        addSlide(AppIntroFragment.newInstance(sliderPage4));
+        addSlide(AppIntroFragment.newInstance(sliderPage5));
 
         // Slider configuration
         showSeparator(false);
@@ -46,6 +60,9 @@ public class IntroActivity extends AppIntro {
         showStatusBar(false);
         setVibrate(false);
         setDepthAnimation();
+
+        // Permissions
+        askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 4);
 
     }
 
