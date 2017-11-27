@@ -2,7 +2,6 @@ package com.augugrumi.spacerace;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.augugrumi.spacerace.listener.NetworkChangeListener;
+import com.augugrumi.spacerace.utility.NetworkingUtility;
 import com.augugrumi.spacerace.utility.gameutility.BaseGameUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onInvitationRemoved(@NonNull String invitationId) {
 
-            if (mIncomingInvitationId.equals(invitationId) && mIncomingInvitationId != null) {
+            if (mIncomingInvitationId != null && mIncomingInvitationId.equals(invitationId)) {
                 mIncomingInvitationId = null;
                 showPopUpNotification(false, ""); // This will hide the invitation popup
             }
@@ -146,7 +146,8 @@ public class MainActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        disablePalyButtons();
+        NetworkingUtility.registerListener(this);
+        disablePlayButtons();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 
@@ -168,9 +169,16 @@ public class MainActivity extends AppCompatActivity implements
             Log.w("SIGNIN", "*** Warning: setup problems detected. Sign in may not work!");
         }
         Log.d("SIGNIN", "Sign-in silently");
+
+        if (!NetworkingUtility.isNetworkAvailable() ||
+                GoogleSignIn.getLastSignedInAccount(SpaceRace.getAppContext()) == null ||
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)!=
+                        PackageManager.PERMISSION_GRANTED)
+            disablePlayButtons();
+
+
         signInSilently();
-
-
     }
 
     @Override
@@ -270,6 +278,8 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 })
                 .addOnFailureListener(createFailureListener("There was a problem getting the activation hint!"));
+
+        enablePlayButtons();
     }
 
     private OnFailureListener createFailureListener(final String string) {
@@ -298,6 +308,7 @@ public class MainActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             Log.d("SIGNIN", "signInSilently(): success");
                             onConnected(task.getResult());
+                            enablePlayButtons();
                         } else {
                             Log.d("SIGNIN", "signInSilently(): failure", task.getException());
 
@@ -528,8 +539,22 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onNetworkAvailable() {
-        if (mSignedInAccount == null)
-            signInSilently();
+        Log.d("NETWORKINGUTILITY", "onNetworkAvailable");
+
+        if (NetworkingUtility.isNetworkAvailable()) {
+            if (mSignedInAccount == null) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
+                    }
+                });
+            }
+            enablePlayButtons();
+        } else {
+            disablePlayButtons();
+        }
+
     }
 
     private class RoomUpdateCallbackImpl extends RoomUpdateCallback {
@@ -773,12 +798,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void enablePlayButtons() {
-        for (int i : toEnable) {
-            findViewById(i).setEnabled(true);
+        if (NetworkingUtility.isNetworkAvailable() &&
+            ActivityCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            mSignedInAccount != null) {
+            for (int i : toEnable) {
+                findViewById(i).setEnabled(true);
+
+            }
         }
     }
 
-    private void disablePalyButtons() {
+    private void disablePlayButtons() {
         for (int i : toEnable) {
             findViewById(i).setEnabled(false);
         }

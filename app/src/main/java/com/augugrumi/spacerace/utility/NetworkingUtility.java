@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.augugrumi.spacerace.SpaceRace;
 import com.augugrumi.spacerace.listener.NetworkChangeListener;
@@ -42,10 +43,9 @@ public class NetworkingUtility extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        boolean oldConnectionAvailable = connectivityAvailable;
         connectivityAvailable = connectivityCheck();
 
-        if (!oldConnectionAvailable && connectivityAvailable)
-            listener.onNetworkAvailable();
+        Log.d("NETWORKINGUTILITY", "NETWORKINGUTILITY " + connectivityAvailable);
+        listener.onNetworkAvailable();
     }
 }
