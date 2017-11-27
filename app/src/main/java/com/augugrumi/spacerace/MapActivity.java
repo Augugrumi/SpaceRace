@@ -27,6 +27,7 @@ import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.pathCreator.PathManager;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
@@ -615,8 +616,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void popPoi () {
-
-         poi = path.pop().getEnd();
+        poi = path.pop().getEnd();
+        hf.setPOI(poi);
     }
 
     private boolean hintShown = false;
@@ -656,7 +657,9 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             Log.d("POI", poi.toString());
             hf.setPOI(poi);
 
-            popPoi();
+            if (path != null && !path.isEmpty())
+                popPoi();
+
             hintShown = true;
         }
     }
@@ -750,5 +753,9 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             drawer.drawNext();
             popPoi();
         }
+    }
+
+    public ScoreCounter getTotalScore() {
+        return hf.getTotalScore();
     }
 }

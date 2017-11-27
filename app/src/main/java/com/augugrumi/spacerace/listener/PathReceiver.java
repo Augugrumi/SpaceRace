@@ -7,5 +7,8 @@ package com.augugrumi.spacerace.listener;
  */
 
 public interface PathReceiver {
+    String ACK_PATH = "ack_path_received-" + PathReceiver.class.toString();
+
     void receivePath(String s);
+    void receiveAck();
 }

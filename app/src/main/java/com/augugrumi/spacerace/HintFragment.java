@@ -83,6 +83,8 @@ public class HintFragment extends Fragment {
     SharedPreferences sharedPref;
     private LatLng poi;
 
+    private ScoreCounter.Builder totalScoreBuilder;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,13 +105,8 @@ public class HintFragment extends Fragment {
         layouts.add(nextHintView);
         showView(explanationView);
 
-        sharedPref = getActivity().getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor e = sharedPref.edit();
-        e.remove("score");
-        e.putInt("score",0);
-        e.apply();
+        if (totalScoreBuilder == null)
+            totalScoreBuilder = new ScoreCounter.Builder();
 
         return mainView;
     }
@@ -162,6 +159,7 @@ public class HintFragment extends Fragment {
         }
 
         builder.appendAnswer(poi, 1, givenAnswer);
+        totalScoreBuilder.appendAnswer(poi, 1, givenAnswer);
 
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
@@ -194,6 +192,7 @@ public class HintFragment extends Fragment {
         }
 
         builder.appendAnswer(poi, 2, givenAnswer);
+        totalScoreBuilder.appendAnswer(poi, 2, givenAnswer);
 
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
@@ -226,13 +225,9 @@ public class HintFragment extends Fragment {
         }
 
         builder.appendAnswer(poi, 3, givenAnswer);
+        totalScoreBuilder.appendAnswer(poi, 3, givenAnswer);
 
         scoreText.setText(builder.build().getScore()+"/3");
-
-        SharedPreferences.Editor e = sharedPref.edit();
-
-        e.putInt("score", builder.build().getScore());
-        e.apply();
 
         showView(quizResultView);
     }
@@ -264,10 +259,18 @@ public class HintFragment extends Fragment {
     private ScoreCounter.Builder builder;
 
     public void setPOI(LatLng poi) {
+        Log.d("SET_POI", poi.toString());
         this.poi = poi;
 
         builder = new ScoreCounter.Builder()
                 .appendPOIQuestions(poi);
+
+        if (totalScoreBuilder == null)
+            totalScoreBuilder = new ScoreCounter.Builder();
+        totalScoreBuilder.appendPOIQuestions(poi);
     }
 
+    public ScoreCounter getTotalScore() {
+        return totalScoreBuilder.build();
+    }
 }
