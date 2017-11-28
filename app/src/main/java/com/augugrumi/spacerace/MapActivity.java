@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.augugrumi.spacerace.pathCreator.PathCreator;
@@ -211,7 +212,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
         hf = new HintFragment();
 
-
+        keepScreenOn();
     }
 
     /**
@@ -680,16 +681,13 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         this, SharedPreferencesManager.getMapStyle()));
+        map.setMinZoomPreference(8.0f);
     }
 
     private void showCurrentPlace() {
-        Log.e("POSIZ_MOV", "7");
-        if (map == null) {
+        if (map == null || !mLocationPermissionGranted) {
             return;
         }
-
-        if (!mLocationPermissionGranted)
-            return;
 
         @SuppressLint("MissingPermission") Task locationResult =
                 mFusedLocationClient.getLastLocation();
@@ -697,9 +695,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()) {
-
-                    Log.e("POSIZ_MOV", "1");
-
                     // Set the map's camera position to the current location of the device.
                     mCurrentLocation = (Location) task.getResult();
                     PieceShape markerPic = new PieceSquareShape(PIECE_SIZE);
@@ -783,5 +778,9 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 .commit();
 
         Log.d("LOADING_SCREEN", "Loading screen stopped");
+    }
+
+    void keepScreenOn() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 }
