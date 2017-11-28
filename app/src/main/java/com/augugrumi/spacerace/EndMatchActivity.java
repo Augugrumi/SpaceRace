@@ -26,6 +26,7 @@ public class EndMatchActivity extends AppCompatActivity {
         endMatch.addEmoji(R.drawable.endmatch_confetti_ball);
         endMatch.addEmoji(R.drawable.endmatch_wind_chime);
         endMatch.addEmoji(R.drawable.endmatch_balloon);
+        endMatch.addEmoji(R.drawable.endmatch_trophy);
     }
 
     @OnClick(R.id.rain_test)
