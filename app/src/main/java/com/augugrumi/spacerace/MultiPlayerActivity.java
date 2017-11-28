@@ -131,13 +131,6 @@ public class MultiPlayerActivity extends MapActivity
         }
     }
 
-    private void launchEndMatchActivity() {
-
-        Intent intent = new Intent(this, EndMatchActivity.class);
-
-        startActivity(intent);
-    }
-
     @Override
     public void receiveEndMatch(String message) {
         //TODO add check which player won

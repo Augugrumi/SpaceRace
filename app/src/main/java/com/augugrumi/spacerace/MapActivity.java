@@ -783,4 +783,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     void keepScreenOn() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
+    void launchEndMatchActivity() {
+
+        Intent intent = new Intent(this, EndMatchActivity.class);
+
+        startActivity(intent);
+    }
 }

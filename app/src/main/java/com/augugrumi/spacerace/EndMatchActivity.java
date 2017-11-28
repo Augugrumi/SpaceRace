@@ -22,7 +22,10 @@ public class EndMatchActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        endMatch.addEmoji(R.drawable.astronaut);
+        endMatch.addEmoji(R.drawable.endmatch_party_popper);
+        endMatch.addEmoji(R.drawable.endmatch_confetti_ball);
+        endMatch.addEmoji(R.drawable.endmatch_wind_chime);
+        endMatch.addEmoji(R.drawable.endmatch_balloon);
     }
 
     @OnClick(R.id.rain_test)
