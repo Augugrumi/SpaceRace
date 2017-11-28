@@ -25,7 +25,7 @@ public class PathDrawer {
     private BitmapDescriptor firstNodeIcon;
     private BitmapDescriptor middleNodeIcon;
     private BitmapDescriptor lastNodeIcon;
-    private int position = 0;
+    private PathCreator.DistanceFrom last;
 
     private boolean isFirstPop;
 
@@ -37,6 +37,7 @@ public class PathDrawer {
 
         this.map = map;
         this.path = path;
+        last = path.getFirst();
         this.firstNodeIcon = firstNodeIcon;
         this.middleNodeIcon = middleNodeIcon;
         this.lastNodeIcon = lastNodeIcon;
@@ -59,16 +60,17 @@ public class PathDrawer {
             isFirstPop = false;
         } else {
 
-            options.position(path.getFirst().getEnd());
             if (path.size() == 0) {
-
+                options.position(last.getEnd());
                 options.icon(lastNodeIcon);
             } else {
-
+                options.position(path.getFirst().getEnd());
                 options.icon(middleNodeIcon);
             }
         }
-        position++;
+
+        if (path.size() > 0)
+            last = path.getFirst();
 
         return map.addMarker(options);
     }
