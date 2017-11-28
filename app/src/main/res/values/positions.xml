@@ -99,4 +99,11 @@
         <item>45.349346</item>
         <item>11.864451</item>
     </string-array>
+    
+    <string-array name="position_21_la_specola">
+        <item>45.401494</item>
+        <item>11.868317</item>
+    </string-array>
+    
+    
 </resources>
