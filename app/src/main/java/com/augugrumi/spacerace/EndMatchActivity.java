@@ -32,8 +32,8 @@ public class EndMatchActivity extends AppCompatActivity {
         endMatch.addEmoji(R.drawable.endmatch_balloon);
         endMatch.addEmoji(R.drawable.endmatch_trophy);
 
-        endMatch.setPer(10);
-        endMatch.setDuration(5000);
+        //endMatch.setPer(10);
+        endMatch.setDuration(2000);
         endMatch.setDropFrequency(250);
     }
 

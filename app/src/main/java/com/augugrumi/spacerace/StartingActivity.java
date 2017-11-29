@@ -25,7 +25,7 @@ public class StartingActivity extends AppCompatActivity {
 
         Intent intent;
 
-        if (!SharedPreferencesManager.getFirstApplicationRun()) {
+        /*if (!SharedPreferencesManager.getFirstApplicationRun()) {
 
             Log.d("INTRO", "First run detected, launching sliders...");
             SharedPreferencesManager.setFirstApplicationRun(true);
@@ -33,10 +33,12 @@ public class StartingActivity extends AppCompatActivity {
             intent = new Intent(this, IntroActivity.class);
         } else {
             intent = new Intent(this, MainActivity.class);
-        }
+        }*/
 
-        Log.d("QAM", QuestionAnswerManager.
-                getQuestions(new LatLng(45.4085729, 11.875285)).toString());
+        //Log.d("QAM", QuestionAnswerManager.
+        //        getQuestions(new LatLng(45.4085729, 11.875285)).toString());
+
+        intent = new Intent(this, EndMatchActivity.class);
 
         try {
             Thread.sleep(2000);
