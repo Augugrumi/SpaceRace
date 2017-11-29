@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/next_hint_layout"
+    android:id="@+id/next_hint_image_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="30dp"
@@ -26,19 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/place_holder" />
-
-    <TextView
-        android:layout_width = "match_parent"
-        android:layout_height = "fill_parent"
-        android:layout_weight = "1"
-        android:textSize="18sp"
-        android:id="@+id/next_hint_text"
-        android:textColor="@android:color/secondary_text_dark_nodisable"
-        android:text="@string/lorem_ipsum"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="insideOverlay"
-        android:fadeScrollbars="true"
-        android:fadingEdge="vertical"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
