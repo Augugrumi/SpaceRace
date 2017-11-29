@@ -1,5 +1,6 @@
 package com.augugrumi.spacerace;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import com.luolc.emojirain.EmojiRainLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class EndMatchActivity extends AppCompatActivity {
 
@@ -89,5 +91,10 @@ public class EndMatchActivity extends AppCompatActivity {
             }
         }.execute(null, null, null);
         endMatch.startDropping();
+    }
+
+    @OnClick(R.id.go_to_the_home)
+    public void onClickGoToHome(View view) {
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
