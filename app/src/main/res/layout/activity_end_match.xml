@@ -6,15 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/end_match_activity"
-    android:background="@color/mainBg">
+    android:background="@color/end_match_bg">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/end_match_costraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/mainBg"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/bg_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/end_match_bg" />
 
         <TextView
             android:id="@+id/end_string"
