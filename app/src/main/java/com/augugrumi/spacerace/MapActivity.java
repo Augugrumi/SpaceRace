@@ -64,6 +64,12 @@ import java.util.Deque;
 public abstract class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
 
+    public static final String MY_SCORE = "my_score_intent";
+    public static final String OPPONENT_SCORE = "my_opponent_score_intent";
+
+    protected int myScore = -1;
+    protected int opponentScore = -1;
+
     private static final int PIECE_SIZE=95;
     private static final int piece = PiecePicker.pickRandomPieceResource();
 
@@ -799,5 +805,12 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
     void keepScreenOn() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    void launchEndMatchActivity() {
+        Intent intent = new Intent(this, EndMatchActivity.class);
+        intent.putExtra(MY_SCORE, myScore);
+        intent.putExtra(OPPONENT_SCORE, opponentScore);
+        startActivity(intent);
     }
 }

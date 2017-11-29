@@ -64,7 +64,11 @@ dependencies {
     compile 'com.flaviofaria:kenburnsview:1.0.7'
     compile 'com.daasuu:EasingInterpolator:1.0.0'
     compile 'com.android.support:percent:26.1.0'
+
+    // End match
+    compile 'com.luolc:emoji-rain:0.1.1'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

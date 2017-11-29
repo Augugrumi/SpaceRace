@@ -24,7 +24,8 @@ public class LoadingPhraseChooser {
     private static final int[] BACKGROUNDS = {
             R.drawable.loading_screen_pic_1,
             R.drawable.loading_screen_pic_2,
-            R.drawable.loading_screen_pic_3
+            R.drawable.loading_screen_pic_3,
+            R.drawable.loading_screen_pic_4
     };
 
     static String pickRandomTip () {

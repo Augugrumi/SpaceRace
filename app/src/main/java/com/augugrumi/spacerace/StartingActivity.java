@@ -35,9 +35,6 @@ public class StartingActivity extends AppCompatActivity {
             intent = new Intent(this, MainActivity.class);
         }
 
-        Log.d("QAM", QuestionAnswerManager.
-                getQuestions(new LatLng(45.4085729, 11.875285)).toString());
-
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

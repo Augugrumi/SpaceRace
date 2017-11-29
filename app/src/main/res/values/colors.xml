@@ -17,5 +17,6 @@
     <color name="slide4Bg">#00006c</color>
 
     <color name="mainBg">#181b22</color>
+    <color name="end_match_bg">#20162e</color>
 
 </resources>
