@@ -16,10 +16,6 @@ import butterknife.OnClick;
 
 public class EndMatchActivity extends AppCompatActivity {
 
-    private int myScore;
-    private int opponentScore;
-    private boolean win;
-
     @BindView(R.id.end_match_activity)
     EmojiRainLayout endMatch;
     @BindView(R.id.end_string)
@@ -48,10 +44,10 @@ public class EndMatchActivity extends AppCompatActivity {
         endMatch.setDuration(2000);
         endMatch.setDropFrequency(250);
 
-        myScore = getIntent().getIntExtra(MapActivity.MY_SCORE, -1);
-        opponentScore = getIntent().getIntExtra(MapActivity.OPPONENT_SCORE, -1);
+        int myScore = getIntent().getIntExtra(MapActivity.MY_SCORE, -1);
+        int opponentScore = getIntent().getIntExtra(MapActivity.OPPONENT_SCORE, -1);
 
-        win = myScore > opponentScore;
+        boolean win = myScore > opponentScore;
 
         myScoreText.setText("" + myScore);
 
@@ -78,9 +74,8 @@ public class EndMatchActivity extends AppCompatActivity {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                } finally {
-
                 }
+
                 return null;
             }
 
