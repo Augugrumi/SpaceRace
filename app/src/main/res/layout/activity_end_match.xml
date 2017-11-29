@@ -28,7 +28,7 @@
             android:layout_margin="100dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:text="@string/end_match_win"
             android:textAlignment="center"
             android:textAllCaps="false"
@@ -68,7 +68,8 @@
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -98,7 +99,8 @@
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
