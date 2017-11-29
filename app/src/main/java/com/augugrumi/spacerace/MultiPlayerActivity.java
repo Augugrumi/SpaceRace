@@ -115,13 +115,13 @@ public class MultiPlayerActivity extends MapActivity
     public void hideHintAndShowMap() {
         super.hideHintAndShowMap();
 
-        int score = getTotalScore().getScore();
+        myScore = getTotalScore().getScore();
 
         if (path.isEmpty()) {
             SpaceRace.messageManager.sendToAllReliably(
                     new EndMessageBuilder()
                             .setType(END_MATCH)
-                            .setScore(score)
+                            .setScore(myScore)
                             .build()
             );
             Games.getLeaderboardsClient(this,
@@ -134,20 +134,18 @@ public class MultiPlayerActivity extends MapActivity
     @Override
     public void receiveEndMatch(String message) {
         //TODO add check which player won
-        Log.d("END_MATCH",
-                "your opponent arrived to destination before you with score:" +
-                    EndMessageBuilder.decodeScore(message));
+        opponentScore = EndMessageBuilder.decodeScore(message);
 
-        int score = getTotalScore().getScore();
+        myScore = getTotalScore().getScore();
 
         Games.getLeaderboardsClient(this,
                 GoogleSignIn.getLastSignedInAccount(this))
                 .submitScore(getString(R.string.leaderboard_id),
-                score);
+                myScore);
         SpaceRace.messageManager.sendToAllReliably(
                 new EndMessageBuilder()
                 .setType(EndMatchReceiver.ACK_END_MATCH)
-                .setScore(score)
+                .setScore(myScore)
                 .build()
         );
 
@@ -157,10 +155,7 @@ public class MultiPlayerActivity extends MapActivity
     @Override
     public void receiveAckEndMatch(String message) {
         //TODO add check which player won
-        Log.d("END_MATCH",
-                "your opponent score:" +
-                        EndMessageBuilder.decodeScore(message));
-
+        opponentScore = EndMessageBuilder.decodeScore(message);
         launchEndMatchActivity();
     }
 
