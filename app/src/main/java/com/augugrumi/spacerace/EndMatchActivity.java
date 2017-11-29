@@ -1,5 +1,6 @@
 package com.augugrumi.spacerace;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -18,8 +19,6 @@ public class EndMatchActivity extends AppCompatActivity {
     @BindView(R.id.end_match_activity)
     EmojiRainLayout endMatch;
 
-    private boolean isAlreadyDropped = false;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,32 +32,33 @@ public class EndMatchActivity extends AppCompatActivity {
         endMatch.addEmoji(R.drawable.endmatch_balloon);
         endMatch.addEmoji(R.drawable.endmatch_trophy);
 
-	endMatch.setDuration(5000);
-	endMatch.setDropFrequency(250);
-
-	endMatch.stopDropping();
-
-	endMatch.setOnTouchListener(new View.OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View view, MotionEvent event) {
-
-		    if (!isAlreadyDropped) {
-
-			Log.d("DROPPING", "Emoji rain :D");
-			
-			isAlreadyDropped = true;
-			endMatch.startDropping();
-		    }		   
-		    
-		    return true;
-		}
-	    });
-
+        endMatch.setPer(10);
+        endMatch.setDuration(5000);
+        endMatch.setDropFrequency(250);
     }
 
-    @OnClick(R.id.rain_test)
-    public void onClick() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                endMatch.startDropping();
+            }
+        }.execute(null, null, null);
         endMatch.startDropping();
     }
 }
