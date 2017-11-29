@@ -71,7 +71,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     private LatLng poi = new LatLng(45.4108011, 11.8880358);
     /************************FORDEBUG**************************/
 
-    private static final double KM_DISTANCE_HINT = 0.50;
+    private static final double KM_DISTANCE_MARKER = 0.50;
+    private static final double KM_DISTANCE_HINT = 0.20;
 
     /**
      * Code used in requesting runtime permissions.
@@ -634,17 +635,32 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     private boolean hintShown = false;
     private void showHintIfNear() {
 
+        if (lsf != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .hide(lsf)
+                    .remove(lsf)
+                    .commitNow();
+            lsf = null;
+        }
+
         Log.i("FRAG_", "" + CoordinatesUtility.get2DDistanceInKm(
                 new LatLng(
                         mCurrentLocation.getLatitude(),
                         mCurrentLocation.getLongitude()
                 ),
                 poi));
+
+        LatLng currentLatLng = new LatLng(
+                mCurrentLocation.getLatitude(),
+                mCurrentLocation.getLongitude()
+        );
+
+        if(CoordinatesUtility.get2DDistanceInKm(currentLatLng, poi)<KM_DISTANCE_MARKER)
+            drawer.drawNext();
+
         if (CoordinatesUtility.get2DDistanceInKm(
-                new LatLng(
-                        mCurrentLocation.getLatitude(),
-                        mCurrentLocation.getLongitude()
-                ),
+                currentLatLng,
                 poi) < KM_DISTANCE_HINT
                 && !hintShown) {
 
@@ -655,6 +671,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             Log.i("FRAG_", "show");
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
             getSupportFragmentManager().
                     beginTransaction()
                     .hide(mapFragment)
@@ -669,7 +686,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             hf.setPOI(poi);
 
             if (path != null && !path.isEmpty())
-                popPoi();
+                drawPath();
 
             hintShown = true;
         }
