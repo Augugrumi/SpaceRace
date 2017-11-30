@@ -2,6 +2,7 @@ package com.augugrumi.spacerace;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -742,12 +744,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
     public void hideHintAndShowMap() {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -793,7 +789,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     public ScoreCounter getTotalScore() {
-        return ((HintFragment)hf).getTotalScore();
+        return (hf instanceof HintFragment)?((HintFragment)hf).getTotalScore():new ScoreCounter.Builder().build();
     }
 
     protected void hideLoadingScreen() {

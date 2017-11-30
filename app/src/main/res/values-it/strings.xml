@@ -427,5 +427,7 @@
     <string name="next">Avanti</string>
     <string name="previous">Indietro</string>
 
-
+    <string name="exit">Vuoi uscire veramente dalla sfida?</string>
+    <string name="your_opponent_retired">Il tuo avversario si è ritirato</string>
+    
 </resources>

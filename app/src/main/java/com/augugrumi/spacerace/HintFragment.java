@@ -276,6 +276,8 @@ public class HintFragment extends AbsHintFragment {
     }
 
     public ScoreCounter getTotalScore() {
+        if (totalScoreBuilder == null)
+            return new ScoreCounter.Builder().build();
         return totalScoreBuilder.build();
     }
 }
