@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.augugrumi.spacerace.utility.QuestionAnswerManager;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -82,8 +84,8 @@ public class FirstHintFragment extends AbsHintFragment {
 
     @Override
     protected void setHintData() {
-        // TODO set hint and image about the next hop!
-        //nextHintText.setText(QuestionAnswerManager.getHint(poi));
-        //placeImage.setImageDrawable(QuestionAnswerManager.getImage(poi));
+
+        nextHintText.setText(QuestionAnswerManager.getHint(poi));
+        placeImage.setImageDrawable(getActivity().getDrawable(QuestionAnswerManager.getImage(poi)));
     }
 }

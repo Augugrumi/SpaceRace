@@ -258,9 +258,8 @@ public class HintFragment extends AbsHintFragment {
         explanationTitleText.setText(QuestionAnswerManager.getTitle(poi));
         explanationContentText.setText(QuestionAnswerManager.getCard(poi));
 
-        // TODO set hint and image about the next hop!
-        //nextHintText.setText(QuestionAnswerManager.getHint(poi));
-        //placeImage.setImageDrawable(QuestionAnswerManager.getImage(poi));
+        nextHintText.setText(QuestionAnswerManager.getHint(poi));
+        placeImage.setImageDrawable(getActivity().getDrawable(QuestionAnswerManager.getImage(poi)));
     }
 
     private ScoreCounter.Builder builder;
