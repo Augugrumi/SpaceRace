@@ -40,7 +40,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/to_next_hint_btn"
             android:text="@string/to_next_hint"
-            android:layout_gravity="bottom|end"/>
+            android:layout_gravity="bottom|end"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
