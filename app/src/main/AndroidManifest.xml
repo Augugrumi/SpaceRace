@@ -33,13 +33,11 @@
         <activity
             android:name=".CreditsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_credits"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_map"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

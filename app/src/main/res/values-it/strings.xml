@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Space Race</string>
     <string name="slide1Subtitle">Esplora i luoghi di Padova legati all\'astronomia</string>
     <string name="slide2Title">Caccia al tesoro</string>
     <string name="slide2Subtitle">Trova indizzi e risolvi indovinelli per trovare la tua meta</string>
@@ -51,6 +50,7 @@
     <string name="title_card_2">Dove splende il Sole di Mantegna</string>
     <string name="card_2_sant_antonio_basilica">È il Santo senza nome, Sant’Antonio. Così universale e amato a Padova da non aver bisogno di essere nominato. Nella “sua” grandiosa Basilica nei secoli hanno lavorato Giotto, Donatello, Mantegna, Giusto de’Menabuoi. Le cupole, i chiostri e le opere d’arte raccontano di devozione, spiritualità e bellezza. All’interno si celano anche numerose volte stellate e, sul portale, uno splendido Sole, copia di quello realizzato dal Mantegna e custodito all’interno, a evocare l’antichissimo legame tra Sole e divinità.</string>
     <string name="card_3_galileo_house">A Padova Galileo Galilei visse “li diciotto anni migliori di tutta la mia vita”, insegnando, studiando e osservando il cielo. Abitava in una via chiamata allora Borgo Vignali e diventata ora via Galileo Galilei. Pare che da qui scoprì i satelliti di Giove, dando inizio in un certo senso al metodo scientifico. La casa non è visitabile ma una targa ricorda lo scienziato. Per il resto, lasciate correre l’immaginazione!</string>
+    <string name="title_card_3">Casa di Galileo</string>
     <string name="card_4_chiesa_san_francesco">"Una chiesa bellissima e poco frequentata, scandita all’esterno da 26 archi e quasi nascosta tra i portici. Un tempo era parte di un grandioso complesso, edificato a partire dal XV secolo, che comprendeva un convento, il primo ospedale di Padova, la Scuola della Carità e l’Oratorio di Santa Margherita. Nella chiesa, tra un giardino quasi segreto e una tela attribuita al Veronese, si cela una lapide dedicata a una certa Stella Stella dal figlio. "</string>
     <string name="title_card_4">Le stelle addosso</string>
     <string name="card_5_chiesa_santa_sofia">Una delle chiese più antiche della città, caratterizzata dal contrasto tra l’elegante struttura esterna e la straordinaria semplicità dell’interno. La sua facciata inclinata può intimorire ma vale la pena di entrare perché, all’interno, si celano altre tracce di Galileo. In fondo alla navata centrale si trova infatti il fonte battesimale in cui venne battezzato Vincenzo, terzo e ultimo figlio dello scienziato.</string>
@@ -66,6 +66,7 @@
     <string name="card_10_orologio_civile">Fu costruito per sostituirsi al sole e alle campane delle chiese nello scandire le attività quotidiane dopo che fu introdotta l’ora civile. Non è un caso che si trovi qui, in un punto del centro cittadino cruciale per il commercio, vicino alle piazze brulicanti di persone e di attività, dal mercato dei bovini al noleggio di carrozze. Ancora oggi questo è un luogo vitalissimo, in cui si consuma la nobile arte del passeggio, così amata da padovani, studenti e turisti.</string>
     <string name="title_card_10">Il tempo della città</string>
     <string name="card_11_galileo_university">È la sede di uno degli atenei più antichi e prestigiosi al mondo, fondato nel 1222. Conosciuto anche come Bo, poiché qui sorgeva la locanda Hospitium Bovis, ha per simbolo il cranio di un bue. Entrando nel Cortile Antico ci si trova circondati da stemmi decorati con stelle araldiche, posti a ricordo da illustri studenti e professori. Ai piani superiori si trovano l’Aula Magna, in cui Galileo teneva le sue lezioni, e la Sala dei Quaranta, dove è conservata quella che si dice fosse la sua cattedra. Visitate anche il Teatro Anatomico, primo esempio al mondo di struttura permanente creata per l’insegnamento dell’anatomia.</string>
+    <string name="name_card_11">Il Bo - via VIII Febbraio 2</string>
     <string name="title_card_11">L’università di Galileo</string>
     <string name="card_12_palazzo_ragione">Antica sede del tribunale cittadino, è ancora oggi al centro della vita civile e commerciale. È detto anche Salone perché il piano superiore è costituito da una sala pensile di ampissime dimensioni, decorata con un ciclo di affreschi a tema astrologico-astronomico di grande intensità. Al piano terra ospita un caratteristico mercato coperto e, appena fuori, una distesa di tavolini ideali per una pausa. Alzando lo sguardo scorgerete la meridiana di Palazzo della Ragione, che in passato svolse un ruolo fondamentale in quest’area destinata al commercio.</string>
     <string name="title_card_12">Tra meridiane e racconti astronomici</string>
@@ -358,6 +359,22 @@
         <string name="answer_21_3_1">Errore</string>
         <string name="answer_21_3_2">Errore</string>
         <string name="answer_21_3_3">Errore</string>
+
+    <!--hint fragment - place explanation view-->
+    <string name="skip_quiz">&lt;&lt; Salta quiz</string>
+    <string name="to_quiz">Quiz &gt;&gt;</string>
+
+    <!--hint fragment - quizzes-->
+    <string name="question_1">Domanda 1</string>
+    <string name="question_2">Domanda 2</string>
+    <string name="question_3">Domanda 3</string>
+
+    <!--hint fragment - quiz result-->
+    <string name="your_score">Il tuo punteggio è</string>
+    <string name="to_next_hint">Vai al prossimo suggerimento</string>
+
+    <!--hint fragment - next hint-->
+    <string name="next_hint">Prossimo suggerimento</string>
 
     <!--Preferences - maps-->
     <string name="map_style">Tema della mappa</string>
