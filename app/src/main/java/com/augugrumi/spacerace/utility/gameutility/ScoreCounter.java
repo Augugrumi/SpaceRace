@@ -78,7 +78,7 @@ public class ScoreCounter {
     public static class Builder {
 
         private Map<LatLng, List<Score>> pointMap;
-        private int score;
+        private int score = 0;
 
         public Builder() {
             pointMap = new HashMap<>();

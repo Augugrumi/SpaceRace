@@ -425,5 +425,7 @@
     <string name="end_match_opponent_score_title">Il punteggio del tuo avversario è:</string>
     <string name="go_home">Ritorna alla schermata principale</string>
 
-
+    <string name="exit">Vuoi uscire veramente dalla sfida?</string>
+    <string name="your_opponent_retired">Il tuo avversario si è ritirato</string>
+    
 </resources>

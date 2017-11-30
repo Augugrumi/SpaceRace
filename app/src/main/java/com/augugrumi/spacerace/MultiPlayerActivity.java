@@ -115,9 +115,9 @@ public class MultiPlayerActivity extends MapActivity
     public void hideHintAndShowMap() {
         super.hideHintAndShowMap();
 
-        myScore = getTotalScore().getScore();
 
         if (path.isEmpty()) {
+            myScore = getTotalScore().getScore();
             SpaceRace.messageManager.sendToAllReliably(
                     new EndMessageBuilder()
                             .setType(END_MATCH)
@@ -126,14 +126,12 @@ public class MultiPlayerActivity extends MapActivity
             );
             Games.getLeaderboardsClient(this,
                     GoogleSignIn.getLastSignedInAccount(this))
-                    .submitScore(getString(R.string.leaderboard_id),
-                            getTotalScore().getScore());
+                    .submitScore(getString(R.string.leaderboard_id), myScore);
         }
     }
 
     @Override
     public void receiveEndMatch(String message) {
-        //TODO add check which player won
         opponentScore = EndMessageBuilder.decodeScore(message);
 
         myScore = getTotalScore().getScore();
@@ -196,5 +194,27 @@ public class MultiPlayerActivity extends MapActivity
             }
             return obj.toString();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.exit)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SpaceRace.messageManager.sendToAllReliably(
+                                new EndMessageBuilder()
+                                        .setType(END_MATCH)
+                                        .setScore(Integer.MIN_VALUE)
+                                        .build()
+                        );
+                        SpaceRace.messageManager.registerForReceiveEndMatch(null);
+                        MultiPlayerActivity.this.finish();
+                        startActivity(new Intent(MultiPlayerActivity.this, MainActivity.class));
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 }

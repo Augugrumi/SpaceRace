@@ -464,4 +464,7 @@
     <string name="end_match_opponent_score_title">Your opponent\'s score is:</string>
     <string name="go_home">Back to menu</string>
 
+    <string name="exit">Do you really want to stop the race?</string>
+    <string name="your_opponent_retired">Your opponent left the match</string>
+
 </resources>
