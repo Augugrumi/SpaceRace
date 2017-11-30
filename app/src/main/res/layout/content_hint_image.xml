@@ -25,35 +25,42 @@
         android:id="@+id/place_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/place_holder" />
-
-    <View
-        android:id="@+id/spacer"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        app:srcCompat="@drawable/place_holder"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:orientation="horizontal"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:layout_weight="1"
         android:layout_gravity="bottom|end">
-        <Button
-            android:id="@+id/to_text_hint"
+
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Previous"
-            android:layout_gravity="bottom"/>
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/to_text_hint"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:text="@string/previous"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/hide_btn"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
             android:paddingLeft="15dp"
             android:text="@android:string/ok"
-            android:layout_gravity="bottom"/>
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

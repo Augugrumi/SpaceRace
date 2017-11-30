@@ -45,7 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/skip_quiz"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/to_quiz_btn"
@@ -53,7 +55,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:text="@string/to_quiz"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
