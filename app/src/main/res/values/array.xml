@@ -7,19 +7,19 @@
         <item>@string/uranus</item>
     </string-array>
 
-    <string-array name="mapValues">
+    <string-array translatable="false"  name="mapValues">
         <item>@raw/mars</item>
         <item>@raw/dark_side_of_the_moon</item>
         <item>@raw/light_side_of_the_moon</item>
         <item>@raw/uranus</item>
     </string-array>
 
-    <string-array name="languageNamesArray">
+    <string-array translatable="false" name="languageNamesArray">
         <item>@string/italian</item>
         <item>@string/english</item>
     </string-array>
 
-    <string-array name="languageValues">
+    <string-array translatable="false" name="languageValues">
         <item>it</item>
         <item>en</item>
     </string-array>

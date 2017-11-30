@@ -33,7 +33,7 @@ import retrofit2.Response;
 
 public class PathCreator {
 
-    private static final String MODE = "DEBUG";
+    private static final String MODE = "DEBUGç";
 
     private final static double MAX_DISTANCE_FIRST_HOP = 10;
     private final static double MIN_DISTANCE_FIRST_HOP = 0;
