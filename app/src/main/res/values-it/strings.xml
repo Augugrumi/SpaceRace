@@ -375,7 +375,7 @@
     <string name="to_next_hint">Vai al prossimo suggerimento</string>
 
     <!--hint fragment - next hint-->
-    <string name="next_hint">Prossimo suggerimento</string>
+    <string name="next_hint">Suggerimento</string>
 
     <!--Preferences - maps-->
     <string name="map_style">Tema della mappa</string>
@@ -424,6 +424,8 @@
     <string name="end_match_my_score_title">Il tuo punteggio è:</string>
     <string name="end_match_opponent_score_title">Il punteggio del tuo avversario è:</string>
     <string name="go_home">Ritorna alla schermata principale</string>
+    <string name="next">Avanti</string>
+    <string name="previous">Indietro</string>
 
 
 </resources>

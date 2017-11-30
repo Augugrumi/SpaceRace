@@ -154,7 +154,7 @@
     <string name="to_next_hint">To next hint</string>
 
     <!--hint fragment - next hint-->
-    <string name="next_hint">Next hint</string>
+    <string name="next_hint">Hint</string>
 
     <!--Preferences - maps-->
     <string name="map_style">Map theme</string>
@@ -463,5 +463,7 @@
     <string name="end_match_my_score_title">Your score is:</string>
     <string name="end_match_opponent_score_title">Your opponent\'s score is:</string>
     <string name="go_home">Back to menu</string>
+    <string name="next">Next</string>
+    <string name="previous">Back</string>
 
 </resources>
