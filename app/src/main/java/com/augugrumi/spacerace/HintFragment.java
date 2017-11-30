@@ -47,6 +47,7 @@ public class HintFragment extends Fragment {
     @BindView(R.id.question3_layout) ViewGroup question3View;
     @BindView(R.id.quiz_result_layout) ViewGroup quizResultView;
     @BindView(R.id.next_hint_layout) ViewGroup nextHintView;
+    @BindView(R.id.next_hint_image_layout) ViewGroup imageHintView;
 
     //content explanation view
     @BindView(R.id.place_explanation_title) TextView explanationTitleText;
@@ -78,6 +79,11 @@ public class HintFragment extends Fragment {
 
     //next hint view
     @BindView(R.id.next_hint_text) TextView nextHintText;
+    @BindView(R.id.to_image_hint) Button toImageHintBtn;
+
+
+    //next hint image view
+    @BindView(R.id.to_text_hint) Button toHintBtn;
     @BindView(R.id.hide_btn) Button hideBtn;
 
     private MapActivity parent;
@@ -112,6 +118,7 @@ public class HintFragment extends Fragment {
         layouts.add(question3View);
         layouts.add(quizResultView);
         layouts.add(nextHintView);
+        layouts.add(imageHintView);
         showView(explanationView);
 
         if (totalScoreBuilder == null)
@@ -241,9 +248,14 @@ public class HintFragment extends Fragment {
         showView(quizResultView);
     }
 
-    @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn})
+    @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn, R.id.to_text_hint})
     public void onClickSkipOrFinishedQuiz(View v) {
         showView(nextHintView);
+    }
+
+    @OnClick(R.id.to_image_hint)
+    public void onClickShowImage(View v) {
+        showView(imageHintView);
     }
 
     @OnClick(R.id.hide_btn)

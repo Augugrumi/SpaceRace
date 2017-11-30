@@ -27,6 +27,12 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/place_holder" />
 
+    <View
+        android:id="@+id/spacer"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,9 +41,17 @@
         android:paddingBottom="10dp"
         android:layout_gravity="bottom|end">
         <Button
+            android:id="@+id/to_text_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previous"
+            android:layout_gravity="bottom"/>
+
+        <Button
             android:id="@+id/hide_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
             android:text="@android:string/ok"
             android:layout_gravity="bottom"/>
 

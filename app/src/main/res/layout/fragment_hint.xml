@@ -12,5 +12,6 @@
     <include layout="@layout/content_quiz3" />
     <include layout="@layout/content_quiz_result" />
     <include layout="@layout/content_hint_next_place" />
+    <include layout="@layout/content_hint_image" />
 
 </LinearLayout>
