@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/next_hint_layout"
+    android:id="@+id/next_hint_image_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="30dp"
@@ -21,18 +21,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:layout_width = "match_parent"
-        android:layout_height = "fill_parent"
-        android:layout_weight = "1"
-        android:textSize="18sp"
-        android:id="@+id/next_hint_text"
-        android:textColor="@android:color/secondary_text_dark_nodisable"
-        android:text="@string/lorem_ipsum"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="insideOverlay"
-        android:fadeScrollbars="true"
-        android:fadingEdge="vertical"/>
+    <ImageView
+        android:id="@+id/place_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/place_holder" />
+
+    <View
+        android:id="@+id/spacer"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,10 +41,18 @@
         android:paddingBottom="10dp"
         android:layout_gravity="bottom|end">
         <Button
-            android:id="@+id/to_image_hint"
+            android:id="@+id/to_text_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
+            android:text="Previous"
+            android:layout_gravity="bottom"/>
+
+        <Button
+            android:id="@+id/hide_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:text="@android:string/ok"
             android:layout_gravity="bottom"/>
 
     </LinearLayout>

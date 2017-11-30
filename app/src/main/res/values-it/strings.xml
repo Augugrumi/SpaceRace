@@ -399,11 +399,24 @@
     <string name="slide4Title">Permessi</string>
     <string name="slide5Subtitle">Indossa la tuta spaziale, chiudi il casco e esplora Padova!</string>
     <string name="slide5Title">Pronto per partire?</string>
+
     <string name="end_match_win">Hai vinto!🎉</string>
     <string name="end_match_loose">Hai perso!😞</string>
     <string name="end_match_single_player">Hai raggiunto la tua meta!</string>
     <string name="end_match_my_score_title">Il tuo punteggio è:</string>
     <string name="end_match_opponent_score_title">Il punteggio del tuo avversario è:</string>
     <string name="go_home">Ritorna alla schermata principale</string>
+
+    <string name="title_card_3">Casa di Galileo</string>
+    <string name="title_card_18">Piazza Capitaniato</string>
+    <string name="skip_quiz">&lt;&lt; Salta quiz</string>
+    <string name="to_quiz">Quiz &gt;&gt;</string>
+    <string name="question_1">Domanda 1</string>
+    <string name="question_2">Domanda 2</string>
+    <string name="question_3">Domanda 3</string>
+    <string name="your_score">Il tuo punteggio è</string>
+    <string name="to_next_hint">Al prossimo suggerimento</string>
+    <string name="next_hint">Indovinello</string>
+
 
 </resources>
