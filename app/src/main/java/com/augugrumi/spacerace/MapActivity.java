@@ -804,6 +804,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         getSupportFragmentManager()
                 .beginTransaction()
+                .hide(mapFragment)
+                .commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .hide(lsf)
                 .add(R.id.hint_cont, hf)
