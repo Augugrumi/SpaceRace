@@ -81,6 +81,7 @@
     <string name="card_17_battistero_duomo">Appena alle spalle del Ghetto, il selciato davanti al Duomo diventa “piazza” per bambini che giocano e studenti in pausa dalle lezioni. Ospita il battistero romanico affrescato da Giusto de’ Menabuoi con scene dal Nuovo e Antico Testamento, con l’Apocalisse e il Paradiso. Soffermatevi sul riquadro che rappresenta la Creazione del Mondo, testimonianza affascinante di come il cielo e la terra venivano raffigurati in base alle conoscenze astronomiche e geografiche dell’epoca.</string>
     <string name="title_card_17">La creazione dell’Universo</string>
     <string name="card_18_piazza_capitaniato">È familiare ed elegante e sembra invitare a una sosta, tra i suoi alberi, le biciclette, il viavai di studenti. Un luogo intimo e movimentato, un tempo occupato dalla Reggia dei Carraresi, signori di Padova, di cui oggi restano la Sala dei Giganti e la loggia (su via Accademia). La Reggia fu crocevia di intellettuali e artisti, tra cui Galileo, Petrarca e il pittore Guariento, e sede dell’Accademia Galileiana: un’istituzione prestigiosa, fondata nel 1599, che raggruppava professori dell’Università o benemeriti della cultura, come lo stesso Galileo, e ancora oggi è dedicata alla promozione culturale.</string>
+    <string name="title_card_18">Piazza Capitaniato</string>
     <string name="card_19_chiesa_san_pietro">Proseguendo con una passeggiata oltre gli alberi di piazza Capitaniato, esiste un’altra Padova, silenziosa e antica. Godetevi via Patriarcato, raggiungerete così la chiesa di San Pietro quasi mimetizzata tra i palazzi dell’omonima via. All’interno si scoprono due cieli stellati: il primo, nella grande cupola sopra l’altare, con la raffigurazione dei quattro evangelisti e il secondo, avvolgente ed intenso, nella cappella dedicata alla Madonna nera di Loreto.</string>
     <string name="title_card_19">La chiesa con due cieli</string>
     <string name="card_20_chiesa_san_tomaso">Sul ponte Sant’Agostino, che collega riviera Paleocapa a piazza Castello, si trova questa chiesa poco conosciuta e dal fascino misterioso. Affacciandosi al suo interno, si può contemplare un cielo cupo, con un oggetto celeste tutt’ora ambiguo e di dubbia interpretazione.</string>
@@ -423,17 +424,6 @@
     <string name="end_match_my_score_title">Il tuo punteggio è:</string>
     <string name="end_match_opponent_score_title">Il punteggio del tuo avversario è:</string>
     <string name="go_home">Ritorna alla schermata principale</string>
-
-    <string name="title_card_3">Casa di Galileo</string>
-    <string name="title_card_18">Piazza Capitaniato</string>
-    <string name="skip_quiz">&lt;&lt; Salta quiz</string>
-    <string name="to_quiz">Quiz &gt;&gt;</string>
-    <string name="question_1">Domanda 1</string>
-    <string name="question_2">Domanda 2</string>
-    <string name="question_3">Domanda 3</string>
-    <string name="your_score">Il tuo punteggio è</string>
-    <string name="to_next_hint">Al prossimo suggerimento</string>
-    <string name="next_hint">Indovinello</string>
 
 
 </resources>
