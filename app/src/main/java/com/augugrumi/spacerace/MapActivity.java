@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -160,7 +161,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
     private LatLng mDefaultLocation = new LatLng(45.414380, 11.876797);
 
-    private HintFragment hf;
+    private AbsHintFragment hf;
 
     protected Deque<PathCreator.DistanceFrom> path;
     private PathDrawer drawer;
@@ -211,7 +212,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
         LanguageManager.languageManagement(this);
 
-        hf = new HintFragment();
+        hf = new FirstHintFragment();
 
         keepScreenOn();
     }
@@ -747,6 +748,14 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 .hide(hf)
                 .commit();
 
+        if (hf instanceof FirstHintFragment) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(hf)
+                    .commit();
+            hf = new HintFragment();
+        }
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         getSupportFragmentManager().
@@ -778,7 +787,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     public ScoreCounter getTotalScore() {
-        return hf.getTotalScore();
+        return ((HintFragment)hf).getTotalScore();
     }
 
     protected void hideLoadingScreen() {
@@ -791,7 +800,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 .beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .hide(lsf)
-                .show(mapFragment)
+                .add(R.id.hint_cont, hf)
+                .show(hf)
                 .commit();
 
         Log.d("LOADING_SCREEN", "Loading screen stopped");
