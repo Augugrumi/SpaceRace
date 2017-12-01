@@ -10,6 +10,7 @@ import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathManager;
+import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.maps.model.LatLng;
@@ -115,18 +116,23 @@ public class MultiPlayerActivity extends MapActivity
     public void hideHintAndShowMap() {
         super.hideHintAndShowMap();
 
+        if (mCurrentLocation != null) {
+            LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 
-        if (path.isEmpty()) {
-            myScore = getTotalScore().getScore();
-            SpaceRace.messageManager.sendToAllReliably(
-                    new EndMessageBuilder()
-                            .setType(END_MATCH)
-                            .setScore(myScore)
-                            .build()
-            );
-            Games.getLeaderboardsClient(this,
-                    GoogleSignIn.getLastSignedInAccount(this))
-                    .submitScore(getString(R.string.leaderboard_id), myScore);
+            if (path.isEmpty() && CoordinatesUtility.get2DDistanceInKm(currentLatLng,
+                    poi) < KM_DISTANCE_HINT) {
+
+                myScore = getTotalScore().getScore();
+                SpaceRace.messageManager.sendToAllReliably(
+                        new EndMessageBuilder()
+                                .setType(END_MATCH)
+                                .setScore(myScore)
+                                .build()
+                );
+                Games.getLeaderboardsClient(this,
+                        GoogleSignIn.getLastSignedInAccount(this))
+                        .submitScore(getString(R.string.leaderboard_id), myScore);
+            }
         }
     }
 

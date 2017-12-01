@@ -2,8 +2,6 @@ package com.augugrumi.spacerace;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,8 +10,6 @@ import android.util.Log;
 import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.utility.LanguageManager;
-import com.augugrumi.spacerace.utility.SharedPreferencesManager;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
@@ -26,7 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.HashSet;
-import java.util.Locale;
 
 /**
  * @author Marco Zanella

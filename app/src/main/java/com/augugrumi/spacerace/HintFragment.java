@@ -255,6 +255,7 @@ public class HintFragment extends AbsHintFragment {
 
     @Override
     protected void setHintData () {
+        Log.d("POI_SETHINT", poi.toString());
         explanationTitleText.setText(QuestionAnswerManager.getTitle(poi));
         explanationContentText.setText(QuestionAnswerManager.getCard(poi));
 

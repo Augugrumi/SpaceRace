@@ -418,8 +418,8 @@
     <string name="slide5Subtitle">Indossa la tuta spaziale, chiudi il casco e esplora Padova!</string>
     <string name="slide5Title">Pronto per partire?</string>
 
-    <string name="end_match_win">Hai vinto!🎉</string>
-    <string name="end_match_loose">Hai perso!😞</string>
+    <string name="end_match_win">Hai vinto!</string>
+    <string name="end_match_loose">Hai perso!</string>
     <string name="end_match_single_player">Hai raggiunto la tua meta!</string>
     <string name="end_match_my_score_title">Il tuo punteggio è:</string>
     <string name="end_match_opponent_score_title">Il punteggio del tuo avversario è:</string>

@@ -77,11 +77,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     private static final int piece = PiecePicker.pickRandomPieceResource();
 
     /************************FORDEBUG**************************/
-    private LatLng poi = new LatLng(45.4108011, 11.8880358);
+    protected LatLng poi = new LatLng(45.4108011, 11.8880358);
     /************************FORDEBUG**************************/
 
     private static final double KM_DISTANCE_MARKER = 0.50;
-    private static final double KM_DISTANCE_HINT = 0.20;
+    protected static final double KM_DISTANCE_HINT = 0.20;
 
     /**
      * Code used in requesting runtime permissions.
@@ -150,7 +150,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     /**
      * Represents a geographical location.
      */
-    private Location mCurrentLocation;
+    protected Location mCurrentLocation;
 
     /**
      * Tracks the status of the location updates request. Value changes when the user presses the
@@ -684,11 +684,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             getSupportFragmentManager().
                     beginTransaction()
                     .hide(mapFragment)
-                    .commit();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.hint_cont, hf)
+                    .show(hf)
                     .commit();
 
             Log.d("POI", poi.toString());
@@ -756,6 +752,12 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .remove(hf)
                     .commit();
             hf = new HintFragment();
+            hf.setPOI(poi);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.hint_cont, (HintFragment)hf)
+                    .hide(hf)
+                    .commit();
         }
 
         SupportMapFragment mapFragment =

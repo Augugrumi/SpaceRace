@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.augugrumi.spacerace.pathCreator.PathCreator;
+import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -44,8 +45,12 @@ public class SinglePlayerActivity extends MapActivity {
     public void hideHintAndShowMap() {
         super.hideHintAndShowMap();
 
-        if(path.isEmpty())
+        LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
+        if(path.isEmpty() && CoordinatesUtility.get2DDistanceInKm(currentLatLng,
+                poi) < KM_DISTANCE_HINT) {
             endMatch();
+        }
     }
 
     public void endMatch() {
