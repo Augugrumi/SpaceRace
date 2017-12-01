@@ -59,6 +59,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import junit.framework.Assert;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Deque;
@@ -650,7 +652,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .hide(lsf)
                     .remove(lsf)
                     .commitNow();
-            lsf = null;
+            //lsf = null;
         }
 
         Log.i("FRAG_", "" + CoordinatesUtility.get2DDistanceInKm(
@@ -741,9 +743,12 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void hideHintAndShowMap() {
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         getSupportFragmentManager()
                 .beginTransaction()
                 .hide(hf)
+                .show(mapFragment)
                 .commit();
 
         if (hf instanceof FirstHintFragment) {
@@ -759,13 +764,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .hide(hf)
                     .commit();
         }
-
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager().
-                beginTransaction()
-                .show(mapFragment)
-                .commit();
 
         startLocationUpdates();
     }
