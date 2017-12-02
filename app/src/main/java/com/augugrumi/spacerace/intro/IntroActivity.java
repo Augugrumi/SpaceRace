@@ -60,6 +60,7 @@ public class IntroActivity extends AppIntro {
         showStatusBar(false);
         setVibrate(false);
         setDepthAnimation();
+        setDoneText(getString(R.string.end_intro));
 
         // Permissions
         askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 4);

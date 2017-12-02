@@ -417,6 +417,7 @@
     <string name="slide4Title">Permessi</string>
     <string name="slide5Subtitle">Indossa la tuta spaziale, chiudi il casco e esplora Padova!</string>
     <string name="slide5Title">Pronto per partire?</string>
+    <string name="end_intro">Iniziamo!</string>
 
     <string name="end_match_win">Hai vinto!</string>
     <string name="end_match_loose">Hai perso!</string>
