@@ -42,16 +42,18 @@ public class MultiPlayerActivity extends MapActivity
 
     protected void createAndDrawPath() {
         if (hasToCreatePath) {
-            PathCreator p = new PathCreator(
-                    new LatLng(
-                            initialPosition.getLatitude(),
-                            initialPosition.getLongitude()
-                    ),
-                    0.3,
-                    2.5);
 
-            path = p.generatePath();
+            while(path == null || path.isEmpty()) {
+                PathCreator p = new PathCreator(
+                        new LatLng(
+                                initialPosition.getLatitude(),
+                                initialPosition.getLongitude()
+                        ),
+                        0.3,
+                        2.5);
 
+                path = p.generatePath();
+            }
             sendPath(path);
 
             drawPath();

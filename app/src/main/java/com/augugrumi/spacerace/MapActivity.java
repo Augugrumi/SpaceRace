@@ -744,32 +744,40 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void hideHintAndShowMap() {
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .hide(hf)
-                .show(mapFragment)
-                .commit();
 
-        if (hf instanceof FirstHintFragment) {
+        try {
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .remove(hf)
-                    .commit();
-            hf = new HintFragment();
-
-            LatLng next = null;
-            if (!path.isEmpty())
-                next = path.getFirst().getEnd();
-            hf.setPOI(poi, next);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.hint_cont, (HintFragment)hf)
                     .hide(hf)
+                    .show(mapFragment)
                     .commit();
+
+            if (hf instanceof FirstHintFragment) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(hf)
+                        .commit();
+                hf = new HintFragment();
+
+                LatLng next = null;
+                if (!path.isEmpty())
+                    next = path.getFirst().getEnd();
+                hf.setPOI(poi, next);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.hint_cont, (HintFragment) hf)
+                        .hide(hf)
+                        .commit();
+            }
+            hintShown = false;
+
+        } catch (Exception e) {
+            Log.e("EXCEPTION_1", e.toString());
+            e.printStackTrace();
         }
-        hintShown = false;
+
         startLocationUpdates();
     }
 
@@ -800,20 +808,25 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     protected void hideLoadingScreen() {
         Log.d("LOADING_SCREEN", "Stopping loading screen");
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .hide(mapFragment)
-                .commit();
+        try {
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .hide(mapFragment)
+                    .commit();
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .hide(lsf)
-                .add(R.id.hint_cont, hf)
-                .show(hf)
-                .commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .hide(lsf)
+                    .add(R.id.hint_cont, hf)
+                    .show(hf)
+                    .commit();
+        } catch (Exception e) {
+            Log.e("EXCEPTION_2", e.toString());
+            e.printStackTrace();
+        }
 
         Log.d("LOADING_SCREEN", "Loading screen stopped");
     }
@@ -827,5 +840,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         intent.putExtra(MY_SCORE, myScore);
         intent.putExtra(OPPONENT_SCORE, opponentScore);
         startActivity(intent);
+        finish();
     }
 }
