@@ -63,4 +63,8 @@ public final class Costants {
     //show on map distance
     public static final double KM_DISTANCE_MARKER = 0.50;
     public static final double KM_DISTANCE_HINT = 0.20;
+
+    //multiplayer opponents number
+    public static final int MIN_NUMBER_OF_PLAYERS = 1;
+    public static final int MAX_NUMBER_OF_PLAYERS = 1;
 }

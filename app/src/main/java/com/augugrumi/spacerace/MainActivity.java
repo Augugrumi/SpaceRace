@@ -56,6 +56,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.augugrumi.spacerace.utility.Costants.MAX_NUMBER_OF_PLAYERS;
+import static com.augugrumi.spacerace.utility.Costants.MIN_NUMBER_OF_PLAYERS;
+
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         NetworkChangeListener {
@@ -484,7 +487,7 @@ public class MainActivity extends AppCompatActivity implements
         if (!invitationPopupIsShowing) {
             showPopUpNotification(false, "");
             mRealTimeMultiplayerClient
-                    .getSelectOpponentsIntent(1, 3)
+                    .getSelectOpponentsIntent(MIN_NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS)
                     .addOnSuccessListener(
                     new OnSuccessListener<Intent>() {
                         @Override
