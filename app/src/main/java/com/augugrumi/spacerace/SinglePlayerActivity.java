@@ -75,6 +75,7 @@ public class SinglePlayerActivity extends MapActivity {
 
     public void endMatch() {
         Log.d("END_MATCH", "the game is over");
+        myScore = getTotalScore().getScore();
 	    launchEndMatchActivity();
     }
 
