@@ -149,60 +149,9 @@ public class PathCreator {
 
             FutureTask<DistanceFrom> task;
             if (MODE != MODE_DEBUG) {
-                task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
-                    @Override
-                    public DistanceFrom call() throws Exception {
-                        Response<Object> response = path.execute();
-                        try {
-
-                            Log.d("POS_FINDER", "ORIGINAL JSON: " + response.body().toString());
-
-                            int pos = response.body().toString().indexOf(toMatch);
-                            if (pos >= 0) {
-
-                                pos += toMatch.length();
-
-                                String semiSanitized = response.body().toString().substring(pos, pos + 10);
-                                pos = semiSanitized.indexOf('m');
-                                String sanitized = semiSanitized.substring(0, pos + 1);
-                                sanitized = sanitized.trim();
-                                sanitized = sanitized.replaceAll(" ", "");
-
-                                double distance = -1;
-                                if (sanitized.indexOf("km") != 0) {
-                                    Log.d("POS_FINDER", "DISTANCE IN KM");
-
-                                    distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 2));
-
-                                    Log.d("POS_FINDER", "Res in kilometers is: " + distance);
-                                    distance *= 1000; // We need the distance in meters
-                                } else if (sanitized.indexOf('m') != 0) {
-                                    Log.d("POS_FINDER", "DISTANCE IN METERS");
-
-                                    distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 1));
-
-                                    Log.d("POS_FINDER", "Res in meters is: " + distance);
-                                }
-
-                                return new DistanceFrom(start, destination, distance);
-
-                            }
-                        } catch (JsonSyntaxException e) {
-                            e.printStackTrace();
-                        }
-
-                        return new DistanceFrom(start, destination, -1);
-                    }
-                });
+                task = createTaskWithDistanceApi(start, destination, path, toMatch);
             } else {
-                task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
-                    @Override
-                    public DistanceFrom call() throws Exception {
-                        return new DistanceFrom(start, destination,
-                                CoordinatesUtility.distance(start.latitude, start.longitude,
-                                        destination.latitude, destination.longitude));
-                    }
-                });
+                task = createTaskWithoutDistanceApi(start, destination);
             }
             res.add(task);
             threadManager.execute(task);
@@ -306,5 +255,70 @@ public class PathCreator {
             }
         }
         return res;
+    }
+
+    private FutureTask<DistanceFrom> createTaskWithoutDistanceApi
+                                            (final LatLng start, final LatLng destination){
+        return new FutureTask<>(new Callable<DistanceFrom>() {
+            @Override
+            public DistanceFrom call() throws Exception {
+                return new DistanceFrom(start, destination,
+                        CoordinatesUtility.distance(start.latitude, start.longitude,
+                                destination.latitude, destination.longitude));
+            }
+        });
+    }
+
+    private FutureTask<DistanceFrom> createTaskWithDistanceApi
+            (final LatLng start, final LatLng destination, final Call<Object> path, final String toMatch){
+        return new FutureTask<>(new Callable<DistanceFrom>() {
+            @Override
+            public DistanceFrom call() throws Exception {
+                Response<Object> response = path.execute();
+                DistanceFrom toReturn;
+                try {
+
+                    Log.d("POS_FINDER", "ORIGINAL JSON: " + response.body().toString());
+
+                    int pos = response.body().toString().indexOf(toMatch);
+                    if (pos >= 0) {
+
+                        pos += toMatch.length();
+
+                        String semiSanitized = response.body().toString().substring(pos, pos + 10);
+                        pos = semiSanitized.indexOf('m');
+                        String sanitized = semiSanitized.substring(0, pos + 1);
+                        sanitized = sanitized.trim();
+                        sanitized = sanitized.replaceAll(" ", "");
+
+                        double distance = -1;
+                        if (sanitized.indexOf("km") != 0) {
+                            Log.d("POS_FINDER", "DISTANCE IN KM");
+
+                            distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 2));
+
+                            Log.d("POS_FINDER", "Res in kilometers is: " + distance);
+                            distance *= 1000; // We need the distance in meters
+                        } else if (sanitized.indexOf('m') != 0) {
+                            Log.d("POS_FINDER", "DISTANCE IN METERS");
+
+                            distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 1));
+
+                            Log.d("POS_FINDER", "Res in meters is: " + distance);
+                        }
+
+                        return new DistanceFrom(start, destination, distance);
+
+                    }
+                    toReturn = new DistanceFrom(start, destination, -1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    toReturn = new DistanceFrom(start, destination,
+                                CoordinatesUtility.distance(start.latitude, start.longitude,
+                                destination.latitude, destination.longitude));
+                }
+                return toReturn;
+            }
+        });
     }
 }
