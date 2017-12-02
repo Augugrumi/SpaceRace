@@ -96,5 +96,13 @@ public class EndMatchActivity extends AppCompatActivity {
     @OnClick(R.id.go_to_the_home)
     public void onClickGoToHome(View view) {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(EndMatchActivity.this, MainActivity.class));
+        finish();
     }
 }
