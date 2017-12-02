@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -16,7 +15,8 @@ import java.util.ArrayList;
 
 public abstract class AbsHintFragment extends Fragment {
     protected MapActivity parent;
-    protected LatLng poi;
+    protected LatLng actualPoi;
+    protected LatLng nextPoi;
     protected ArrayList<ViewGroup> layouts;
 
     protected void showView(ViewGroup view) {
@@ -34,8 +34,9 @@ public abstract class AbsHintFragment extends Fragment {
         setHintData();
     }
 
-    public void setPOI(LatLng poi) {
-        Log.d("SET_POI", poi.toString());
-        this.poi = poi;
+    public void setPOI(LatLng actualPoi, LatLng nextPoi) {
+        Log.d("SET_POI", actualPoi.toString());
+        this.actualPoi = actualPoi;
+        this.nextPoi = nextPoi;
     }
 }
