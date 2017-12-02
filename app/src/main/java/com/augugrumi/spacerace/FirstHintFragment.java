@@ -84,7 +84,6 @@ public class FirstHintFragment extends AbsHintFragment {
 
     @Override
     protected void setHintData() {
-
         nextHintText.setText(QuestionAnswerManager.getHint(actualPoi));
         placeImage.setImageDrawable(getActivity().getDrawable(QuestionAnswerManager.getImage(actualPoi)));
     }

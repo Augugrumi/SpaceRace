@@ -61,8 +61,8 @@ public final class Costants {
     public final static String GITHUB_URI = "https://github.com/Augugrumi";
 
     //show on map distance
-    public static final double KM_DISTANCE_MARKER = 0.50;
-    public static final double KM_DISTANCE_HINT = 0.20;
+    public static final double KM_DISTANCE_MARKER = 0.20;
+    public static final double KM_DISTANCE_HINT = 0.020;
 
     //multiplayer opponents number
     public static final int MIN_NUMBER_OF_PLAYERS = 1;

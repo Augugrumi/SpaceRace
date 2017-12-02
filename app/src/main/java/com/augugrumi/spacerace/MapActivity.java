@@ -74,10 +74,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     protected int myScore = -1;
     protected int opponentScore = -1;
 
-    /************************FORDEBUG**************************/
-    protected LatLng poi = new LatLng(45.4108011, 11.8880358);
-    /************************FORDEBUG**************************/
-
+    protected LatLng poi;
 
 
     /**
@@ -653,7 +650,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .hide(lsf)
                     .remove(lsf)
                     .commitNow();
-            //lsf = null;
+            lsf = null;
         }
 
         Log.i("FRAG_", "" + CoordinatesUtility.get2DDistanceInKm(
@@ -772,7 +769,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .hide(hf)
                     .commit();
         }
-
+        hintShown = false;
         startLocationUpdates();
     }
 
