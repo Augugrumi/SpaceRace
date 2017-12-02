@@ -21,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.Deque;
 
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_HINT;
+
 public class MultiPlayerActivity extends MapActivity
         implements PathReceiver, EndMatchReceiver{
 

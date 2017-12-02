@@ -14,6 +14,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Deque;
 
+import static com.augugrumi.spacerace.utility.Costants.DEFAULT_PIECE_DISPLAYED;
+import static com.augugrumi.spacerace.utility.Costants.ICON_DIMENSION;
+
 /**
  * Created by davide on 19/11/17.
  */
@@ -77,8 +80,6 @@ public class PathDrawer {
 
     public static class Builder {
 
-        private static final int ICON_DIMENSION = 90;
-
         private GoogleMap map;
         private Deque<PathCreator.DistanceFrom> path;
         private BitmapDescriptor firstNodeIcon;
@@ -89,7 +90,7 @@ public class PathDrawer {
 
             Bitmap toScale = BitmapFactory.decodeResource(
                     SpaceRace.getAppContext().getResources(),
-                    R.drawable.ic_account_balance_black_48dp);
+                    DEFAULT_PIECE_DISPLAYED);
             toScale = Bitmap.createScaledBitmap(toScale,
                     ICON_DIMENSION,
                     ICON_DIMENSION,

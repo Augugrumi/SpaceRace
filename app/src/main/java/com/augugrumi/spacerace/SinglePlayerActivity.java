@@ -16,6 +16,8 @@ import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_HINT;
+
 public class SinglePlayerActivity extends MapActivity {
 
     @Override

@@ -27,18 +27,17 @@ import java.util.concurrent.FutureTask;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.augugrumi.spacerace.utility.Costants.HOP_MIN_NUM;
+import static com.augugrumi.spacerace.utility.Costants.MAX_DISTANCE_FIRST_HOP;
+import static com.augugrumi.spacerace.utility.Costants.MIN_DISTANCE_FIRST_HOP;
+import static com.augugrumi.spacerace.utility.Costants.MODE;
+import static com.augugrumi.spacerace.utility.Costants.MODE_DEBUG;
+
 /**
  * Created by dpolonio on 15/11/17.
  */
 
 public class PathCreator {
-
-    private static final String MODE = "DEBUG";
-
-    private final static double MAX_DISTANCE_FIRST_HOP = 10;
-    private final static double MIN_DISTANCE_FIRST_HOP = 0;
-
-    private static final int HOP_MIN_NUM = 1;
 
     public static class DistanceFrom {
 
@@ -149,7 +148,7 @@ public class PathCreator {
             final Call<Object> path = new PathRetrieval().getDirections(init, dest);
 
             FutureTask<DistanceFrom> task;
-            if (MODE!="DEBUG") {
+            if (MODE != MODE_DEBUG) {
                 task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
                     @Override
                     public DistanceFrom call() throws Exception {
