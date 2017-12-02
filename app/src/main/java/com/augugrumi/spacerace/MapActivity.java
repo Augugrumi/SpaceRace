@@ -765,11 +765,14 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 if (!path.isEmpty())
                     next = path.getFirst().getEnd();
                 hf.setPOI(poi, next);
+
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.hint_cont, (HintFragment) hf)
                         .hide(hf)
                         .commit();
+            } else {
+                popPoi();
             }
             hintShown = false;
 

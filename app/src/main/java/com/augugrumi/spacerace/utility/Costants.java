@@ -23,7 +23,7 @@ public final class Costants {
     //path costants
     public final static double MAX_DISTANCE_FIRST_HOP = 2.5;
     public final static double MIN_DISTANCE_FIRST_HOP = 0.2;
-    public static final int HOP_MIN_NUM = 1;
+    public static final int HOP_MIN_NUM = 2;
 
     //map displaying
     public static int DEFAULT_PIECE_DISPLAYED = R.drawable.ic_account_balance_black_48dp;
