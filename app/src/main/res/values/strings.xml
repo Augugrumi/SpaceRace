@@ -463,7 +463,7 @@
     <string name="end_match_loose">You lost!😞</string>
     <string name="end_match_single_player">You reached the destination!</string>
     <string name="end_match_my_score_title">Your score is:</string>
-    <string name="end_match_opponent_score_title">Your opponent's score is:</string>
+    <string name="end_match_opponent_score_title">Your opponent\'s score is:</string>
     <string name="go_home">Back to menu</string>
 
 </resources>
