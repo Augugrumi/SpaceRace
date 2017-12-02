@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/next_hint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,11 +42,13 @@
         android:paddingBottom="10dp"
         android:layout_gravity="bottom|end">
         <Button
-            android:id="@+id/hide_btn"
+            android:id="@+id/to_image_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@android:string/ok"
-            android:layout_gravity="bottom"/>
+            android:text="@string/next"
+            android:layout_gravity="bottom"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 

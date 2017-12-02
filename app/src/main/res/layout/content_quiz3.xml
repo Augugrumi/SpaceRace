@@ -34,18 +34,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="btn1"
-        android:id="@+id/quiz3_rx1_btn"/>
+        android:id="@+id/quiz3_rx1_btn"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="btn2"
-        android:id="@+id/quiz3_rx2_btn"/>
+        android:id="@+id/quiz3_rx2_btn"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="btn3"
-        android:id="@+id/quiz3_rx3_btn"/>
+        android:id="@+id/quiz3_rx3_btn"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>

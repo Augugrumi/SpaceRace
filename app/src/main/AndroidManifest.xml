@@ -33,13 +33,11 @@
         <activity
             android:name=".CreditsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_credits"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_map"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -61,13 +59,17 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".SpaceRacePreferenceActivity" />
+        <activity android:name=".SpaceRacePreferenceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PreferencesTheme"/>
         <activity
             android:name=".SinglePlayerActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MultiPlayerActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
 
         <receiver android:name=".utility.NetworkingUtility">
             <intent-filter>
@@ -76,7 +78,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".EndMatchActivity"></activity>
+        <activity android:name=".EndMatchActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

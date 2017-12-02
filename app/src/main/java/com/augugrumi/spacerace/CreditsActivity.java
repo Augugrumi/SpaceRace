@@ -35,7 +35,7 @@ public class CreditsActivity extends AppCompatActivity {
 
     @OnClick(R.id.facebook)
     public void goOnFacebookPage() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fb.me/spaceracepsw"));
         startActivity(browserIntent);
     }
 

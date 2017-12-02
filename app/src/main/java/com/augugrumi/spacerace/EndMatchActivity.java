@@ -51,17 +51,22 @@ public class EndMatchActivity extends AppCompatActivity {
 
         myScoreText.setText("" + myScore);
 
-        if (opponentScore != -1) {
-            opponentScoreTextView.setText("" + opponentScore);
-            if (!win) {
-                endStringTextView.setText(R.string.end_match_loose);
-            }
-        } else {
-            endStringTextView.setText(R.string.end_match_single_player);
-            opponentLayout.setVisibility(View.GONE);
+        switch (opponentScore) {
+            case Integer.MIN_VALUE:
+                endStringTextView.setText(R.string.your_opponent_retired);
+                opponentLayout.setVisibility(View.GONE);
+                break;
+            case -1:
+                endStringTextView.setText(R.string.end_match_single_player);
+                opponentLayout.setVisibility(View.GONE);
+                break;
+            default:
+                opponentScoreTextView.setText("" + opponentScore);
+                if (!win) {
+                    endStringTextView.setText(R.string.end_match_loose);
+                }
+                break;
         }
-
-
     }
 
     @Override

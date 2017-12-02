@@ -47,6 +47,8 @@ public class QuestionAnswerManager {
     private static final String A31 = "Answer31";
     private static final String A32 = "Answer32";
     private static final String A33 = "Answer33";
+    private static final String HINT = "Hint";
+    private static final String IMAGE = "Image";
 
     private static Map<LatLng, JSONObject> qa;
 
@@ -154,6 +156,94 @@ public class QuestionAnswerManager {
         try {
             JSONObject obj = qa.get(latLng);
             toReturn = obj.getString(CARD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+
+    public static int getImage(LatLng latLng) {
+        int toReturn = -1;
+        String path;
+        try {
+            JSONObject obj = qa.get(latLng);
+            path = obj.getString(IMAGE);
+            switch (path){
+                case "place_della_valle.jpg":
+                    toReturn = R.drawable.place_della_valle;
+                    break;
+                case "place_basilica_santo_antonio_padova.jpg":
+                    toReturn = R.drawable.place_basilica_santo_antonio_padova;
+                    break;
+                case "place_casa_galileo.jpg":
+                    toReturn = R.drawable.place_casa_galileo;
+                    break;
+                case "place_chiesa_di_san_francesco_grande_a_padova.jpg":
+                    toReturn = R.drawable.place_chiesa_di_san_francesco_grande_a_padova;
+                    break;
+                case "place_chiesa_di_santa_sofia.jpg":
+                    toReturn = R.drawable.place_chiesa_di_santa_sofia;
+                    break;
+                case "place_borgo_altinate.jpg":
+                    toReturn = R.drawable.place_borgo_altinate;
+                    break;
+                case "place_chiesa_degli_eremitani.jpg":
+                    toReturn = R.drawable.place_chiesa_degli_eremitani;
+                    break;
+                case "place_cappella_degli_scrovegni.jpg":
+                    toReturn = R.drawable.place_cappella_degli_scrovegni;
+                    break;
+                case "place_pedrocchi.png":
+                    toReturn = R.drawable.place_pedrocchi;
+                    break;
+                case "place_orologio_civile.png":
+                    toReturn = R.drawable.place_orologio_civile;
+                    break;
+                case "place_il_bo.jpg":
+                    toReturn = R.drawable.place_il_bo;
+                    break;
+                case "place_palazzo_della_ragione.jpg":
+                    toReturn = R.drawable.place_palazzo_della_ragione;
+                    break;
+                case "place_via_santa_lucia.png":
+                    toReturn = R.drawable.place_via_santa_lucia;
+                    break;
+                case "place_oratorio_di_san_rocco.jpg":
+                    toReturn = R.drawable.place_oratorio_di_san_rocco;
+                    break;
+                case "place_piazza_dei_signori.jpg":
+                    toReturn = R.drawable.place_piazza_dei_signori;
+                    break;
+                case "place_chiesa_san_nicolo.jpg":
+                    toReturn = R.drawable.place_chiesa_san_nicolo;
+                    break;
+                case "place_piazza_duomo_padova.jpg":
+                    toReturn = R.drawable.place_piazza_duomo_padova;
+                    break;
+                case "place_piazza_capitaniato.png":
+                    toReturn = R.drawable.place_piazza_capitaniato;
+                    break;
+                case "place_chiesa_di_san_pietro.png":
+                    toReturn = R.drawable.place_chiesa_di_san_pietro;
+                    break;
+                case "place_chiesa_di_san_tomaso.png":
+                    toReturn = R.drawable.place_chiesa_di_san_tomaso;
+                    break;
+                case "place_la_specola.jpg":
+                    toReturn = R.drawable.place_la_specola;
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+
+    public static String getHint(LatLng latLng) {
+        String toReturn = "";
+        try {
+            JSONObject obj = qa.get(latLng);
+            toReturn = obj.getString(HINT);
         } catch (JSONException e) {
             e.printStackTrace();
         }

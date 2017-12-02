@@ -1,26 +1,20 @@
 package com.augugrumi.spacerace;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ScrollView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.augugrumi.spacerace.utility.LanguageManager;
 import com.augugrumi.spacerace.utility.QuestionAnswerManager;
 import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.google.android.gms.maps.model.LatLng;
-
-import junit.framework.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,9 +30,7 @@ import butterknife.OnClick;
  *          date 09/11/17
  */
 
-public class HintFragment extends Fragment {
-
-    private ArrayList<ViewGroup> layouts;
+public class HintFragment extends AbsHintFragment {
 
     //views
     @BindView(R.id.explanation_layout) ViewGroup explanationView;
@@ -47,12 +39,16 @@ public class HintFragment extends Fragment {
     @BindView(R.id.question3_layout) ViewGroup question3View;
     @BindView(R.id.quiz_result_layout) ViewGroup quizResultView;
     @BindView(R.id.next_hint_layout) ViewGroup nextHintView;
+    @BindView(R.id.next_hint_image_layout) ViewGroup imageHintView;
 
     //content explanation view
     @BindView(R.id.place_explanation_title) TextView explanationTitleText;
     @BindView(R.id.place_explanation_text) TextView explanationContentText;
     @BindView(R.id.skip_quiz_btn) Button skipBtn;
     @BindView(R.id.to_quiz_btn) Button quizBtn;
+
+    //place image
+    @BindView(R.id.place_image) ImageView placeImage;
 
     //question1 view
     @BindView(R.id.question1_text) TextView question1Text;
@@ -78,12 +74,12 @@ public class HintFragment extends Fragment {
 
     //next hint view
     @BindView(R.id.next_hint_text) TextView nextHintText;
+    @BindView(R.id.to_image_hint) Button toImageHintBtn;
+
+
+    //next hint image view
+    @BindView(R.id.to_text_hint) Button toHintBtn;
     @BindView(R.id.hide_btn) Button hideBtn;
-
-    private MapActivity parent;
-
-    SharedPreferences sharedPref;
-    private LatLng poi;
 
     private ScoreCounter.Builder totalScoreBuilder;
 
@@ -112,6 +108,7 @@ public class HintFragment extends Fragment {
         layouts.add(question3View);
         layouts.add(quizResultView);
         layouts.add(nextHintView);
+        layouts.add(imageHintView);
         showView(explanationView);
 
         if (totalScoreBuilder == null)
@@ -241,9 +238,14 @@ public class HintFragment extends Fragment {
         showView(quizResultView);
     }
 
-    @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn})
+    @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn, R.id.to_text_hint})
     public void onClickSkipOrFinishedQuiz(View v) {
         showView(nextHintView);
+    }
+
+    @OnClick(R.id.to_image_hint)
+    public void onClickShowImage(View v) {
+        showView(imageHintView);
     }
 
     @OnClick(R.id.hide_btn)
@@ -251,25 +253,19 @@ public class HintFragment extends Fragment {
         parent.hideHintAndShowMap();
     }
 
-    private void showView(ViewGroup view) {
-        for (ViewGroup v : layouts) {
-            v.setVisibility(View.GONE);
-        }
-        view.setVisibility(View.VISIBLE);
-    }
-
     @Override
-    public void onStart() {
-        super.onStart();
+    protected void setHintData () {
         explanationTitleText.setText(QuestionAnswerManager.getTitle(poi));
         explanationContentText.setText(QuestionAnswerManager.getCard(poi));
+
+        nextHintText.setText(QuestionAnswerManager.getHint(poi));
+        placeImage.setImageDrawable(getActivity().getDrawable(QuestionAnswerManager.getImage(poi)));
     }
 
     private ScoreCounter.Builder builder;
 
     public void setPOI(LatLng poi) {
-        Log.d("SET_POI", poi.toString());
-        this.poi = poi;
+        super.setPOI(poi);
 
         builder = new ScoreCounter.Builder()
                 .appendPOIQuestions(poi);
@@ -280,6 +276,8 @@ public class HintFragment extends Fragment {
     }
 
     public ScoreCounter getTotalScore() {
+        if (totalScoreBuilder == null)
+            return new ScoreCounter.Builder().build();
         return totalScoreBuilder.build();
     }
 }

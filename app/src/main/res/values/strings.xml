@@ -67,7 +67,6 @@
     <string name="slide3Subtitle">Sign In with Google, play and win!</string>
     <string name="warningSlider3Title">Login error</string>
     <string name="warningSlider3SubTitle">Something went wrong during the login</string>
-    <string name="title_activity_map">MapActivity</string>
 
     <!--map activity-->
     <string name="permission_rationale">Location permission is needed for core functionality</string>
@@ -112,7 +111,7 @@
     <string name="card_17_battistero_duomo">In the area right behind the Ghetto, the pavement in front of the Duomo becomes a “square” for children playing and students on a short break. It hosts the Romanesque baptistery frescoed by Giusto de’ Menabuoi with scenes from the Old and New Testament, the Apocalypse and the Paradise. Notice the panel representing the creation of the world, a fascinating example of how the sky and the Earth were depicted according to the astronomical and geographical knowledge of the time.</string>
     <string name="title_card_17">The creation of the Universe</string>
     <string name="card_18_piazza_capitaniato">Piazza Capitaniato is familiar and elegant. It seems to invite you to stop for a break among its trees, its bicycles, the coming and going of the students. An intimate but lively place, once occupied by the Reggia dei Carraresi, the lords of Padua. The Reggia, today represented only by Sala dei Giganti and the loggia (in via Accademia),  was a meeting point for intellectuals and artists, including Galileo, Petrarch and the painter Guariento. The Reggia later became the seat of the Accademia Galileiana: a prestigious institution, founded in 1599, which brought together University professors, artists and thinkers, like Galileo himself. Today, the academy is still dedicated to cultural activities.</string>
-    <string name="title_card_18" translatable="false">Capitanato Square</string>
+    <string name="title_card_18">Capitaniato Square</string>
     <string name="card_19_chiesa_san_pietro">Continuing your walk beyond the trees of piazza Capitaniato,  you will reach the borders of another Padua, quiet and ancient. Enjoy via Patriarcato, and follow it to the church of San Pietro, which is almost camouflaged between the palaces of the street that bears its name. Inside you will discover two starry skies: the first, inside the great dome above the altar, depicting the four evangelists; the second, intense and encircling, in the chapel dedicated to the Black Madonna of Loreto. The altar, depicting the four evangelists; the second, intense and encircling, in the chapel dedicated to the Black Madonna of Loreto.</string>
     <string name="title_card_19">The church with two skies</string>
     <string name="card_20_chiesa_san_tomaso">On Sant’Agostino bridge – which connects the riviera Paleocapa with piazza Castello – you will find this little-known church, which has a mysterious charm all of its own. If you have a look inside, you can see a gloomy sky, with a celestial object. The nature and meaning of this object remain uncertain even today.</string>
@@ -155,7 +154,7 @@
     <string name="to_next_hint">To next hint</string>
 
     <!--hint fragment - next hint-->
-    <string name="next_hint">Next hint</string>
+    <string name="next_hint">Hint</string>
 
     <!--Preferences - maps-->
     <string name="map_style">Map theme</string>
@@ -185,7 +184,6 @@
     <string name="lorem_ipsum_short" translatable="false">Lorem ipsum</string>
     <string name="lorem_ipsum_medium" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</string>
     <string name="lorem_ipsum" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</string>
-    <string name="title_activity_starting">StartingActivity</string>
 
     <string name="leaderboard_id" translatable="false">CgkI6vn-hvYMEAIQAQ</string>
 
@@ -465,5 +463,12 @@
     <string name="end_match_my_score_title">Your score is:</string>
     <string name="end_match_opponent_score_title">Your opponent\'s score is:</string>
     <string name="go_home">Back to menu</string>
+    <string name="next">Next</string>
+    <string name="previous">Back</string>
+
+    <string name="exit">Do you really want to stop the race?</string>
+    <string name="your_opponent_retired">Your opponent left the match</string>
+
+    <string name="end_intro">Done</string>
 
 </resources>
