@@ -37,8 +37,28 @@ public class SinglePlayerActivity extends MapActivity {
         path = p.generatePath();
         Log.d("PATH_CREATED", path.toString());
 
-        drawPath();
-        hideLoadingScreen();
+        if (path == null || path.isEmpty()) {
+            dieNoPath();
+        } else {
+            drawPath();
+            hideLoadingScreen();
+        }
+    }
+
+    private void dieNoPath() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,
+                android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(R.string.path_problem)
+                .setMessage(R.string.path_not_found)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(SinglePlayerActivity.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
