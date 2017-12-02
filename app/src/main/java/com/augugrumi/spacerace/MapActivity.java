@@ -67,14 +67,12 @@ import static com.augugrumi.spacerace.utility.Costants.PIECE_SIZE;
 
 public abstract class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
-
     public static final String MY_SCORE = "my_score_intent";
     public static final String OPPONENT_SCORE = "my_opponent_score_intent";
+    private static final int piece = PiecePicker.pickRandomPieceResource();
 
     protected int myScore = -1;
     protected int opponentScore = -1;
-
-    private static final int piece = PiecePicker.pickRandomPieceResource();
 
     /************************FORDEBUG**************************/
     protected LatLng poi = new LatLng(45.4108011, 11.8880358);
