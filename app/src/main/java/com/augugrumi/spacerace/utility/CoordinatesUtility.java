@@ -72,7 +72,6 @@ public class CoordinatesUtility {
         GeodeticCurve geoCurve = geoCalc.calculateGeodeticCurve(reference, l1cord, l2cord);
         double ellipseKilometers = geoCurve.getEllipsoidalDistance() / 1000.0;
 
-        System.out.println("2-D path from Lincoln Memorial to Eiffel Tower using WGS84");
         System.out.printf("Ellipsoidal Distance: %1.2f kilometers\n", ellipseKilometers);
 
         return ellipseKilometers;

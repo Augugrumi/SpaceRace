@@ -217,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements
                 .setRoomStatusUpdateCallback(mRoomStatusUpdateCallback)
                 .build();
 
+        SpaceRace.messageManager.setmRoomConfig(mRoomConfig);
+
         keepScreenOn();
 
         mRealTimeMultiplayerClient.join(mRoomConfig)
@@ -481,7 +483,9 @@ public class MainActivity extends AppCompatActivity implements
     public void onClickNewMatch(View view) {
         if (!invitationPopupIsShowing) {
             showPopUpNotification(false, "");
-            mRealTimeMultiplayerClient.getSelectOpponentsIntent(1, 3).addOnSuccessListener(
+            mRealTimeMultiplayerClient
+                    .getSelectOpponentsIntent(1, 3)
+                    .addOnSuccessListener(
                     new OnSuccessListener<Intent>() {
                         @Override
                         public void onSuccess(Intent intent) {

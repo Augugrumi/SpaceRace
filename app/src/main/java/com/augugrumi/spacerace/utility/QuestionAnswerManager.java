@@ -240,6 +240,7 @@ public class QuestionAnswerManager {
     }
 
     public static String getHint(LatLng latLng) {
+        Log.d("AAAA", "Stampa latlng " + latLng);
         String toReturn = "";
         try {
             JSONObject obj = qa.get(latLng);

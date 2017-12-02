@@ -2,7 +2,6 @@ package com.augugrumi.spacerace;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -15,8 +14,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -59,11 +56,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import junit.framework.Assert;
-
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Deque;
+
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_HINT;
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_MARKER;
+import static com.augugrumi.spacerace.utility.Costants.PIECE_SIZE;
 
 
 public abstract class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -75,15 +74,13 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     protected int myScore = -1;
     protected int opponentScore = -1;
 
-    private static final int PIECE_SIZE=95;
     private static final int piece = PiecePicker.pickRandomPieceResource();
 
     /************************FORDEBUG**************************/
     protected LatLng poi = new LatLng(45.4108011, 11.8880358);
     /************************FORDEBUG**************************/
 
-    private static final double KM_DISTANCE_MARKER = 0.50;
-    protected static final double KM_DISTANCE_HINT = 0.20;
+
 
     /**
      * Code used in requesting runtime permissions.
@@ -445,7 +442,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         }
 
         if (mCurrentLocation != null) {
-            if (oldLocation!=null) {
+            if (oldLocation!= null) {
                 // refresh ogni 2 sec -> record mondiale 8,33m/s => ~16 ogni 2 sec => 15
                 // per essere sicuri
                 if (CoordinatesUtility.distance(mCurrentLocation, oldLocation)<MAX_DIFFERENCE_UPDATE_POLYLINE) {
@@ -462,7 +459,10 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     }
                     marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 }
-                showHintIfNear();
+                if (drawer != null) {
+
+                    showHintIfNear();
+                }
             }
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mCurrentLocation.getLatitude(),
@@ -640,7 +640,10 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
     private void popPoi () {
         poi = path.pop().getEnd();
-        hf.setPOI(poi);
+        LatLng next = null;
+        if (!path.isEmpty())
+            next = path.getFirst().getEnd();
+        hf.setPOI(poi, next);
     }
 
     private boolean hintShown = false;
@@ -690,10 +693,13 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .commit();
 
             Log.d("POI", poi.toString());
-            hf.setPOI(poi);
+            LatLng next = null;
+            if (!path.isEmpty())
+                next = path.getFirst().getEnd();
+            hf.setPOI(poi, next);
 
-            if (path != null && !path.isEmpty())
-                drawPath();
+            /*if (path != null && !path.isEmpty())
+                drawPath();*/
 
             hintShown = true;
         }
@@ -757,7 +763,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .remove(hf)
                     .commit();
             hf = new HintFragment();
-            hf.setPOI(poi);
+
+            LatLng next = null;
+            if (!path.isEmpty())
+                next = path.getFirst().getEnd();
+            hf.setPOI(poi, next);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.hint_cont, (HintFragment)hf)
@@ -793,7 +803,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     protected void hideLoadingScreen() {
-
         Log.d("LOADING_SCREEN", "Stopping loading screen");
 
         SupportMapFragment mapFragment =

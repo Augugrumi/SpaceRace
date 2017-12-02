@@ -18,6 +18,7 @@ import com.google.android.gms.games.RealTimeMultiplayerClient;
 import com.google.android.gms.games.multiplayer.realtime.OnRealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -90,8 +91,26 @@ public class SpaceRace extends Application {
         private HashSet<Integer> pendingMessageSet = new HashSet<>();
         private PathReceiver pathReceiver;
         private EndMatchReceiver endMatchReceiver;
+        private RoomConfig mRoomConfig;
 
         private MessageManager(){}
+
+        public void setmRoomConfig (RoomConfig mRoomConfig) {
+            this.mRoomConfig = mRoomConfig;
+        }
+
+        public void leaveRoom() {
+            Log.d("ROOM", "Leaving room.");
+            if (mRoom.getRoomId() != null) {
+                mRealTimeMultiplayerClient.leave(mRoomConfig, mRoom.getRoomId())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                mRoomConfig = null;
+                            }
+                        });
+            }
+        }
 
         public void setRealTimeMultiplayerClient(RealTimeMultiplayerClient client) {
             mRealTimeMultiplayerClient = client;
