@@ -181,6 +181,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_map);
 
         lsf = new LoadingScreenFragment();
+        hf = new FirstHintFragment();
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -219,8 +220,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         }
 
         LanguageManager.languageManagement(this);
-
-        hf = new FirstHintFragment();
 
         keepScreenOn();
     }
@@ -768,17 +767,18 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         try {
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .hide(hf)
                     .show(mapFragment)
-                    .commit();
+                    .commitNow();
 
             if (hf instanceof FirstHintFragment) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .remove(hf)
-                        .commit();
+                        .commitNow();
                 hf = new HintFragment();
 
                 popPoi();
@@ -787,7 +787,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                         .beginTransaction()
                         .add(R.id.hint_cont, (HintFragment) hf)
                         .hide(hf)
-                        .commit();
+                        .commitNow();
             } else {
                 hf.setHintData();
                 popPoi();
@@ -832,8 +832,10 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         Log.d("LOADING_SCREEN", "Stopping loading screen");
 
         try {
+
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .hide(mapFragment)

@@ -112,8 +112,8 @@ public class MultiPlayerActivity extends MapActivity
     @Override
     public void receiveAck() {
         Log.d("ACK_RECEIVED", "ack");
-
         hideLoadingScreen();
+        Log.d("LOADING_SCREEN", "after hide");
     }
 
     @Override
