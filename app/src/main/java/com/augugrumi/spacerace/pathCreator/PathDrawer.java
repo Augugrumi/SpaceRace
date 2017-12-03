@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 
 import static com.augugrumi.spacerace.utility.Costants.DEFAULT_PIECE_DISPLAYED;
@@ -39,7 +40,8 @@ public class PathDrawer {
                        BitmapDescriptor lastNodeIcon) {
 
         this.map = map;
-        this.path = path;
+        this.path = new ArrayDeque<>();
+        this.path.addAll(path);
         last = path.getFirst();
         this.firstNodeIcon = firstNodeIcon;
         this.middleNodeIcon = middleNodeIcon;
@@ -62,18 +64,15 @@ public class PathDrawer {
             options.icon(firstNodeIcon);
             isFirstPop = false;
         } else {
+            last = path.pop();
+            options.position(last.getEnd());
 
             if (path.size() == 0) {
-                options.position(last.getEnd());
                 options.icon(lastNodeIcon);
             } else {
-                options.position(path.getFirst().getEnd());
                 options.icon(middleNodeIcon);
             }
         }
-
-        if (path.size() > 0)
-            last = path.getFirst();
 
         return map.addMarker(options);
     }

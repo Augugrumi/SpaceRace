@@ -26,7 +26,7 @@ public abstract class AbsHintFragment extends Fragment {
         view.setVisibility(View.VISIBLE);
     }
 
-    protected abstract void setHintData ();
+    public abstract void setHintData ();
 
     @Override
     public void onStart() {

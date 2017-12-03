@@ -642,6 +642,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     private boolean hintShown = false;
+    private boolean symbolShown = false;
     private void showHintIfNear() {
 
         if (lsf != null) {
@@ -665,8 +666,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 mCurrentLocation.getLongitude()
         );
 
-        if(CoordinatesUtility.get2DDistanceInKm(currentLatLng, poi)<KM_DISTANCE_MARKER)
+        if(CoordinatesUtility.get2DDistanceInKm(currentLatLng, poi)<KM_DISTANCE_MARKER
+                && !symbolShown) {
             drawer.drawNext();
+            symbolShown = true;
+        }
 
         if (CoordinatesUtility.get2DDistanceInKm(
                 currentLatLng,
@@ -766,6 +770,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     next = path.getFirst().getEnd();
                 hf.setPOI(poi, next);
 
+
                 getSupportFragmentManager()
                         .beginTransaction()
                         .add(R.id.hint_cont, (HintFragment) hf)
@@ -775,6 +780,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 popPoi();
             }
             hintShown = false;
+            symbolShown = false;
 
         } catch (Exception e) {
             Log.e("EXCEPTION_1", e.toString());
