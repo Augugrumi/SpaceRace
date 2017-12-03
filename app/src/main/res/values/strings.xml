@@ -459,6 +459,7 @@
     <string name="loading_action_1">Waiting for planets to be fully aligned…</string>
     <string name="end_match_win">You won!</string>
     <string name="end_match_loose">You lost!</string>
+    <string name="end_match_draw">Draw!</string>
     <string name="end_match_single_player">You reached the destination!</string>
     <string name="end_match_my_score_title">Your score is:</string>
     <string name="end_match_opponent_score_title">Your opponent\'s score is:</string>

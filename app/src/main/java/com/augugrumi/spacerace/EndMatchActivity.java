@@ -47,8 +47,6 @@ public class EndMatchActivity extends AppCompatActivity {
         int myScore = getIntent().getIntExtra(MapActivity.MY_SCORE, -1);
         int opponentScore = getIntent().getIntExtra(MapActivity.OPPONENT_SCORE, -1);
 
-        boolean win = myScore > opponentScore;
-
         myScoreText.setText("" + myScore);
 
         switch (opponentScore) {
@@ -62,8 +60,10 @@ public class EndMatchActivity extends AppCompatActivity {
                 break;
             default:
                 opponentScoreTextView.setText("" + opponentScore);
-                if (!win) {
+                if (myScore < opponentScore) {
                     endStringTextView.setText(R.string.end_match_loose);
+                } else if (myScore == opponentScore) {
+                    endStringTextView.setText(R.string.end_match_draw);
                 }
                 break;
         }
