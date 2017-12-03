@@ -46,19 +46,25 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
+import java.util.List;
 
 import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_HINT;
 import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_MARKER;
@@ -441,11 +447,21 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 // refresh ogni 2 sec -> record mondiale 8,33m/s => ~16 ogni 2 sec => 15
                 // per essere sicuri
                 if (CoordinatesUtility.distance(mCurrentLocation, oldLocation)<MAX_DIFFERENCE_UPDATE_POLYLINE) {
+
+                    List<PatternItem> dashItems = new ArrayList<>();
+                    // 5 and 10 pixel long dash
+                    dashItems.add(new Dash(5));
+                    dashItems.add(new Gap(25));
+                    dashItems.add(new Dash(15));
+
                     map.addPolyline(new PolylineOptions()
                             .add(new LatLng(oldLocation.getLatitude(),
                                             oldLocation.getLongitude()),
                                     new LatLng(mCurrentLocation.getLatitude(),
                                             mCurrentLocation.getLongitude()))
+                            .endCap(new RoundCap())
+                            .startCap(new RoundCap())
+                            .pattern(dashItems)
                             .width(30)
                             .color(Color.CYAN));
                     if (marker == null) {
