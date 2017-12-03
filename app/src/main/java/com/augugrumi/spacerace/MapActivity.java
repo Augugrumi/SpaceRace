@@ -765,11 +765,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                         .commit();
                 hf = new HintFragment();
 
-                LatLng next = null;
-                if (!path.isEmpty())
-                    next = path.getFirst().getEnd();
-                hf.setPOI(poi, next);
-
+                popPoi();
 
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -777,6 +773,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                         .hide(hf)
                         .commit();
             } else {
+                hf.setHintData();
                 popPoi();
             }
             hintShown = false;
@@ -806,7 +803,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
         if (drawer.hasNext()) {
             drawer.drawNext();
-            popPoi();
+            poi = path.getFirst().getEnd();
+            hf.setPOI(poi, poi);
         }
     }
 

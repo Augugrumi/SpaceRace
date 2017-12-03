@@ -274,6 +274,8 @@ public class HintFragment extends AbsHintFragment {
             nextHintText.setText(QuestionAnswerManager.getHint(nextPoi));
             placeImage.setImageDrawable(getActivity().getDrawable(QuestionAnswerManager.getImage(nextPoi)));
         }
+
+        showView(explanationView);
     }
 
     private ScoreCounter.Builder builder;
