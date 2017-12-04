@@ -24,6 +24,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.InvitationCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -122,12 +124,61 @@ public class MainActivity extends AbsRoomActivity implements NetworkChangeListen
                     public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
                         if (task.isSuccessful()) {
                             Log.d("SIGNIN", "signInSilently(): success");
-                            onConnected(task.getResult());
+                            try {
+                                onConnected(task.getResult());
+                            } catch (NullPointerException e) {
+                                mInvitationCallback = new InvitationCallback() {
+                                    // Called when we get an invitation to play a game. We react by showing that to the user.
+                                    @Override
+                                    public void onInvitationReceived(@NonNull Invitation invitation) {
+                                        // We got an invitation to play a game! So, store it in
+                                        // mIncomingInvitationId
+                                        // and show the popup on the screen.
+                                        mIncomingInvitationId = invitation.getInvitationId();
+                                        showPopUpNotification(true,
+                                                invitation.getInviter().getDisplayName());
+                                    }
+
+                                    @Override
+                                    public void onInvitationRemoved(@NonNull String invitationId) {
+
+                                        if (mIncomingInvitationId != null && mIncomingInvitationId.equals(invitationId)) {
+                                            mIncomingInvitationId = null;
+                                            showPopUpNotification(false, ""); // This will hide the invitation popup
+                                        }
+                                    }
+                                };
+                                mInvitationsClient.registerInvitationCallback(mInvitationCallback);
+                            }
                             enablePlayButtons();
                         } else {
                             Log.d("SIGNIN", "signInSilently(): failure", task.getException());
+                            try {
+                                onDisconnected();
+                            } catch (NullPointerException e) {
+                                mInvitationCallback = new InvitationCallback() {
+                                    // Called when we get an invitation to play a game. We react by showing that to the user.
+                                    @Override
+                                    public void onInvitationReceived(@NonNull Invitation invitation) {
+                                        // We got an invitation to play a game! So, store it in
+                                        // mIncomingInvitationId
+                                        // and show the popup on the screen.
+                                        mIncomingInvitationId = invitation.getInvitationId();
+                                        showPopUpNotification(true,
+                                                invitation.getInviter().getDisplayName());
+                                    }
 
-                            onDisconnected();
+                                    @Override
+                                    public void onInvitationRemoved(@NonNull String invitationId) {
+
+                                        if (mIncomingInvitationId != null && mIncomingInvitationId.equals(invitationId)) {
+                                            mIncomingInvitationId = null;
+                                            showPopUpNotification(false, ""); // This will hide the invitation popup
+                                        }
+                                    }
+                                };
+                                mInvitationsClient.registerInvitationCallback(mInvitationCallback);
+                            }
                         }
                     }
                 });
