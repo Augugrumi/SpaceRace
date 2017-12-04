@@ -840,17 +840,23 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     .beginTransaction()
                     .hide(mapFragment)
                     .commit();
-            Thread.sleep(500);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                     .hide(lsf)
-                    .add(R.id.hint_cont, hf)
-                    .show(hf)
                     .commitNow();
+
         } catch (Exception e) {
             Log.e("EXCEPTION_2", e.toString());
             e.printStackTrace();
+        } finally {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .add(R.id.hint_cont, hf)
+                    .show(hf)
+                    .commitNow();
         }
 
         Log.d("LOADING_SCREEN", "Loading screen stopped");
