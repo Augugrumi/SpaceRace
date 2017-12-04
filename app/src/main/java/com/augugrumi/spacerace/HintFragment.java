@@ -1,3 +1,23 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace;
 
 import android.os.Bundle;
@@ -135,7 +155,7 @@ public class HintFragment extends AbsHintFragment {
 
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
-                QuestionAnswerManager.getQuestionAnswers(poi, 1);
+                QuestionAnswerManager.getQuestionAnswers(actualPoi, 1);
 
         question1Text.setText(qa.getQuestion());
         answers = qa.getAnswers();
@@ -164,12 +184,12 @@ public class HintFragment extends AbsHintFragment {
                 break;
         }
 
-        builder.appendAnswer(poi, 1, givenAnswer);
-        totalScoreBuilder.appendAnswer(poi, 1, givenAnswer);
+        builder.appendAnswer(actualPoi, 1, givenAnswer);
+        totalScoreBuilder.appendAnswer(actualPoi, 1, givenAnswer);
 
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
-                QuestionAnswerManager.getQuestionAnswers(poi, 2);
+                QuestionAnswerManager.getQuestionAnswers(actualPoi, 2);
         question2Text.setText(qa.getQuestion());
         answers = qa.getAnswers();
         Collections.shuffle(answers);
@@ -197,12 +217,12 @@ public class HintFragment extends AbsHintFragment {
                 break;
         }
 
-        builder.appendAnswer(poi, 2, givenAnswer);
-        totalScoreBuilder.appendAnswer(poi, 2, givenAnswer);
+        builder.appendAnswer(actualPoi, 2, givenAnswer);
+        totalScoreBuilder.appendAnswer(actualPoi, 2, givenAnswer);
 
         List<String> answers;
         QuestionAnswerManager.QuestionAnswers qa =
-                QuestionAnswerManager.getQuestionAnswers(poi, 3);
+                QuestionAnswerManager.getQuestionAnswers(actualPoi, 3);
         question3Text.setText(qa.getQuestion());
         answers = qa.getAnswers();
         Collections.shuffle(answers);
@@ -230,17 +250,28 @@ public class HintFragment extends AbsHintFragment {
                 break;
         }
 
-        builder.appendAnswer(poi, 3, givenAnswer);
-        totalScoreBuilder.appendAnswer(poi, 3, givenAnswer);
+        builder.appendAnswer(actualPoi, 3, givenAnswer);
+        totalScoreBuilder.appendAnswer(actualPoi, 3, givenAnswer);
 
         scoreText.setText(builder.build().getScore()+"/3");
+
+        if (nextPoi == null)
+            nextHintBtn.setText(android.R.string.ok);
 
         showView(quizResultView);
     }
 
-    @OnClick({R.id.skip_quiz_btn, R.id.to_next_hint_btn, R.id.to_text_hint})
+    @OnClick(R.id.to_text_hint)
     public void onClickSkipOrFinishedQuiz(View v) {
         showView(nextHintView);
+    }
+
+    @OnClick({R.id.to_next_hint_btn, R.id.skip_quiz_btn})
+    public void onNextHint(View v) {
+        if (nextPoi == null)
+            parent.hideHintAndShowMap();
+        else
+            showView(nextHintView);
     }
 
     @OnClick(R.id.to_image_hint)
@@ -254,25 +285,30 @@ public class HintFragment extends AbsHintFragment {
     }
 
     @Override
-    protected void setHintData () {
-        explanationTitleText.setText(QuestionAnswerManager.getTitle(poi));
-        explanationContentText.setText(QuestionAnswerManager.getCard(poi));
+    public void setHintData () {
+        Log.d("POI_SETHINT", actualPoi.toString());
+        explanationTitleText.setText(QuestionAnswerManager.getTitle(actualPoi));
+        explanationContentText.setText(QuestionAnswerManager.getCard(actualPoi));
 
-        nextHintText.setText(QuestionAnswerManager.getHint(poi));
-        placeImage.setImageDrawable(getActivity().getDrawable(QuestionAnswerManager.getImage(poi)));
+        if (nextPoi != null) {
+            nextHintText.setText(QuestionAnswerManager.getHint(nextPoi));
+            placeImage.setImageDrawable(getActivity().getDrawable(QuestionAnswerManager.getImage(nextPoi)));
+        }
+
+        showView(explanationView);
     }
 
     private ScoreCounter.Builder builder;
 
-    public void setPOI(LatLng poi) {
-        super.setPOI(poi);
+    public void setPOI(LatLng actualPoi, LatLng nextPoi) {
+        super.setPOI(actualPoi, nextPoi);
 
         builder = new ScoreCounter.Builder()
-                .appendPOIQuestions(poi);
+                .appendPOIQuestions(actualPoi);
 
         if (totalScoreBuilder == null)
             totalScoreBuilder = new ScoreCounter.Builder();
-        totalScoreBuilder.appendPOIQuestions(poi);
+        totalScoreBuilder.appendPOIQuestions(actualPoi);
     }
 
     public ScoreCounter getTotalScore() {

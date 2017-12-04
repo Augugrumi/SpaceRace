@@ -1,3 +1,23 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace;
 
 import android.content.Intent;
@@ -17,6 +37,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.championswimmer.libsocialbuttons.fabs.FABFacebook;
 
+import static com.augugrumi.spacerace.utility.Costants.FACEBOOK_URI;
+import static com.augugrumi.spacerace.utility.Costants.GITHUB_URI;
+
 public class CreditsActivity extends AppCompatActivity {
     @BindView(R.id.facebook)
     FABFacebook fabFacebook;
@@ -35,13 +58,13 @@ public class CreditsActivity extends AppCompatActivity {
 
     @OnClick(R.id.facebook)
     public void goOnFacebookPage() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fb.me/spaceracepsw"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_URI));
         startActivity(browserIntent);
     }
 
     @OnClick(R.id.github)
     public void goOnGithubPage() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Augugrumi"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URI));
         startActivity(browserIntent);
     }
 }

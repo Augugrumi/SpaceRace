@@ -1,3 +1,23 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace.pathCreator;
 
 import android.graphics.Bitmap;
@@ -12,7 +32,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
+
+import static com.augugrumi.spacerace.utility.Costants.DEFAULT_PIECE_DISPLAYED;
+import static com.augugrumi.spacerace.utility.Costants.ICON_DIMENSION;
 
 /**
  * Created by davide on 19/11/17.
@@ -36,7 +60,8 @@ public class PathDrawer {
                        BitmapDescriptor lastNodeIcon) {
 
         this.map = map;
-        this.path = path;
+        this.path = new ArrayDeque<>();
+        this.path.addAll(path);
         last = path.getFirst();
         this.firstNodeIcon = firstNodeIcon;
         this.middleNodeIcon = middleNodeIcon;
@@ -59,25 +84,20 @@ public class PathDrawer {
             options.icon(firstNodeIcon);
             isFirstPop = false;
         } else {
+            last = path.pop();
+            options.position(last.getEnd());
 
             if (path.size() == 0) {
-                options.position(last.getEnd());
                 options.icon(lastNodeIcon);
             } else {
-                options.position(path.getFirst().getEnd());
                 options.icon(middleNodeIcon);
             }
         }
-
-        if (path.size() > 0)
-            last = path.getFirst();
 
         return map.addMarker(options);
     }
 
     public static class Builder {
-
-        private static final int ICON_DIMENSION = 90;
 
         private GoogleMap map;
         private Deque<PathCreator.DistanceFrom> path;
@@ -89,7 +109,7 @@ public class PathDrawer {
 
             Bitmap toScale = BitmapFactory.decodeResource(
                     SpaceRace.getAppContext().getResources(),
-                    R.drawable.ic_account_balance_black_48dp);
+                    DEFAULT_PIECE_DISPLAYED);
             toScale = Bitmap.createScaledBitmap(toScale,
                     ICON_DIMENSION,
                     ICON_DIMENSION,

@@ -1,3 +1,23 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace.utility.gameutility.piece;
 
 import android.graphics.Bitmap;
@@ -9,34 +29,17 @@ import com.augugrumi.spacerace.SpaceRace;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
+import static com.augugrumi.spacerace.utility.Costants.FINAL_GOAL;
+import static com.augugrumi.spacerace.utility.Costants.HINT;
+import static com.augugrumi.spacerace.utility.Costants.LIST_OF_PIECES;
+import static com.augugrumi.spacerace.utility.Costants.MIDDLE_GOAL;
+import static com.augugrumi.spacerace.utility.Costants.START;
+
 /**
  * Created by dpolonio on 09/11/17.
  */
 
 public class PiecePicker {
-
-    private final static int[] LIST_OF_PIECES = {
-            R.drawable.piece_alien_monster,
-            R.drawable.piece_billed_cap,
-            R.drawable.piece_extraterrestrial_alien,
-            R.drawable.piece_flying_saucer,
-            R.drawable.piece_mage,
-            R.drawable.piece_male_astronaut,
-            R.drawable.piece_male_singer,
-            R.drawable.piece_moyai,
-            R.drawable.piece_robot_face,
-            R.drawable.piece_rocket,
-            R.drawable.piece_satellite,
-            R.drawable.piece_satellite_antenna,
-            R.drawable.piece_sleuth_or_spy,
-            R.drawable.piece_telescope,
-            R.drawable.piece_unicorn_face
-    };
-
-    private final static int FINAL_GOAL = R.drawable.piece_direct_hit;
-    private final static int START = R.drawable.piece_european_castle;
-    private final static int MIDDLE_GOAL = R.drawable.piece_gem_stone;
-    private final static int HINT = R.drawable.piece_scroll;
 
     public static int pickRandomPieceResource() {
 

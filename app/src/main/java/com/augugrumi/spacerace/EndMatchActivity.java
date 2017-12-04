@@ -1,3 +1,23 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace;
 
 import android.content.Intent;
@@ -47,8 +67,6 @@ public class EndMatchActivity extends AppCompatActivity {
         int myScore = getIntent().getIntExtra(MapActivity.MY_SCORE, -1);
         int opponentScore = getIntent().getIntExtra(MapActivity.OPPONENT_SCORE, -1);
 
-        boolean win = myScore > opponentScore;
-
         myScoreText.setText("" + myScore);
 
         switch (opponentScore) {
@@ -62,8 +80,10 @@ public class EndMatchActivity extends AppCompatActivity {
                 break;
             default:
                 opponentScoreTextView.setText("" + opponentScore);
-                if (!win) {
+                if (myScore < opponentScore) {
                     endStringTextView.setText(R.string.end_match_loose);
+                } else if (myScore == opponentScore) {
+                    endStringTextView.setText(R.string.end_match_draw);
                 }
                 break;
         }
@@ -96,5 +116,13 @@ public class EndMatchActivity extends AppCompatActivity {
     @OnClick(R.id.go_to_the_home)
     public void onClickGoToHome(View view) {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(EndMatchActivity.this, MainActivity.class));
+        finish();
     }
 }

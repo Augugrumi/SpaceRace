@@ -1,8 +1,27 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -15,8 +34,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -49,39 +66,42 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
+import java.util.List;
+
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_HINT;
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_MARKER;
+import static com.augugrumi.spacerace.utility.Costants.PIECE_SIZE;
 
 
 public abstract class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
-
     public static final String MY_SCORE = "my_score_intent";
     public static final String OPPONENT_SCORE = "my_opponent_score_intent";
+    private static final int piece = PiecePicker.pickRandomPieceResource();
 
     protected int myScore = -1;
     protected int opponentScore = -1;
 
-    private static final int PIECE_SIZE=95;
-    private static final int piece = PiecePicker.pickRandomPieceResource();
+    protected LatLng poi;
 
-    /************************FORDEBUG**************************/
-    private LatLng poi = new LatLng(45.4108011, 11.8880358);
-    /************************FORDEBUG**************************/
-
-    private static final double KM_DISTANCE_MARKER = 0.50;
-    private static final double KM_DISTANCE_HINT = 0.20;
 
     /**
      * Code used in requesting runtime permissions.
@@ -150,7 +170,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     /**
      * Represents a geographical location.
      */
-    private Location mCurrentLocation;
+    protected Location mCurrentLocation;
 
     /**
      * Tracks the status of the location updates request. Value changes when the user presses the
@@ -181,6 +201,7 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_map);
 
         lsf = new LoadingScreenFragment();
+        hf = new FirstHintFragment();
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -219,8 +240,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         }
 
         LanguageManager.languageManagement(this);
-
-        hf = new FirstHintFragment();
 
         keepScreenOn();
     }
@@ -443,15 +462,25 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         }
 
         if (mCurrentLocation != null) {
-            if (oldLocation!=null) {
+            if (oldLocation!= null) {
                 // refresh ogni 2 sec -> record mondiale 8,33m/s => ~16 ogni 2 sec => 15
                 // per essere sicuri
                 if (CoordinatesUtility.distance(mCurrentLocation, oldLocation)<MAX_DIFFERENCE_UPDATE_POLYLINE) {
+
+                    List<PatternItem> dashItems = new ArrayList<>();
+                    // 5 and 10 pixel long dash
+                    dashItems.add(new Dash(5));
+                    dashItems.add(new Gap(25));
+                    dashItems.add(new Dash(15));
+
                     map.addPolyline(new PolylineOptions()
                             .add(new LatLng(oldLocation.getLatitude(),
                                             oldLocation.getLongitude()),
                                     new LatLng(mCurrentLocation.getLatitude(),
                                             mCurrentLocation.getLongitude()))
+                            .endCap(new RoundCap())
+                            .startCap(new RoundCap())
+                            .pattern(dashItems)
                             .width(30)
                             .color(Color.CYAN));
                     if (marker == null) {
@@ -460,7 +489,10 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                     }
                     marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 }
-                showHintIfNear();
+                if (drawer != null) {
+
+                    showHintIfNear();
+                }
             }
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mCurrentLocation.getLatitude(),
@@ -638,10 +670,14 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
     private void popPoi () {
         poi = path.pop().getEnd();
-        hf.setPOI(poi);
+        LatLng next = null;
+        if (!path.isEmpty())
+            next = path.getFirst().getEnd();
+        hf.setPOI(poi, next);
     }
 
     private boolean hintShown = false;
+    private boolean symbolShown = false;
     private void showHintIfNear() {
 
         if (lsf != null) {
@@ -665,8 +701,11 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
                 mCurrentLocation.getLongitude()
         );
 
-        if(CoordinatesUtility.get2DDistanceInKm(currentLatLng, poi)<KM_DISTANCE_MARKER)
+        if(CoordinatesUtility.get2DDistanceInKm(currentLatLng, poi)<KM_DISTANCE_MARKER
+                && !symbolShown) {
             drawer.drawNext();
+            symbolShown = true;
+        }
 
         if (CoordinatesUtility.get2DDistanceInKm(
                 currentLatLng,
@@ -684,18 +723,17 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
             getSupportFragmentManager().
                     beginTransaction()
                     .hide(mapFragment)
-                    .commit();
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.hint_cont, hf)
+                    .show(hf)
                     .commit();
 
             Log.d("POI", poi.toString());
-            hf.setPOI(poi);
+            LatLng next = null;
+            if (!path.isEmpty())
+                next = path.getFirst().getEnd();
+            hf.setPOI(poi, next);
 
-            if (path != null && !path.isEmpty())
-                drawPath();
+            /*if (path != null && !path.isEmpty())
+                drawPath();*/
 
             hintShown = true;
         }
@@ -745,25 +783,42 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void hideHintAndShowMap() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .hide(hf)
-                .commit();
 
-        if (hf instanceof FirstHintFragment) {
+        try {
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
             getSupportFragmentManager()
                     .beginTransaction()
-                    .remove(hf)
-                    .commit();
-            hf = new HintFragment();
-        }
+                    .hide(hf)
+                    .show(mapFragment)
+                    .commitNow();
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager().
-                beginTransaction()
-                .show(mapFragment)
-                .commit();
+            if (hf instanceof FirstHintFragment) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(hf)
+                        .commitNow();
+                hf = new HintFragment();
+
+                popPoi();
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.hint_cont, (HintFragment) hf)
+                        .hide(hf)
+                        .commitNow();
+            } else {
+                hf.setHintData();
+                popPoi();
+            }
+            hintShown = false;
+            symbolShown = false;
+
+        } catch (Exception e) {
+            Log.e("EXCEPTION_1", e.toString());
+            e.printStackTrace();
+        }
 
         startLocationUpdates();
     }
@@ -784,7 +839,8 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
 
         if (drawer.hasNext()) {
             drawer.drawNext();
-            popPoi();
+            poi = path.getFirst().getEnd();
+            hf.setPOI(poi, poi);
         }
     }
 
@@ -793,23 +849,35 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
     }
 
     protected void hideLoadingScreen() {
-
         Log.d("LOADING_SCREEN", "Stopping loading screen");
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .hide(mapFragment)
-                .commit();
+        try {
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .hide(lsf)
-                .add(R.id.hint_cont, hf)
-                .show(hf)
-                .commit();
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .hide(mapFragment)
+                    .commit();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .hide(lsf)
+                    .commitNow();
+
+        } catch (Exception e) {
+            Log.e("EXCEPTION_2", e.toString());
+            e.printStackTrace();
+        } finally {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .add(R.id.hint_cont, hf)
+                    .show(hf)
+                    .commitNow();
+        }
 
         Log.d("LOADING_SCREEN", "Loading screen stopped");
     }
@@ -823,5 +891,6 @@ public abstract class MapActivity extends AppCompatActivity implements OnMapRead
         intent.putExtra(MY_SCORE, myScore);
         intent.putExtra(OPPONENT_SCORE, opponentScore);
         startActivity(intent);
+        finish();
     }
 }

@@ -1,3 +1,23 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace.pathCreator;
 
 import android.support.annotation.NonNull;
@@ -27,18 +47,17 @@ import java.util.concurrent.FutureTask;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.augugrumi.spacerace.utility.Costants.HOP_MIN_NUM;
+import static com.augugrumi.spacerace.utility.Costants.MAX_DISTANCE_FIRST_HOP;
+import static com.augugrumi.spacerace.utility.Costants.MIN_DISTANCE_FIRST_HOP;
+import static com.augugrumi.spacerace.utility.Costants.MODE;
+import static com.augugrumi.spacerace.utility.Costants.MODE_DEBUG;
+
 /**
  * Created by dpolonio on 15/11/17.
  */
 
 public class PathCreator {
-
-    private static final String MODE = "DEBUG";
-
-    private final static double MAX_DISTANCE_FIRST_HOP = 10;
-    private final static double MIN_DISTANCE_FIRST_HOP = 0;
-
-    private static final int HOP_MIN_NUM = 1;
 
     public static class DistanceFrom {
 
@@ -149,61 +168,10 @@ public class PathCreator {
             final Call<Object> path = new PathRetrieval().getDirections(init, dest);
 
             FutureTask<DistanceFrom> task;
-            if (MODE!="DEBUG") {
-                task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
-                    @Override
-                    public DistanceFrom call() throws Exception {
-                        Response<Object> response = path.execute();
-                        try {
-
-                            Log.d("POS_FINDER", "ORIGINAL JSON: " + response.body().toString());
-
-                            int pos = response.body().toString().indexOf(toMatch);
-                            if (pos >= 0) {
-
-                                pos += toMatch.length();
-
-                                String semiSanitized = response.body().toString().substring(pos, pos + 10);
-                                pos = semiSanitized.indexOf('m');
-                                String sanitized = semiSanitized.substring(0, pos + 1);
-                                sanitized = sanitized.trim();
-                                sanitized = sanitized.replaceAll(" ", "");
-
-                                double distance = -1;
-                                if (sanitized.indexOf("km") != 0) {
-                                    Log.d("POS_FINDER", "DISTANCE IN KM");
-
-                                    distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 2));
-
-                                    Log.d("POS_FINDER", "Res in kilometers is: " + distance);
-                                    distance *= 1000; // We need the distance in meters
-                                } else if (sanitized.indexOf('m') != 0) {
-                                    Log.d("POS_FINDER", "DISTANCE IN METERS");
-
-                                    distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 1));
-
-                                    Log.d("POS_FINDER", "Res in meters is: " + distance);
-                                }
-
-                                return new DistanceFrom(start, destination, distance);
-
-                            }
-                        } catch (JsonSyntaxException e) {
-                            e.printStackTrace();
-                        }
-
-                        return new DistanceFrom(start, destination, -1);
-                    }
-                });
+            if (MODE != MODE_DEBUG) {
+                task = createTaskWithDistanceApi(start, destination, path, toMatch);
             } else {
-                task = new FutureTask<DistanceFrom>(new Callable<DistanceFrom>() {
-                    @Override
-                    public DistanceFrom call() throws Exception {
-                        return new DistanceFrom(start, destination,
-                                CoordinatesUtility.distance(start.latitude, start.longitude,
-                                        destination.latitude, destination.longitude));
-                    }
-                });
+                task = createTaskWithoutDistanceApi(start, destination);
             }
             res.add(task);
             threadManager.execute(task);
@@ -307,5 +275,70 @@ public class PathCreator {
             }
         }
         return res;
+    }
+
+    private FutureTask<DistanceFrom> createTaskWithoutDistanceApi
+                                            (final LatLng start, final LatLng destination){
+        return new FutureTask<>(new Callable<DistanceFrom>() {
+            @Override
+            public DistanceFrom call() throws Exception {
+                return new DistanceFrom(start, destination,
+                        CoordinatesUtility.distance(start.latitude, start.longitude,
+                                destination.latitude, destination.longitude));
+            }
+        });
+    }
+
+    private FutureTask<DistanceFrom> createTaskWithDistanceApi
+            (final LatLng start, final LatLng destination, final Call<Object> path, final String toMatch){
+        return new FutureTask<>(new Callable<DistanceFrom>() {
+            @Override
+            public DistanceFrom call() throws Exception {
+                Response<Object> response = path.execute();
+                DistanceFrom toReturn;
+                try {
+
+                    Log.d("POS_FINDER", "ORIGINAL JSON: " + response.body().toString());
+
+                    int pos = response.body().toString().indexOf(toMatch);
+                    if (pos >= 0) {
+
+                        pos += toMatch.length();
+
+                        String semiSanitized = response.body().toString().substring(pos, pos + 10);
+                        pos = semiSanitized.indexOf('m');
+                        String sanitized = semiSanitized.substring(0, pos + 1);
+                        sanitized = sanitized.trim();
+                        sanitized = sanitized.replaceAll(" ", "");
+
+                        double distance = -1;
+                        if (sanitized.indexOf("km") != 0) {
+                            Log.d("POS_FINDER", "DISTANCE IN KM");
+
+                            distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 2));
+
+                            Log.d("POS_FINDER", "Res in kilometers is: " + distance);
+                            distance *= 1000; // We need the distance in meters
+                        } else if (sanitized.indexOf('m') != 0) {
+                            Log.d("POS_FINDER", "DISTANCE IN METERS");
+
+                            distance = Double.parseDouble(sanitized.substring(0, sanitized.length() - 1));
+
+                            Log.d("POS_FINDER", "Res in meters is: " + distance);
+                        }
+
+                        return new DistanceFrom(start, destination, distance);
+
+                    }
+                    toReturn = new DistanceFrom(start, destination, -1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    toReturn = new DistanceFrom(start, destination,
+                                CoordinatesUtility.distance(start.latitude, start.longitude,
+                                destination.latitude, destination.longitude));
+                }
+                return toReturn;
+            }
+        });
     }
 }

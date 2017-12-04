@@ -1,3 +1,23 @@
+/**
+* Copyright 2017 Davide Polonio <poloniodavide@gmail.com>, Federico Tavella
+* <fede.fox16@gmail.com> and Marco Zanella <zanna0150@gmail.com>
+* 
+* This file is part of SpaceRace.
+* 
+* SpaceRace is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SpaceRace is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SpaceRace.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package com.augugrumi.spacerace;
 
 import android.content.DialogInterface;
@@ -10,6 +30,7 @@ import com.augugrumi.spacerace.listener.EndMatchReceiver;
 import com.augugrumi.spacerace.listener.PathReceiver;
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathManager;
+import com.augugrumi.spacerace.utility.CoordinatesUtility;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.maps.model.LatLng;
@@ -19,6 +40,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Deque;
+
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_HINT;
 
 public class MultiPlayerActivity extends MapActivity
         implements PathReceiver, EndMatchReceiver{
@@ -39,16 +62,18 @@ public class MultiPlayerActivity extends MapActivity
 
     protected void createAndDrawPath() {
         if (hasToCreatePath) {
-            PathCreator p = new PathCreator(
-                    new LatLng(
-                            initialPosition.getLatitude(),
-                            initialPosition.getLongitude()
-                    ),
-                    0.3,
-                    2.5);
 
-            path = p.generatePath();
+            while(path == null || path.isEmpty()) {
+                PathCreator p = new PathCreator(
+                        new LatLng(
+                                initialPosition.getLatitude(),
+                                initialPosition.getLongitude()
+                        ),
+                        0.3,
+                        2.5);
 
+                path = p.generatePath();
+            }
             sendPath(path);
 
             drawPath();
@@ -107,26 +132,31 @@ public class MultiPlayerActivity extends MapActivity
     @Override
     public void receiveAck() {
         Log.d("ACK_RECEIVED", "ack");
-
         hideLoadingScreen();
+        Log.d("LOADING_SCREEN", "after hide");
     }
 
     @Override
     public void hideHintAndShowMap() {
         super.hideHintAndShowMap();
 
+        if (mCurrentLocation != null) {
+            LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 
-        if (path.isEmpty()) {
-            myScore = getTotalScore().getScore();
-            SpaceRace.messageManager.sendToAllReliably(
-                    new EndMessageBuilder()
-                            .setType(END_MATCH)
-                            .setScore(myScore)
-                            .build()
-            );
-            Games.getLeaderboardsClient(this,
-                    GoogleSignIn.getLastSignedInAccount(this))
-                    .submitScore(getString(R.string.leaderboard_id), myScore);
+            if (path.isEmpty() && CoordinatesUtility.get2DDistanceInKm(currentLatLng,
+                    poi) < KM_DISTANCE_HINT) {
+
+                myScore = getTotalScore().getScore();
+                SpaceRace.messageManager.sendToAllReliably(
+                        new EndMessageBuilder()
+                                .setType(END_MATCH)
+                                .setScore(myScore)
+                                .build()
+                );
+                Games.getLeaderboardsClient(this,
+                        GoogleSignIn.getLastSignedInAccount(this))
+                        .submitScore(getString(R.string.leaderboard_id), myScore);
+            }
         }
     }
 
