@@ -37,8 +37,8 @@
     <string name="license_failed">Controllo della licenza fallito.</string>
     <string name="unknown_error">Errore sconosciuto.</string>
     <string name="title_activity_sign_in">SignInActivity</string>
-    <string name="new_match">Crea una nuova partita</string>
-    <string name="join_existing_match">Unisciti a una partita</string>
+    <string name="new_match">Crea una nuova partita multiplayer</string>
+    <string name="join_existing_match">Unisciti a una partita multiplayer</string>
     <string name="high_scores">Punteggi</string>
     <string name="credits">Crediti</string>
     <string name="title_activity_credits">CreditsActivity</string>

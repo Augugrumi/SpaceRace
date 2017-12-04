@@ -53,8 +53,8 @@
     <string name="title_activity_sign_in">SignInActivity</string>
 
     <!--main activity buttons-->
-    <string name="new_match">Create new match</string>
-    <string name="join_existing_match">Join existing match</string>
+    <string name="new_match">Create new multiplayer match</string>
+    <string name="join_existing_match">Join existing multiplayer match</string>
     <string name="high_scores">High scores</string>
     <string name="credits">Credits</string>
     <string name="title_activity_credits">CreditsActivity</string>
