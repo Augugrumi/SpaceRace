@@ -1,102 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="prato_valle">
-        <item>45.3988129</item>
-        <item>11.8756055</item>
+    <string-array translatable="false" name="position_1_prato_della_valle">
+        <item>45.398464</item>
+        <item>11.876525</item>
     </string-array>
     
-    <string-array name="basilica_sant_antonio">
-        <item>45.4013978</item>
-        <item>11.8785844</item>
+    <string-array translatable="false" name="position_2_sant_antonio_basilica">
+        <item>45.401180</item>
+        <item>11.881053</item>
     </string-array>
     
-    <string-array name="casa_galileo">
-        <item>45.3863555</item>
-        <item>11.8574948</item>
+    <string-array translatable="false" name="position_3_galileo_house">
+        <item>45.403379</item>
+        <item>11.881770</item>
     </string-array>
     
-    <string-array name="chiesa_san_francesco">
-        <item>45.4048849</item>
-        <item>11.8787972</item>
+    <string-array translatable="false" name="position_4_chiesa_san_francesco">
+        <item>45.404850</item>
+        <item>11.879260</item>
     </string-array>
     
-    <string-array name="chiesa_santa_sofia">
-        <item>45.4072275</item>
-        <item>11.8821707</item>
+    <string-array translatable="false" name="position_5_chiesa_santa_sofia">
+        <item>45.407224</item>
+        <item>11.884359</item>
     </string-array>
     
-    <string-array name="borgo_altinate">
+    <string-array translatable="false" name="position_6_borgo_altinate">
         <item>45.4082788</item>
         <item>11.8795842</item>
     </string-array>
     
-    <string-array name="chiesa_degli_eremitani">
-        <item>45.4101425</item>
-        <item>11.877933</item>
+    <string-array translatable="false" name="position_7_chiesa_eremitani">
+        <item>45.410472</item>
+        <item>11.879697</item>
     </string-array>
 
-    <string-array name="cappella_degli_scrovegni">
-        <item>45.4116696</item>
-        <item>11.8769395</item>
+    <string-array translatable="false" name="position_8_cappella_scrovegni">
+        <item>45.411666</item>
+        <item>11.879128</item>
     </string-array>
     
-    <string-array name="caffe_pedrocchi">
-        <item>45.407463</item>
-        <item>11.8753303</item>
+    <string-array translatable="false" name="position_9_caffè_pedrocchi">
+        <item>45.407366</item>
+        <item>11.877124</item>
     </string-array>
 
-    <string-array name="orologio_civile">
+    <string-array translatable="false" name="position_10_orologio_civile">
         <item>45.4077389</item>
         <item>11.8773198</item>
     </string-array>
     
-    <string-array name="bo">
-        <item>45.4067795</item>
-        <item>11.8750883</item>
+    <string-array translatable="false" name="position_11_galileo_university">
+        <item>45.406584</item>
+        <item>11.876788</item>
     </string-array>
     
-    <string-array name="palazzo_della_ragione">
-        <item>45.4067927</item>
-        <item>11.8726683</item>
+    <string-array translatable="false" name="position_12_palazzo_ragione">
+        <item>45.406784</item>
+        <item>11.875136</item>
     </string-array>
     
-    <!--<string-array name="verso_santa_lucia">
-        <item>0</item>
-        <item>0</item>
-    </string-array> -->
-    
-    <string-array name="oratorio_san_rocco">
-        <item>45.4086444</item>
-        <item>11.8733343</item>
+    <string-array translatable="false" name="position_13_santa_lucia">
+        <item>45.408641</item>
+        <item>11.875523</item>
     </string-array>
     
-    <string-array name="piazza_dei_signori">
-        <item>45.407544</item>
-        <item>11.8714289</item>
+    <string-array translatable="false" name="position_14_oratorio_san_rocco">
+        <item>45.408569</item>
+        <item>11.875215</item>
     </string-array>
     
-    <string-array name="chiesa_san_nicolo">
-        <item>45.408864</item>
-        <item>11.8703153</item>
+    <string-array translatable="false" name="position_15_piazza_signori">
+        <item>45.407540</item>
+        <item>11.873618</item>
     </string-array>
     
-    <string-array name="battistero_duomo">
-        <item>45.4066827</item>
-        <item>11.8702959</item>
+    <string-array translatable="false" name="position_16_chiesa_san_nicolò">
+        <item>45.408860</item>
+        <item>11.872504</item>
     </string-array>
     
-    <string-array name="piazza_capitaniato">
-        <item>45.4075288</item>
-        <item>11.8686772</item>
+    <string-array translatable="false" name="position_17_battistero_duomo">
+        <item>45.406679</item>
+        <item>11.872485</item>
     </string-array>
     
-    <string-array name="chiesa_san_pietro">
-        <item>45.4087296</item>
-        <item>11.8664117</item>
+    <string-array translatable="false" name="position_18_piazza_capitaniato">
+        <item>45.407958</item>
+        <item>11.872093</item>
     </string-array>
     
-    <string-array name="chiesa_san_tommaso">
-        <item>45.4032479</item>
-        <item>11.867147</item>
+    <string-array translatable="false" name="position_19_chiesa_san_pietro">
+        <item>45.408726</item>
+        <item>11.868600</item>
     </string-array>
+    
+    <string-array translatable="false" name="position_20_chiesa_san_tomaso">
+        <item>45.403244</item>
+        <item>11.869336</item>
+    </string-array>
+    
+    <string-array translatable="false" name="position_21_la_specola">
+        <item>45.401494</item>
+        <item>11.868317</item>
+    </string-array>
+    
+    
 </resources>

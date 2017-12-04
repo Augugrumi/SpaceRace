@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:clickable="false"
+        android:defaultValue=" "
+        android:enabled="false"
+        android:key="edit_text_preference_1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:visibility="invisible"
+        android:title="" />
+    <ListPreference
+        android:title="@string/map_style"
+        android:summary="@string/map_style_summary"
+        android:key="mapStyleKey"
+        android:defaultValue="@raw/dark_side_of_the_moon"
+        android:entries="@array/mapNamesArray"
+        android:entryValues="@array/mapValues" />
+
+    <Preference android:title="Title"
+        android:key="signInOut"
+        android:summary="Summary"/>
+
+    <ListPreference
+        android:title="@string/language_title"
+        android:summary="@string/language_summary"
+        android:key="languageKey"
+        android:entries="@array/languageNamesArray"
+        android:entryValues="@array/languageValues" />
+
+</PreferenceScreen>

@@ -16,25 +16,25 @@ import java.util.List;
 class PositionsLoader {
 
     private static final int[] POSITIONS = {
-            R.array.basilica_sant_antonio,
-            R.array.battistero_duomo,
-            R.array.bo,
-            R.array.borgo_altinate,
-            R.array.caffe_pedrocchi,
-            R.array.cappella_degli_scrovegni,
-            R.array.casa_galileo,
-            R.array.chiesa_degli_eremitani,
-            R.array.chiesa_san_francesco,
-            R.array.chiesa_san_nicolo,
-            R.array.chiesa_san_pietro,
-            R.array.chiesa_san_tommaso,
-            R.array.chiesa_santa_sofia,
-            R.array.oratorio_san_rocco,
-            R.array.orologio_civile,
-            R.array.palazzo_della_ragione,
-            R.array.piazza_capitaniato,
-            R.array.piazza_dei_signori,
-            R.array.prato_valle
+            R.array.position_2_sant_antonio_basilica,
+            R.array.position_17_battistero_duomo,
+            R.array.position_11_galileo_university,
+            R.array.position_6_borgo_altinate,
+            R.array.position_9_caffè_pedrocchi,
+            R.array.position_8_cappella_scrovegni,
+            R.array.position_3_galileo_house,
+            R.array.position_7_chiesa_eremitani,
+            R.array.position_4_chiesa_san_francesco,
+            R.array.position_16_chiesa_san_nicolò,
+            R.array.position_19_chiesa_san_pietro,
+            R.array.position_20_chiesa_san_tomaso,
+            R.array.position_5_chiesa_santa_sofia,
+            R.array.position_14_oratorio_san_rocco,
+            R.array.position_10_orologio_civile,
+            R.array.position_12_palazzo_ragione,
+            R.array.position_18_piazza_capitaniato,
+            R.array.position_15_piazza_signori,
+            R.array.position_1_prato_della_valle
     };
 
     static List<LatLng> getPositions() {

@@ -11,6 +11,12 @@
 
     <string name="slide3Title">Challenge your friends!</string>
 
+    <string name="slide4Title">Permissions</string>
+    <string name="slide4Subtitle">Space Race uses GPS to track you on the map! Please give to the application the permission to know your location</string>
+
+    <string name="slide5Title">Are you ready to kick off?</string>
+    <string name="slide5Subtitle">Put your spacesuit, close your helmet and explore Padova!</string>
+
 
     <string name="title_activity_room">RoomActivity</string>
 
@@ -24,14 +30,14 @@
     <string name="quick_game_explanation">Challenge a random opponent.</string>
     <string name="invite_players_explanation">Invite friends to play a game.</string>
     <string name="see_invitations_explanation">See who is inviting you right now.</string>
-    <string name="inv_popup_text">Incoming invitation!</string>
+    <string name="inv_popup_text">Incoming transmission</string>
     <string name="accept_popup_invite">Accept</string>
     <string name="sign_out">Sign Out</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="instructions">Click the button as fast as you can!</string>
     <string name="game_problem">An error occurred while starting the game. Please try again.</string>
     <string name="click_me">Click me!</string>
-    <string name="is_inviting_you">is challenging you to a game!</string>
+    <string name="is_inviting_you">do you accept the challenge?</string>
     <string name="signin_other_error">There was an issue with sign in. Please try again later.</string>
 
     <string name="gamehelper_sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
@@ -47,8 +53,8 @@
     <string name="title_activity_sign_in">SignInActivity</string>
 
     <!--main activity buttons-->
-    <string name="new_match">Create new match</string>
-    <string name="join_existing_match">Join existing match</string>
+    <string name="new_match">Create new multiplayer match</string>
+    <string name="join_existing_match">Join existing multiplayer match</string>
     <string name="high_scores">High scores</string>
     <string name="credits">Credits</string>
     <string name="title_activity_credits">CreditsActivity</string>
@@ -61,7 +67,6 @@
     <string name="slide3Subtitle">Sign In with Google, play and win!</string>
     <string name="warningSlider3Title">Login error</string>
     <string name="warningSlider3SubTitle">Something went wrong during the login</string>
-    <string name="title_activity_map">MapActivity</string>
 
     <!--map activity-->
     <string name="permission_rationale">Location permission is needed for core functionality</string>
@@ -70,13 +75,13 @@
     <string name="settings">Settings</string>
 
     <!--schede-->
-    <string name="introduction">Avete mai incontrato Galileo a Padova? E sapete che la prima stella cometa “con la coda” fu dipinta proprio a Padova da Giotto, nella celebre Cappella degli Scrovegni? Storie di stelle e pianeti, orologi e meridiane si nascondono nelle città, sotto un portico, dentro a una chiesa, sulla facciata di un palazzo e ci raccontano quanto la conoscenza del cielo fosse importante per i nostri antenati. Il progetto “Seconda stella a destra” traccia un itinerario alla ricerca degli elementi celesti disseminati nel centro storico di Padova e permette di scoprire una città non convenzionale, tra astronomia, arte e cultura.    L’itinerario parte simbolicamente da Prato della Valle, ai piedi della statua di Galileo Galilei, che proprio a Padova fece delle scoperte che cambiarono profondamente la nostra conoscenza astronomica. Il percorso si snoda tra i luoghi del centro storico, dentro le mura, e si conclude alla Specola, sede dell’Osservatorio astronomico di INAF – Istituto Nazionale di Astrofisica. Vi porterà a scoprire i luoghi di Galileo, dalla sede dell’Università in cui insegnava alla sua casa, i luoghi del tempo, come meridiane e orologi, e i luoghi del cielo, raffigurazioni cioè di volte stellate, simboli celesti, stemmi.  Potrete seguire l’itinerario per intero, scegliere un’esplorazione tematica o, ancora, creare il vostro percorso, saltando qua e là. L’importante è che ricordiate una cosa: di alzare gli occhi al cielo!</string>
+    <string name="introduction">Avete mai incontrato Galileo a Padova? E sapete che la   prima stella cometa “con la coda” fu dipinta proprio a Padova da Giotto, nella celebre Cappella degli Scrovegni? Storie di stelle e pianeti, orologi e meridiane si nascondono nelle città, sotto un portico, dentro a una chiesa, sulla facciata di un palazzo e ci raccontano quanto la conoscenza del cielo fosse importante per i nostri antenati. Il progetto “Seconda stella a destra” traccia un itinerario alla ricerca degli elementi celesti disseminati nel centro storico di Padova e permette di scoprire una città non convenzionale, tra astronomia, arte e cultura.    L’itinerario parte simbolicamente da Prato della Valle, ai piedi della statua di Galileo Galilei, che proprio a Padova fece delle scoperte che cambiarono profondamente la nostra conoscenza astronomica. Il percorso si snoda tra i luoghi del centro storico, dentro le mura, e si conclude alla Specola, sede dell’Osservatorio astronomico di INAF – Istituto Nazionale di Astrofisica. Vi porterà a scoprire i luoghi di Galileo, dalla sede dell’Università in cui insegnava alla sua casa, i luoghi del tempo, come meridiane e orologi, e i luoghi del cielo, raffigurazioni cioè di volte stellate, simboli celesti, stemmi.  Potrete seguire l’itinerario per intero, scegliere un’esplorazione tematica o, ancora, creare il vostro percorso, saltando qua e là. L’importante è che ricordiate una cosa: di alzare gli occhi al cielo!</string>
     <string name="card_1_prato_della_valle">Eyes toward the sky and arm pointing at something up there: have you ever met Galileo Galilei in Padua? You will find him in the spectacular Prato della Valle, where he appears as one of the 78 statues of illustrious people that decorate the largest square of the city (maybe the largest in Europe!). The “Prato”, that’s what the locals call this square, although it actually has a elliptical shape and a green island at the centre. It’s in an area reclaimed from a swamp, which was drained at the end of the Eighteenth century. It has always been a lively place and it still hosts a busy market every Saturday.</string>
     <string name="title_card_1">A date with Galileo</string>
     <string name="card_2_sant_antonio_basilica">For locals ”the Saint” is Saint Anthony: they’ll know who you mean. So universal and loved, he doesn’t even need to be named. Artists such as Giotto, Donatello, Mantegna and Giusto de’Menabuoi have all left their mark on “his” grand Basilica over the centuries. Its domes, its cloisters and its works of art reveal stories of devotion, spirituality and beauty. Inside you’ll find various starry vaults and outside a splendid sun on the entrance, a copy of the one by Mantegna, which you’ll find inside the Basilica. It’s an ancient symbol for divinity.</string>
     <string name="title_card_2">Where Mantegna’s Sun shines</string>
     <string name="card_3_galileo_house">Padua is the place where Galileo Galilei lived “the best eighteen years of my whole life”, teaching, studying and observing the sky. He lived in a street once called Borgo Vignali and later rechristened via Galileo Galilei. Apparently that’s the place where he discovered Jupiter’s satellites, a crucial moment in the birth of the modern scientific method. The house is not open to visitors, but there’s a plaque outside in memory of the scientist. For the rest, just free your imagination!</string>
-    <string name="title_card_3"></string>
+    <string name="title_card_3">Gallileo\'s home</string>
     <string name="card_4_chiesa_san_francesco">Almost hidden in a shadowy street, you will find this beautiful but neglected church, with 26 arches outside. Begun int he fifteenth century, it was once part of a great complex, including a convent, the first hospital in Padua, the charitable Scuola della Carità and the Oratorio di Santa Margherita. Inside the church, between an almost-secret garden and a canvas ascribed to Veronese, you will also find a plaque to Stella Stella, dedicated by his son.</string>
     <string name="title_card_4">The stars on</string>
     <string name="card_5_chiesa_santa_sofia">One of the oldest churches in town, Santa Sofia’s character comes from the contrast between the elegant external structure and the great sparseness of the interior. Its inclined façade can be intimidating, but it’s worth visiting the church because inside you will find other traces of Galileo’s presence. At the end of the nave is baptismal font where Vincenzo, the scientist’s third and last son, was christened.</string>
@@ -106,7 +111,7 @@
     <string name="card_17_battistero_duomo">In the area right behind the Ghetto, the pavement in front of the Duomo becomes a “square” for children playing and students on a short break. It hosts the Romanesque baptistery frescoed by Giusto de’ Menabuoi with scenes from the Old and New Testament, the Apocalypse and the Paradise. Notice the panel representing the creation of the world, a fascinating example of how the sky and the Earth were depicted according to the astronomical and geographical knowledge of the time.</string>
     <string name="title_card_17">The creation of the Universe</string>
     <string name="card_18_piazza_capitaniato">Piazza Capitaniato is familiar and elegant. It seems to invite you to stop for a break among its trees, its bicycles, the coming and going of the students. An intimate but lively place, once occupied by the Reggia dei Carraresi, the lords of Padua. The Reggia, today represented only by Sala dei Giganti and the loggia (in via Accademia),  was a meeting point for intellectuals and artists, including Galileo, Petrarch and the painter Guariento. The Reggia later became the seat of the Accademia Galileiana: a prestigious institution, founded in 1599, which brought together University professors, artists and thinkers, like Galileo himself. Today, the academy is still dedicated to cultural activities.</string>
-    <string name="title_card_18" translatable="false"></string>
+    <string name="title_card_18">Capitaniato Square</string>
     <string name="card_19_chiesa_san_pietro">Continuing your walk beyond the trees of piazza Capitaniato,  you will reach the borders of another Padua, quiet and ancient. Enjoy via Patriarcato, and follow it to the church of San Pietro, which is almost camouflaged between the palaces of the street that bears its name. Inside you will discover two starry skies: the first, inside the great dome above the altar, depicting the four evangelists; the second, intense and encircling, in the chapel dedicated to the Black Madonna of Loreto. The altar, depicting the four evangelists; the second, intense and encircling, in the chapel dedicated to the Black Madonna of Loreto.</string>
     <string name="title_card_19">The church with two skies</string>
     <string name="card_20_chiesa_san_tomaso">On Sant’Agostino bridge – which connects the riviera Paleocapa with piazza Castello – you will find this little-known church, which has a mysterious charm all of its own. If you have a look inside, you can see a gloomy sky, with a celestial object. The nature and meaning of this object remain uncertain even today.</string>
@@ -149,14 +154,322 @@
     <string name="to_next_hint">To next hint</string>
 
     <!--hint fragment - next hint-->
-    <string name="next_hint">Next hint</string>
+    <string name="next_hint">Hint</string>
 
+    <!--Preferences - maps-->
+    <string name="map_style">Map theme</string>
+    <string name="map_style_summary">Choose the theme of the map displayed</string>
+    <string name="mars_map" translatable="false">Bloody mars</string>
+    <string name="dark_moon_map" translatable="false">The dark side of the moon</string>
+    <string name="light_moon_map" translatable="false">The light side of the moon</string>
+    <string name="uranus" translatable="false">Uranus</string>
+
+    <!--Preferences - Sign-in/Sign-out-->
+    <string name="sign_in_button">Sign in</string>
+    <string name="sign_out_button">Sign out</string>
+    <string name="sign_in_summary_button">Access with your Google Play account</string>
+    <string name="sign_out_summary_button">Disconnect your account </string>
+
+    <!--Preferences - languages-->
+    <string name="language_title">Application language</string>
+    <string name="language_summary">Change the application language</string>
+    <string name="italian">Italian</string>
+    <string name="english">English</string>
+
+    <!--Dialog no path-->
+    <string name="path_problem">Path problem</string>
+    <string name="path_not_found">No path for the game found in your area</string>
 
     <!--debug-->
     <string name="lorem_ipsum_short" translatable="false">Lorem ipsum</string>
     <string name="lorem_ipsum_medium" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</string>
     <string name="lorem_ipsum" translatable="false">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</string>
-    <string name="title_activity_starting">StartingActivity</string>
 
     <string name="leaderboard_id" translatable="false">CgkI6vn-hvYMEAIQAQ</string>
+
+    <string name="preference_file_key" translatable="false">SpaceRacePreferences</string>
+
+    <string name="question_1_1">How many statues are there in Prato della Valle?</string>
+    <string name="answer_1_1_1">78</string>
+    <string name="answer_1_1_2">76</string>
+    <string name="answer_1_1_3">68</string>
+    <string name="question_1_2">When was the first statue positioned?</string>
+    <string name="answer_1_2_1">1775</string>
+    <string name="answer_1_2_2">1332</string>
+    <string name="answer_1_2_3">1446</string>
+    <string name="question_1_3">Who is the patron saint of Padua?</string>
+    <string name="answer_1_3_1">Saint Antonio</string>
+    <string name="answer_1_3_2">Saint Francesco</string>
+    <string name="answer_1_3_3">Saint Gennaro</string>
+    <string name="question_2_1">Where was Saint Antonio born?</string>
+    <string name="answer_2_1_1">Lisbon</string>
+    <string name="answer_2_1_2">Paris</string>
+    <string name="answer_2_1_3">Madrid</string>
+    <string name="question_2_2">Who did he meet in Assisi?</string>
+    <string name="answer_2_2_1">Saint Francis</string>
+    <string name="answer_2_2_2">Saint Gennaro</string>
+    <string name="answer_2_2_3">Saint Tommaso</string>
+    <string name="question_2_3">Where have Galileo been living between 1592 and 1610?</string>
+    <string name="answer_2_3_1">Padua</string>
+    <string name="answer_2_3_2">Pisa</string>
+    <string name="answer_2_3_3">Rome</string>
+    <string name="question_3_1">What does Galileo discover from his home?</string>
+    <string name="answer_3_1_1">Jupiter\'s satellites</string>
+    <string name="answer_3_1_2">Uranus\' satellites</string>
+    <string name="answer_3_1_3">The moon</string>
+    <string name="question_3_2">In what year did the Church cancel the condemnation to Galileo?</string>
+    <string name="answer_3_2_1">1992</string>
+    <string name="answer_3_2_2">1892</string>
+    <string name="answer_3_2_3">1792</string>
+    <string name="question_3_3">What is the Holy Protector of the Cubs (Scout)?</string>
+    <string name="answer_3_3_1">Saint Francesco from Assisi</string>
+    <string name="answer_3_3_2">Staint Giorgio</string>
+    <string name="answer_3_3_3">Staint Gennaro</string>
+    <string name="question_4_1">What did the complex of the Church of St. Francesco include in the 15th century?</string>
+    <string name="answer_4_1_1">The first hospital in Padua</string>
+    <string name="answer_4_1_2">The first parking in Padua</string>
+    <string name="answer_4_1_3">Marketplace</string>
+    <string name="question_4_2">To whom is a canvas attributed in the inside of the Church?</string>
+    <string name="answer_4_2_1">Veronese</string>
+    <string name="answer_4_2_2">Tiepolo</string>
+    <string name="answer_4_2_3">Giotto</string>
+    <string name="question_4_3">Which Greek word signifies \"wisdom\"?</string>
+    <string name="answer_4_3_1">Sophia</string>
+    <string name="answer_4_3_2">Giorgia</string>
+    <string name="answer_4_3_3">Anna</string>
+    <string name="question_5_1">Which is the name of the son of Galileo baptized in this church?</string>
+    <string name="answer_5_1_1">Vincenzo</string>
+    <string name="answer_5_1_2">Gianni</string>
+    <string name="answer_5_1_3">Marco</string>
+    <string name="question_5_2">In what century did the construction of the church begin?</string>
+    <string name="answer_5_2_1">IX</string>
+    <string name="answer_5_2_2">V</string>
+    <string name="answer_5_2_3">XIV</string>
+    <string name="question_5_3">Where were the main public channels once?</string>
+    <string name="answer_5_3_1">Borgo Altinate</string>
+    <string name="answer_5_3_2">Near the Piovego</string>
+    <string name="answer_5_3_3">Close to the station</string>
+    <string name="question_6_1">What is the motto of Borgo Altinate?</string>
+    <string name="answer_6_1_1">Where culture is fashion</string>
+    <string name="answer_6_1_2">So we went out to see the stars again</string>
+    <string name="answer_6_1_3">Second star on the right</string>
+    <string name="question_6_2">Where were the palaces of the noble Venetians built when the Serenissima Republic conquered the city?</string>
+    <string name="answer_6_2_1">In the streets of the Borgo</string>
+    <string name="answer_6_2_2">In Piazza dei Signori</string>
+    <string name="answer_6_2_3">In Via Altinate</string>
+    <string name="question_6_3">Which church was built by the Order of the Eremitani of St. Agostino?</string>
+    <string name="answer_6_3_1">Eremitani\'s Church</string>
+    <string name="answer_6_3_2">Scrovegni\'s Chapel</string>
+    <string name="answer_6_3_3">Saint Tomaso\'s Church</string>
+    <string name="question_7_1">When did the building of the church begin?</string>
+    <string name="answer_7_1_1">1264</string>
+    <string name="answer_7_1_2">1598</string>
+    <string name="answer_7_1_3">1876</string>
+    <string name="question_7_2">When was it struck by an Anglo-American bombing?</string>
+    <string name="answer_7_2_1">1944</string>
+    <string name="answer_7_2_2">1916</string>
+    <string name="answer_7_2_3">1832</string>
+    <string name="question_7_3">To which family of nobles is entitled a chapel in Padua?</string>
+    <string name="answer_7_3_1">Scrovegni</string>
+    <string name="answer_7_3_2">Medici</string>
+    <string name="answer_7_3_3">Este</string>
+    <string name="question_8_1">The Chapel is candidate to become...</string>
+    <string name="answer_8_1_1">Second UNESCO World Heritage Site of Padua</string>
+    <string name="answer_8_1_2">Eighth world wonder</string>
+    <string name="answer_8_1_3">Bishop\'s seat</string>
+    <string name="question_8_2">What period do the remains around the chapel date back to?</string>
+    <string name="answer_8_2_1">Roman era</string>
+    <string name="answer_8_2_2">Medieval era</string>
+    <string name="answer_8_2_3">Modern era</string>
+    <string name="question_8_3">A local conviction says that if you enter in this place during the first year of university, you will not graduate. Where is this place?</string>
+    <string name="answer_8_3_1">Caffè Pedrocchi</string>
+    <string name="answer_8_3_2">University of Padua</string>
+    <string name="answer_8_3_3">Arena Gardens</string>
+    <string name="question_9_1">How is Caffe Pedrocchi called?</string>
+    <string name="answer_9_1_1">Coffee without doors</string>
+    <string name="answer_9_1_2">Coffee without windows</string>
+    <string name="answer_9_1_3">Coffee without milk</string>
+    <string name="question_9_2">Who designed the building?</string>
+    <string name="answer_9_2_1">Giuseppe Jappelli</string>
+    <string name="answer_9_2_2">Lucio Fontana</string>
+    <string name="answer_9_2_3">Renzo Piano</string>
+    <string name="question_9_3">What\'s in February VIII street?</string>
+    <string name="answer_9_3_1">Civil Clock</string>
+    <string name="answer_9_3_2">Clock tower</string>
+    <string name="answer_9_3_3">A watchmaker</string>
+    <string name="question_10_1">The Civil Clock was built after the introduction of...</string>
+    <string name="answer_10_1_1">Civil time</string>
+    <string name="answer_10_1_2">Common time</string>
+    <string name="answer_10_1_3">Byzantine calendar</string>
+    <string name="question_10_2">If the civil time corresponds to that of the meridian that crosses the state, how can the civil time be called?</string>
+    <string name="answer_10_2_1">Winter time</string>
+    <string name="answer_10_2_2">Daylight savings time</string>
+    <string name="answer_10_2_3">Ora pro nobis</string>
+    <string name="question_10_3">What palace takes its name from the bove?</string>
+    <string name="answer_10_3_1">The Bo</string>
+    <string name="answer_10_3_2">Palace of the Ragione</string>
+    <string name="answer_10_3_3">Maldura\'s Palace</string>
+    <string name="question_11_1">In 1405, Francesco da Carrara gave Palazzo Bo to...</string>
+    <string name="answer_11_1_1">To a meat trader</string>
+    <string name="answer_11_1_2">A prostitute</string>
+    <string name="answer_11_1_3">To a shoemaker</string>
+    <string name="question_11_2">When did the University of Padua become the owner of the palace?</string>
+    <string name="answer_11_2_1">1539</string>
+    <string name="answer_11_2_2">1654</string>
+    <string name="answer_11_2_3">1245</string>
+    <string name="question_11_3">Which palace is called \"Salon\"?</string>
+    <string name="answer_11_3_1">Palace of the Ragione</string>
+    <string name="answer_11_3_2">The Bo</string>
+    <string name="answer_11_3_3">Liviano</string>
+    <string name="question_12_1">What does the palace cover recall?</string>
+    <string name="answer_12_1_1">A flipped ship</string>
+    <string name="answer_12_1_2">An ice cream pan</string>
+    <string name="answer_12_1_3">A dome</string>
+    <string name="question_12_2">How long is Palazzo della Ragione?</string>
+    <string name="answer_12_2_1">81 meters</string>
+    <string name="answer_12_2_2">200 meters</string>
+    <string name="answer_12_2_3">20 meters</string>
+    <string name="question_12_3">Where is Ezzellino\'s house?</string>
+    <string name="answer_12_3_1">Between Via San Fermo and Santa Lucia</string>
+    <string name="answer_12_3_2">Piazza Garibaldi</string>
+    <string name="answer_12_3_3">Corso Milano</string>
+    <string name="question_13_1">Who is Ezzellino?</string>
+    <string name="answer_13_1_1">A tyrant</string>
+    <string name="answer_13_1_2">An emperor</string>
+    <string name="answer_13_1_3">A juggler</string>
+    <string name="question_13_2">What was Ezzellino accused of?</string>
+    <string name="answer_13_2_1">Sufferers and heresy</string>
+    <string name="answer_13_2_2">Lust</string>
+    <string name="answer_13_2_3">Laziness</string>
+    <string name="question_13_3">To which French saint is dedicated the church?</string>
+    <string name="answer_13_3_1">Saint Rocco</string>
+    <string name="answer_13_3_2">Saint Domenico</string>
+    <string name="answer_13_3_3">Saint Giuseppe</string>
+    <string name="question_14_1">Of what scourge is San Rocco invoked protector?</string>
+    <string name="answer_14_1_1">The plague</string>
+    <string name="answer_14_1_2">The leprosy</string>
+    <string name="answer_14_1_3">Taxes</string>
+    <string name="question_14_2">When did the construction of the oratory begin?</string>
+    <string name="answer_14_2_1">1525</string>
+    <string name="answer_14_2_2">1256</string>
+    <string name="answer_14_2_3">1998</string>
+    <string name="question_14_3">Where is the clock tower?</string>
+    <string name="answer_14_3_1">Signori\' square</string>
+    <string name="answer_14_3_2">Square of the Herbs</string>
+    <string name="answer_14_3_3">Garibaldi\' square</string>
+    <string name="question_15_1">Which zodiacal sign is missing in the Clock Tower?</string>
+    <string name="answer_15_1_1">Libra</string>
+    <string name="answer_15_1_2">Lion</string>
+    <string name="answer_15_1_3">Cancer</string>
+    <string name="question_15_2">In what century was the square build?</string>
+    <string name="answer_15_2_1">XIV</string>
+    <string name="answer_15_2_2">III</string>
+    <string name="answer_15_2_3">XX</string>
+    <string name="question_15_3">From whom did the Santa Claus tradition originate?</string>
+    <string name="answer_15_3_1">Saint Nicholas</string>
+    <string name="answer_15_3_2">Saint Francis</string>
+    <string name="answer_15_3_3">Saint Agostino</string>
+    <string name="question_16_1">Saint Nicholas is the protector of...</string>
+    <string name="answer_16_1_1">Merchants and traders</string>
+    <string name="answer_16_1_2">Jugglers</string>
+    <string name="answer_16_1_3">Lawyers</string>
+    <string name="question_16_2">To whom is the canvas contained in the church attributed?</string>
+    <string name="answer_16_2_1">Giandomenico Tiepolo</string>
+    <string name="answer_16_2_2">Giotto da Bondone</string>
+    <string name="answer_16_2_3">Michelangelo Buonarroti</string>
+    <string name="question_16_3">Which building is dedicated to Saint Giovanni Battista?</string>
+    <string name="answer_16_3_1">Baptistery of Padua</string>
+    <string name="answer_16_3_2">The Bo</string>
+    <string name="answer_16_3_3">Maldura\'s palace</string>
+    <string name="question_17_1">Who has built the baptistery?</string>
+    <string name="answer_17_1_1">Giusto de Menabuoi</string>
+    <string name="answer_17_1_2">Galileo Galilei</string>
+    <string name="answer_17_1_3">Michelangelo Buonarroti</string>
+    <string name="question_17_2">In which century did the build of the baptistry begin?</string>
+    <string name="answer_17_2_1">XII</string>
+    <string name="answer_17_2_2">XXI</string>
+    <string name="answer_17_2_3">II</string>
+    <string name="question_17_3">Which association has the purpose of promoting humanistic and scientific disciplines?</string>
+    <string name="answer_17_3_1">Galilean Academy</string>
+    <string name="answer_17_3_2">Libera</string>
+    <string name="answer_17_3_3">FIGC</string>
+    <string name="question_18_1">Where is the venue of the academy?</string>
+    <string name="answer_18_1_1">Carraresi\'s lodge</string>
+    <string name="answer_18_1_2">Black lodge</string>
+    <string name="answer_18_1_3">Lionello\'s lodge</string>
+    <string name="question_18_2">Where is the Giants Hall?</string>
+    <string name="answer_18_2_1">Liviano\'s palace</string>
+    <string name="answer_18_2_2">Bo\'s palace</string>
+    <string name="answer_18_2_3">Maldura\'s palace</string>
+    <string name="question_18_3">What is the name of the first pope?</string>
+    <string name="answer_18_3_1">Peter</string>
+    <string name="answer_18_3_2">Mario</string>
+    <string name="answer_18_3_3">John</string>
+    <string name="question_19_1">What religious order was in the church?</string>
+    <string name="answer_19_1_1">Benedictine Nuns</string>
+    <string name="answer_19_1_2">Franciscan Friars</string>
+    <string name="answer_19_1_3">Capuchin Friars</string>
+    <string name="question_19_2">What is the canvas on the left of the first altar representing?</string>
+    <string name="answer_19_2_1">The conversion of Saint Paul</string>
+    <string name="answer_19_2_2">The Crucifixion of Jesus Christ</string>
+    <string name="answer_19_2_3">The assumption of Mary</string>
+    <string name="question_19_3">Which church is titled Tommaso Becket?</string>
+    <string name="answer_19_3_1">Church of St. Tomaso</string>
+    <string name="answer_19_3_2">Church of St. James</string>
+    <string name="answer_19_3_3">Church of St. Rocco</string>
+    <string name="question_20_1">What is the architectural style of the church?</string>
+    <string name="answer_20_1_1">Baroque</string>
+    <string name="answer_20_1_2">Manuelino</string>
+    <string name="answer_20_1_3">Neorenaissance</string>
+    <string name="question_20_2">What is the full name of the church?</string>
+    <string name="answer_20_2_1">Church of Saint Tomaso Cantauriense</string>
+    <string name="answer_20_2_2">Church of Saint Tomaso the Misc</string>
+    <string name="answer_20_2_3">Church of St. Tomaso the Apostle</string>
+    <string name="question_20_3">What building was used as the venue for the astronomical observatory of the University of Padua?</string>
+    <string name="answer_20_3_1">Specola</string>
+    <string name="answer_20_3_2">The Bo</string>
+    <string name="answer_20_3_3">Caffè Pedrocchi</string>
+    <string name="question_21_1">How many steps are there in Specola?</string>
+    <string name="answer_21_1_1">252</string>
+    <string name="answer_21_1_2">556</string>
+    <string name="answer_21_1_3">32</string>
+    <string name="question_21_2">What is the name of the tower on which the Specola is placed?</string>
+    <string name="answer_21_2_1">Torlonga</string>
+    <string name="answer_21_2_2">Archimede Tower</string>
+    <string name="answer_21_2_3">Tor Vergata</string>
+    <string name="question_21_3">Error</string>
+    <string name="answer_21_3_1">Error</string>
+    <string name="answer_21_3_2">Error</string>
+    <string name="answer_21_3_3">Error</string>
+
+    <string name="preamble_invitation">We captured a radio signal coming from</string>
+    <string name="decline_popup_button">Not now</string>
+
+    <string name="single_player_button">Explore Padova alone</string>
+
+    <!--alert dialog permission not granted-->
+    <string name="permission_granted_alert_title">Error permission not granted</string>
+    <string name="permission_granted_alert_summary">Application could not work without accessing the GPS position</string>
+
+    <!--alert dialog problem with signin-->
+    <string name="error_during_signin">Error during sign in</string>
+
+    <string name="loading">Loading…</string>
+    <string name="loading_tip_1">Do you know? Every time you answer correctly to a question, you gain one point. Get it right!</string>
+    <string name="loading_action_1">Waiting for planets to be fully aligned…</string>
+    <string name="end_match_win">You won!</string>
+    <string name="end_match_loose">You lost!</string>
+    <string name="end_match_draw">Draw!</string>
+    <string name="end_match_single_player">You reached the destination!</string>
+    <string name="end_match_my_score_title">Your score is:</string>
+    <string name="end_match_opponent_score_title">Your opponent\'s score is:</string>
+    <string name="go_home">Back to menu</string>
+    <string name="next">Next</string>
+    <string name="previous">Back</string>
+
+    <string name="exit">Do you really want to stop the race?</string>
+    <string name="your_opponent_retired">Your opponent left the match</string>
+
+    <string name="end_intro">Done</string>
+
 </resources>

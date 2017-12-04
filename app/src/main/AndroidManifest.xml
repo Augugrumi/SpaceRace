@@ -2,14 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.augugrumi.spacerace">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".SpaceRace"
         android:allowBackup="true"
+        android:configChanges="locale"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,23 +22,35 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme">
-        </activity>
-        <activity
-            android:name=".intro.IntroActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".RoomActivity"
-            android:label="@string/title_activity_room"
+            android:name=".intro.IntroActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".CreditsActivity"
-            android:label="@string/title_activity_credits"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MapActivity"
-            android:label="@string/title_activity_map"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".StartingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
@@ -44,15 +59,27 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".SpaceRacePreferenceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PreferencesTheme"/>
         <activity
-            android:name=".StartingActivity"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".SinglePlayerActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MultiPlayerActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <receiver android:name=".utility.NetworkingUtility">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.WIFI_STATE_CHANGED" />
             </intent-filter>
-        </activity>
+        </receiver>
+
+        <activity android:name=".EndMatchActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -12,7 +12,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
+
+import static com.augugrumi.spacerace.utility.Costants.DEFAULT_PIECE_DISPLAYED;
+import static com.augugrumi.spacerace.utility.Costants.ICON_DIMENSION;
 
 /**
  * Created by davide on 19/11/17.
@@ -25,6 +29,7 @@ public class PathDrawer {
     private BitmapDescriptor firstNodeIcon;
     private BitmapDescriptor middleNodeIcon;
     private BitmapDescriptor lastNodeIcon;
+    private PathCreator.DistanceFrom last;
 
     private boolean isFirstPop;
 
@@ -35,7 +40,9 @@ public class PathDrawer {
                        BitmapDescriptor lastNodeIcon) {
 
         this.map = map;
-        this.path = path;
+        this.path = new ArrayDeque<>();
+        this.path.addAll(path);
+        last = path.getFirst();
         this.firstNodeIcon = firstNodeIcon;
         this.middleNodeIcon = middleNodeIcon;
         this.lastNodeIcon = lastNodeIcon;
@@ -57,13 +64,12 @@ public class PathDrawer {
             options.icon(firstNodeIcon);
             isFirstPop = false;
         } else {
+            last = path.pop();
+            options.position(last.getEnd());
 
-            options.position(path.pop().getEnd());
             if (path.size() == 0) {
-
                 options.icon(lastNodeIcon);
             } else {
-
                 options.icon(middleNodeIcon);
             }
         }
@@ -72,8 +78,6 @@ public class PathDrawer {
     }
 
     public static class Builder {
-
-        private static final int ICON_DIMENSION = 90;
 
         private GoogleMap map;
         private Deque<PathCreator.DistanceFrom> path;
@@ -85,7 +89,7 @@ public class PathDrawer {
 
             Bitmap toScale = BitmapFactory.decodeResource(
                     SpaceRace.getAppContext().getResources(),
-                    R.drawable.ic_account_balance_black_48dp);
+                    DEFAULT_PIECE_DISPLAYED);
             toScale = Bitmap.createScaledBitmap(toScale,
                     ICON_DIMENSION,
                     ICON_DIMENSION,

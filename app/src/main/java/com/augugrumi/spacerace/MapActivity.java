@@ -17,11 +17,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.augugrumi.spacerace.pathCreator.PathCreator;
 import com.augugrumi.spacerace.pathCreator.PathDrawer;
 import com.augugrumi.spacerace.utility.CoordinatesUtility;
+import com.augugrumi.spacerace.utility.LanguageManager;
+import com.augugrumi.spacerace.utility.LoadingScreenFragment;
+import com.augugrumi.spacerace.utility.SharedPreferencesManager;
+import com.augugrumi.spacerace.utility.gameutility.ScoreCounter;
 import com.augugrumi.spacerace.utility.gameutility.piece.PiecePicker;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceShape;
 import com.augugrumi.spacerace.utility.gameutility.piece.PieceSquareShape;
@@ -41,33 +46,42 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.text.DateFormat;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
 import java.util.List;
 
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_HINT;
+import static com.augugrumi.spacerace.utility.Costants.KM_DISTANCE_MARKER;
+import static com.augugrumi.spacerace.utility.Costants.PIECE_SIZE;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+public abstract class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapActivity.class.getSimpleName();
-
-    private static final int PIECE_SIZE=95;
+    public static final String MY_SCORE = "my_score_intent";
+    public static final String OPPONENT_SCORE = "my_opponent_score_intent";
     private static final int piece = PiecePicker.pickRandomPieceResource();
 
-    /************************FORDEBUG**************************/
-    private static final LatLng POI = new LatLng(45.4108011, 11.8880358);
-    /************************FORDEBUG**************************/
+    protected int myScore = -1;
+    protected int opponentScore = -1;
 
-    private static final double KM_DISTANCE_HINT = 0.020;
+    protected LatLng poi;
+
 
     /**
      * Code used in requesting runtime permissions.
@@ -100,7 +114,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private final static String KEY_LOCATION = "location";
     private final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
 
-    private Location initialPosition = null;
+    protected Location initialPosition = null;
 
     private GoogleMap map;
 
@@ -136,7 +150,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     /**
      * Represents a geographical location.
      */
-    private Location mCurrentLocation;
+    protected Location mCurrentLocation;
 
     /**
      * Tracks the status of the location updates request. Value changes when the user presses the
@@ -155,19 +169,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private LatLng mDefaultLocation = new LatLng(45.414380, 11.876797);
 
-    private HintFragment hf;
+    private AbsHintFragment hf;
 
-    private Deque<PathCreator.DistanceFrom> path;
+    protected Deque<PathCreator.DistanceFrom> path;
     private PathDrawer drawer;
+    private LoadingScreenFragment lsf;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        lsf = new LoadingScreenFragment();
+        hf = new FirstHintFragment();
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .add(R.id.hint_cont, lsf)
+                .show(lsf)
+                .commit();
+
 
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
@@ -193,7 +219,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             startLocationUpdates();
         }
 
-        hf = new HintFragment();
+        LanguageManager.languageManagement(this);
+
+        keepScreenOn();
     }
 
     /**
@@ -278,41 +306,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 new LatLng(initialPosition.getLatitude(),
                                         initialPosition.getLongitude()), DEFAULT_ZOOM));
 
-                        PathCreator p = new PathCreator(
-                                new LatLng(
-                                        initialPosition.getLatitude(),
-                                        initialPosition.getLongitude()
-                                ),
-                                0.3,
-                                2.5);
+                        Log.d("INITIAL_POSITION", initialPosition.getLatitude() + " " +
+                                initialPosition.getLongitude());
 
-                        List<Deque<PathCreator.DistanceFrom>> res = p.generatePaths();
-                        Collections.shuffle(res);
-
-                        path = res.get((int)(Math.random() * (res.size() -1)));
-
-                        double sum = 0;
-                        for (PathCreator.DistanceFrom d : path) {
-
-                            Log.d("PATH_RESULT", d.getStart() + " " + d.getEnd() + " " + d.getDistance());
-                            sum += d.getDistance();
-                        }
-
-                        Log.d("PATH_RESULT", "Distance: " + sum);
-
-                        PieceShape ps = new PieceSquareShape(125);
-
-                        drawer = new PathDrawer.Builder()
-                                .setMap(map)
-                                .setStartIcon(PiecePicker.getStartGoal(ps))
-                                .setMiddleIcon(PiecePicker.getPiece(ps, R.drawable.piece_gem_stone))
-                                .setEndIcon(PiecePicker.getPiece(ps, R.drawable.piece_direct_hit))
-                                .setPath(path)
-                                .build();
-
-                        if (drawer.hasNext()) {
-                            drawer.drawNext();
-                        }
+                        createAndDrawPath();
                     }
 
                     mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
@@ -322,6 +319,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         };
     }
+
 
     @NonNull
     private Marker placeMarker(@NonNull BitmapDescriptor draw, @NonNull LatLng pos) {
@@ -444,15 +442,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         if (mCurrentLocation != null) {
-            if (oldLocation!=null) {
+            if (oldLocation!= null) {
                 // refresh ogni 2 sec -> record mondiale 8,33m/s => ~16 ogni 2 sec => 15
                 // per essere sicuri
                 if (CoordinatesUtility.distance(mCurrentLocation, oldLocation)<MAX_DIFFERENCE_UPDATE_POLYLINE) {
+
+                    List<PatternItem> dashItems = new ArrayList<>();
+                    // 5 and 10 pixel long dash
+                    dashItems.add(new Dash(5));
+                    dashItems.add(new Gap(25));
+                    dashItems.add(new Dash(15));
+
                     map.addPolyline(new PolylineOptions()
                             .add(new LatLng(oldLocation.getLatitude(),
                                             oldLocation.getLongitude()),
                                     new LatLng(mCurrentLocation.getLatitude(),
                                             mCurrentLocation.getLongitude()))
+                            .endCap(new RoundCap())
+                            .startCap(new RoundCap())
+                            .pattern(dashItems)
                             .width(30)
                             .color(Color.CYAN));
                     if (marker == null) {
@@ -461,11 +469,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                     marker.setPosition(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
                 }
-                showHintIfNear();
+                if (drawer != null) {
+
+                    showHintIfNear();
+                }
             }
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mCurrentLocation.getLatitude(),
-                            mCurrentLocation.getLongitude()), zoom));
+                            mCurrentLocation.getLongitude()), map.getCameraPosition().zoom));
         }
     }
 
@@ -637,25 +648,73 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void popPoi () {
+        poi = path.pop().getEnd();
+        LatLng next = null;
+        if (!path.isEmpty())
+            next = path.getFirst().getEnd();
+        hf.setPOI(poi, next);
+    }
+
     private boolean hintShown = false;
+    private boolean symbolShown = false;
     private void showHintIfNear() {
-        Log.i("FRAG_", "" + CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                POI.latitude, POI.longitude));
-        if (CoordinatesUtility.distance(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
-                POI.latitude, POI.longitude)<KM_DISTANCE_HINT && !hintShown) {
+
+        if (lsf != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .hide(lsf)
+                    .remove(lsf)
+                    .commitNow();
+            lsf = null;
+        }
+
+        Log.i("FRAG_", "" + CoordinatesUtility.get2DDistanceInKm(
+                new LatLng(
+                        mCurrentLocation.getLatitude(),
+                        mCurrentLocation.getLongitude()
+                ),
+                poi));
+
+        LatLng currentLatLng = new LatLng(
+                mCurrentLocation.getLatitude(),
+                mCurrentLocation.getLongitude()
+        );
+
+        if(CoordinatesUtility.get2DDistanceInKm(currentLatLng, poi)<KM_DISTANCE_MARKER
+                && !symbolShown) {
+            drawer.drawNext();
+            symbolShown = true;
+        }
+
+        if (CoordinatesUtility.get2DDistanceInKm(
+                currentLatLng,
+                poi) < KM_DISTANCE_HINT
+                && !hintShown) {
+
             stopLocationUpdates();
+
+
+
             Log.i("FRAG_", "show");
             SupportMapFragment mapFragment =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
             getSupportFragmentManager().
                     beginTransaction()
                     .hide(mapFragment)
+                    .show(hf)
                     .commit();
 
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.hint_cont, hf)
-                    .commit();
+            Log.d("POI", poi.toString());
+            LatLng next = null;
+            if (!path.isEmpty())
+                next = path.getFirst().getEnd();
+            hf.setPOI(poi, next);
+
+            /*if (path != null && !path.isEmpty())
+                drawPath();*/
+
             hintShown = true;
         }
     }
@@ -663,16 +722,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
+        map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                        this, SharedPreferencesManager.getMapStyle()));
+        map.setMinZoomPreference(8.0f);
     }
 
     private void showCurrentPlace() {
-        Log.e("POSIZ_MOV", "7");
-        if (map == null) {
+        if (map == null || !mLocationPermissionGranted) {
             return;
         }
-
-        if (!mLocationPermissionGranted)
-            return;
 
         @SuppressLint("MissingPermission") Task locationResult =
                 mFusedLocationClient.getLastLocation();
@@ -680,9 +739,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()) {
-
-                    Log.e("POSIZ_MOV", "1");
-
                     // Set the map's camera position to the current location of the device.
                     mCurrentLocation = (Location) task.getResult();
                     PieceShape markerPic = new PieceSquareShape(PIECE_SIZE);
@@ -706,25 +762,109 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
     public void hideHintAndShowMap() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .hide(hf)
-                .commit();
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        getSupportFragmentManager().
-                beginTransaction()
-                .show(mapFragment)
-                .commit();
+        try {
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .hide(hf)
+                    .show(mapFragment)
+                    .commitNow();
+
+            if (hf instanceof FirstHintFragment) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(hf)
+                        .commitNow();
+                hf = new HintFragment();
+
+                popPoi();
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.hint_cont, (HintFragment) hf)
+                        .hide(hf)
+                        .commitNow();
+            } else {
+                hf.setHintData();
+                popPoi();
+            }
+            hintShown = false;
+            symbolShown = false;
+
+        } catch (Exception e) {
+            Log.e("EXCEPTION_1", e.toString());
+            e.printStackTrace();
+        }
 
         startLocationUpdates();
+    }
+
+    protected abstract void createAndDrawPath();
+
+    protected void drawPath() {
+        PieceShape ps = new PieceSquareShape(125);
+
+        drawer = new PathDrawer.Builder()
+                .setMap(map)
+                .setStartIcon(PiecePicker.getStartGoal(ps))
+                .setMiddleIcon(PiecePicker.getPiece(ps, R.drawable.piece_gem_stone))
+                .setEndIcon(PiecePicker.getPiece(ps, R.drawable.piece_direct_hit))
+                .setPath(path)
+                .build();
+
+
+        if (drawer.hasNext()) {
+            drawer.drawNext();
+            poi = path.getFirst().getEnd();
+            hf.setPOI(poi, poi);
+        }
+    }
+
+    public ScoreCounter getTotalScore() {
+        return (hf instanceof HintFragment)?((HintFragment)hf).getTotalScore():new ScoreCounter.Builder().build();
+    }
+
+    protected void hideLoadingScreen() {
+        Log.d("LOADING_SCREEN", "Stopping loading screen");
+
+        try {
+
+            SupportMapFragment mapFragment =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .hide(mapFragment)
+                    .commit();
+            Thread.sleep(500);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .hide(lsf)
+                    .add(R.id.hint_cont, hf)
+                    .show(hf)
+                    .commitNow();
+        } catch (Exception e) {
+            Log.e("EXCEPTION_2", e.toString());
+            e.printStackTrace();
+        }
+
+        Log.d("LOADING_SCREEN", "Loading screen stopped");
+    }
+
+    void keepScreenOn() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    void launchEndMatchActivity() {
+        Intent intent = new Intent(this, EndMatchActivity.class);
+        intent.putExtra(MY_SCORE, myScore);
+        intent.putExtra(OPPONENT_SCORE, opponentScore);
+        startActivity(intent);
+        finish();
     }
 }

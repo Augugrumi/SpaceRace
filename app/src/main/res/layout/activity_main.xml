@@ -1,144 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:fancy="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/main_activity"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/mainBg"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainBg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <ImageView
-            android:id="@+id/rocketWallpaper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="center"
-            android:src="@drawable/rocket_dark_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.35000002"
-            tools:ignore="ContentDescription" />
+        android:id="@+id/rocketWallpaper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="center"
+        android:src="@drawable/rocket_dark_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35000002"
+        tools:ignore="ContentDescription" />
 
 
-        <com.rilixtech.materialfancybutton.MaterialFancyButton
-            android:id="@+id/leaderboard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@null"
-            android:text=""
-            app:layout_constraintBottom_toTopOf="@+id/new_match"
-            app:layout_constraintEnd_toStartOf="@+id/credits"
-            app:layout_constraintStart_toEndOf="@+id/main_settings"
-            fancy:mfb_borderColor="#FFFF"
-            fancy:mfb_borderWidth="2dp"
-            fancy:mfb_defaultColor="@android:color/transparent"
-            fancy:mfb_iconPaddingBottom="10dp"
-            fancy:mfb_iconPaddingLeft="10dp"
-            fancy:mfb_iconPaddingRight="10dp"
-            fancy:mfb_iconPaddingTop="10dp"
-            fancy:mfb_iconResource="@drawable/trophy_icon_material_36"
-            fancy:mfb_radius="30dp">
+    <com.rilixtech.materialfancybutton.MaterialFancyButton
+        android:id="@+id/leaderboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/new_match"
+        app:layout_constraintEnd_toStartOf="@+id/credits"
+        app:layout_constraintStart_toEndOf="@+id/main_settings"
+        fancy:mfb_borderColor="#FFFF"
+        fancy:mfb_borderWidth="2dp"
+        fancy:mfb_defaultColor="@android:color/transparent"
+        fancy:mfb_iconPaddingBottom="10dp"
+        fancy:mfb_iconPaddingLeft="10dp"
+        fancy:mfb_iconPaddingRight="10dp"
+        fancy:mfb_iconPaddingTop="10dp"
+        fancy:mfb_iconResource="@drawable/trophy_icon_material_36"
+        fancy:mfb_radius="30dp">
 
-        </com.rilixtech.materialfancybutton.MaterialFancyButton>
-
-
-        <!-- "PLEASE WAIT" SCREEN -->
+    </com.rilixtech.materialfancybutton.MaterialFancyButton>
 
 
-        <com.rilixtech.materialfancybutton.MaterialFancyButton
-            android:id="@+id/new_match"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:padding="@dimen/main_buttons_padding"
-            android:text="@string/new_match"
-            app:layout_constraintBottom_toTopOf="@+id/join"
-            app:layout_constraintEnd_toStartOf="@+id/credits"
-            app:layout_constraintStart_toEndOf="@+id/main_settings"
-            fancy:mfb_borderColor="#FFFF"
-            fancy:mfb_borderWidth="2dp"
-            fancy:mfb_defaultColor="@android:color/transparent"
-            fancy:mfb_radius="30dp" />
+    <!-- "PLEASE WAIT" SCREEN -->
 
-        <com.rilixtech.materialfancybutton.MaterialFancyButton
-            android:id="@+id/join"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="110dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:padding="@dimen/main_buttons_padding"
-            android:text="@string/join_existing_match"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/credits"
-            app:layout_constraintHorizontal_bias="0.527"
-            app:layout_constraintStart_toEndOf="@+id/main_settings"
-            fancy:mfb_borderColor="#FFFF"
-            fancy:mfb_borderWidth="2dp"
-            fancy:mfb_defaultColor="@android:color/transparent"
-            fancy:mfb_radius="30dp" />
 
-        <Button
-            android:id="@+id/debug_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="For debug - Map"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/credits"
-            app:layout_constraintHorizontal_bias="0.52"
-            app:layout_constraintStart_toEndOf="@+id/main_settings" />
+    <com.rilixtech.materialfancybutton.MaterialFancyButton
+        android:id="@+id/new_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:padding="@dimen/main_buttons_padding"
+        android:text="@string/new_match"
+        
+        app:layout_constraintBottom_toTopOf="@+id/join"
+        app:layout_constraintEnd_toStartOf="@+id/credits"
+        app:layout_constraintStart_toEndOf="@+id/main_settings"
+        fancy:mfb_borderColor="#FFFF"
+        fancy:mfb_borderWidth="2dp"
+        fancy:mfb_defaultColor="@android:color/transparent"
+        fancy:mfb_radius="30dp" />
 
-        <ImageButton
-            android:id="@+id/credits"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_info_details" />
+    <com.rilixtech.materialfancybutton.MaterialFancyButton
+        android:id="@+id/join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="130dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:padding="@dimen/main_buttons_padding"
+        android:text="@string/join_existing_match"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/credits"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toEndOf="@+id/main_settings"
+        fancy:mfb_borderColor="#FFFF"
+        fancy:mfb_borderWidth="2dp"
+        fancy:mfb_defaultColor="@android:color/transparent"
+        fancy:mfb_radius="30dp" />
 
-        <ImageButton
-            android:id="@+id/main_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
-            android:layout_marginStart="24dp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_settings_white_24dp" />
+    <com.rilixtech.materialfancybutton.MaterialFancyButton
+        android:id="@+id/sigleplayer_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:padding="@dimen/main_buttons_padding"
+        android:text="@string/single_player_button"
+        
+        app:layout_constraintEnd_toStartOf="@+id/credits"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toEndOf="@+id/main_settings"
+        app:layout_constraintTop_toBottomOf="@+id/join"
+        fancy:mfb_borderColor="#FFFF"
+        fancy:mfb_borderWidth="2dp"
+        fancy:mfb_defaultColor="@android:color/transparent"
+        fancy:mfb_radius="30dp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="284dp"
-            android:layout_height="202dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            fancy:srcCompat="@drawable/main_title" />
+    <ImageButton
+        android:id="@+id/credits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+    <ImageButton
+        android:id="@+id/main_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="24dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_settings_white_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="284dp"
+        android:layout_height="202dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        fancy:srcCompat="@drawable/main_title" />
 
     <LinearLayout
         android:id="@+id/screen_wait"
@@ -168,94 +174,141 @@
         android:id="@+id/invitation_popup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="200dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginBottom="180dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/custom_popup_border"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/rocketWallpaper"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/custom_border">
-
-        <TextView
-            android:id="@+id/incoming_invitation_text"
-            style="@style/InvPopupText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:textSize="8pt"
-            android:paddingTop="10dp"
-            android:textAlignment="center"
-            android:textColor="@android:color/white" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <com.rilixtech.materialfancybutton.MaterialFancyButton
-                android:id="@+id/button_accept_popup_invitation"
-                style="@style/InvPopupButton"
+            <ImageView
+                android:id="@+id/transmission_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginStart="180dp"
-                android:padding="@dimen/main_buttons_padding"
-                android:paddingEnd="25dp"
-                android:paddingStart="25dp"
-                android:text="@string/accept_popup_invite"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                fancy:mfb_borderColor="#FFFF"
-                fancy:mfb_borderWidth="2dp"
-                fancy:mfb_defaultColor="@android:color/white"
-                fancy:mfb_focusColor="@color/AccentColor"
-                fancy:mfb_radius="30dp"
-                android:textAllCaps="true"
-                fancy:mfb_textColor="@color/AccentColor" />
+                app:layout_constraintTop_toTopOf="@+id/incoming_invitation_text_title"
+                app:srcCompat="@drawable/transmission" />
 
-            <com.rilixtech.materialfancybutton.MaterialFancyButton
-                android:id="@+id/button_decline_popup_invitation"
-                style="@style/InvPopupButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/incoming_invitation_text_title"
+                style="@style/InvPopupText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginEnd="180dp"
-                android:layout_marginStart="40dp"
-                android:padding="@dimen/main_buttons_padding"
-                android:paddingEnd="25dp"
-                android:paddingStart="25dp"
-                android:text="@android:string/cancel"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="@string/inv_popup_text"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                fancy:mfb_borderColor="#FFFF"
-                fancy:mfb_borderWidth="2dp"
-                fancy:mfb_defaultColor="@android:color/white"
-                fancy:mfb_focusColor="@color/AccentColor"
-                fancy:mfb_radius="30dp"
-                android:textAllCaps="true"
-                fancy:mfb_textColor="@color/AccentColor" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!--<Button
-                android:id="@+id/button_decline_popup_invitation"
-                style="@style/InvPopupButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/incoming_invitation_text"
+                style="@style/InvPopupText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="180dp"
-                android:layout_marginStart="20dp"
-                android:text="@android:string/cancel"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="2dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:paddingBottom="20dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />-->
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/incoming_invitation_text_title" />
 
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.rilixtech.materialfancybutton.MaterialFancyButton
+                    android:id="@+id/button_accept_popup_invitation"
+                    style="@style/InvPopupButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="180dp"
+                    android:padding="@dimen/main_buttons_padding"
+                    android:paddingEnd="25dp"
+                    android:paddingStart="25dp"
+                    android:text="@string/accept_popup_invite"
+                    android:textAllCaps="true"
+                    
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    fancy:mfb_borderColor="#FFFF"
+                    fancy:mfb_borderWidth="2dp"
+                    fancy:mfb_defaultColor="@android:color/white"
+                    fancy:mfb_focusColor="@color/slide3BgPlayGames"
+                    fancy:mfb_radius="30dp"
+                    fancy:mfb_textColor="@color/slide3BgPlayGames" />
+
+                <com.rilixtech.materialfancybutton.MaterialFancyButton
+                    android:id="@+id/button_decline_popup_invitation"
+                    style="@style/InvPopupButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="180dp"
+                    android:layout_marginStart="40dp"
+                    android:padding="@dimen/main_buttons_padding"
+                    android:paddingEnd="25dp"
+                    android:paddingStart="25dp"
+                    android:text="@string/decline_popup_button"
+                    android:textAllCaps="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    fancy:mfb_borderColor="#FFFF"
+                    fancy:mfb_borderWidth="2dp"
+                    fancy:mfb_defaultColor="@android:color/white"
+                    fancy:mfb_focusColor="@color/AccentColor"
+                    fancy:mfb_radius="30dp"
+                    fancy:mfb_textColor="@color/AccentColor" />
+
+                <!--<Button
+                    android:id="@+id/button_decline_popup_invitation"
+                    style="@style/InvPopupButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="180dp"
+                    android:layout_marginStart="20dp"
+                    android:text="@android:string/cancel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />-->
+
+            </android.support.constraint.ConstraintLayout>
         </android.support.constraint.ConstraintLayout>
+
     </LinearLayout>
 
 

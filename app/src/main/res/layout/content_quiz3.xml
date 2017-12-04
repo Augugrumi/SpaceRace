@@ -13,7 +13,7 @@
     <TextView
         android:id="@+id/place_explanation_title"
         android:textAlignment="center"
-        android:textColor="@android:color/primary_text_light"
+        android:textColor="@android:color/primary_text_dark_nodisable"
         android:textSize="22sp"
         android:paddingBottom="20dp"
         android:text="@string/question_3"
@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
+        android:textColor="@android:color/secondary_text_dark_nodisable"
         android:textSize="18sp"
         android:id="@+id/question3_text"
         android:text="@string/lorem_ipsum_medium" />
@@ -33,18 +34,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="btn1"
-        android:id="@+id/quiz3_rx1_btn"/>
+        android:id="@+id/quiz3_rx1_btn"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="btn2"
-        android:id="@+id/quiz3_rx2_btn"/>
+        android:id="@+id/quiz3_rx2_btn"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="btn3"
-        android:id="@+id/quiz3_rx3_btn"/>
+        android:id="@+id/quiz3_rx3_btn"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>

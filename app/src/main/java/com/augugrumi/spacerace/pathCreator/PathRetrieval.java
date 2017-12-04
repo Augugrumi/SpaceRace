@@ -9,14 +9,13 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.augugrumi.spacerace.utility.Costants.GOOGLE_MAPS_API_URL;
+
 /**
  * Created by dpolonio on 16/11/17.
  */
 
 class PathRetrieval {
-
-    private final static String GOOGLE_MAPS_API_URL = "https://maps.googleapis.com";
-
     Call<Object> getDirections(@NonNull String origin, @NonNull String destination) {
         Retrofit request = new Retrofit.Builder()
                 .baseUrl(GOOGLE_MAPS_API_URL)
@@ -29,6 +28,7 @@ class PathRetrieval {
                 destination,
                 "walking",
                 "metric",
-                SpaceRace.getAppContext().getString(R.string.google_maps_directions_api_key));
+                SpaceRace.getAppContext().getString(R.string.google_maps_directions_api_key)
+        );
     }
 }

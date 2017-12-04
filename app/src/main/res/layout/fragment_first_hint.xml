@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    class="com.augugrumi.spacerace.FirstHintFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_first_hint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/content_hint_next_place" />
+    <include layout="@layout/content_hint_image" />
+
+</LinearLayout>

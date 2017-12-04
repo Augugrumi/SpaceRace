@@ -12,7 +12,7 @@
     <TextView
         android:id="@+id/place_explanation_title"
         android:textAlignment="center"
-        android:textColor="@android:color/primary_text_light"
+        android:textColor="@android:color/primary_text_dark_nodisable"
         android:textSize="22sp"
         android:paddingBottom="20dp"
         android:text="@string/lorem_ipsum_short"
@@ -26,6 +26,7 @@
         android:layout_weight = "1"
         android:textSize="18sp"
         android:id="@+id/place_explanation_text"
+        android:textColor="@android:color/secondary_text_dark_nodisable"
         android:text="@string/lorem_ipsum"
         android:scrollbars="vertical"
         android:scrollbarStyle="insideOverlay"
@@ -44,7 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/skip_quiz"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/to_quiz_btn"
@@ -52,7 +55,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:text="@string/to_quiz"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 

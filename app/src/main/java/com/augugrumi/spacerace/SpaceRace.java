@@ -7,11 +7,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.augugrumi.spacerace.listener.EndMatchReceiver;
+import com.augugrumi.spacerace.listener.PathReceiver;
+import com.augugrumi.spacerace.utility.LanguageManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.RealTimeMultiplayerClient;
+import com.google.android.gms.games.multiplayer.realtime.OnRealTimeMessageReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
+import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import java.util.HashSet;
 
 /**
  * @author Marco Zanella
@@ -29,14 +40,6 @@ public class SpaceRace extends Application {
         super.onCreate();
 
         instance = this;
-
-        // [START configure_signin]
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // [END configure_signin]
 
         gAPIClient = new GoogleApiClient.Builder(instance)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -58,25 +61,14 @@ public class SpaceRace extends Application {
 
                         Log.d("INTRO", "Something went wrong with Google Play Games connection...\n" +
                                 connectionResult.toString());
-
-                        /*new AlertDialog.Builder(instance)
-                                .setTitle(getResources().getText(R.string.warningSlider3Title))
-                                .setMessage(getResources().getText(R.string.warningSlider3SubTitle))
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        // Nothing?
-                                    }
-                                })
-                                .show();*/
                     }
                 })
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 .addApi(Drive.API).addScope(Drive.SCOPE_APPFOLDER)
                 //.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        LanguageManager.languageManagement(this);
 
     }
 
@@ -88,8 +80,108 @@ public class SpaceRace extends Application {
         return gAPIClient;
     }
 
-    public static void setgAPIClient(GoogleApiClient client) {
-        SpaceRace.gAPIClient = client;
-    }
+    public static MessageManager messageManager = new MessageManager();
 
+    public static class MessageManager implements OnRealTimeMessageReceivedListener,
+            RealTimeMultiplayerClient.ReliableMessageSentCallback{
+
+        private Room mRoom = null;
+        private String mMyParticipantId = null;
+        private RealTimeMultiplayerClient mRealTimeMultiplayerClient = null;
+        private HashSet<Integer> pendingMessageSet = new HashSet<>();
+        private PathReceiver pathReceiver;
+        private EndMatchReceiver endMatchReceiver;
+        private RoomConfig mRoomConfig;
+
+        private MessageManager(){}
+
+        public void setmRoomConfig (RoomConfig mRoomConfig) {
+            this.mRoomConfig = mRoomConfig;
+        }
+
+        public void leaveRoom() {
+            Log.d("ROOM", "Leaving room.");
+            if (mRoom.getRoomId() != null) {
+                mRealTimeMultiplayerClient.leave(mRoomConfig, mRoom.getRoomId())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                mRoomConfig = null;
+                            }
+                        });
+            }
+        }
+
+        public void setRealTimeMultiplayerClient(RealTimeMultiplayerClient client) {
+            mRealTimeMultiplayerClient = client;
+        }
+
+        public void setRoom(Room room) {
+            mRoom = room;
+        }
+
+        public void setParticipantId(String participantId) {
+            mMyParticipantId = participantId;
+        }
+
+        public void sendToAllReliably(final String messageString) {
+            byte [] message = messageString.getBytes();
+            for (final String participantId : mRoom.getParticipantIds()) {
+                if (!participantId.equals(mMyParticipantId)) {
+                    mRealTimeMultiplayerClient.sendReliableMessage(message,
+                            mRoom.getRoomId(), participantId,
+                            this).addOnCompleteListener(
+                            new OnCompleteListener<Integer>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Integer> task) {
+                                    // Keep track of which messages are sent, if desired.
+                                    Log.d("MEXX", "Sent '" + messageString + "' to " + participantId);
+                                    recordMessageToken(task.getResult());
+                                }
+                            });
+                }
+            }
+        }
+
+        private synchronized void recordMessageToken(int tokenId) {
+            pendingMessageSet.add(tokenId);
+        }
+
+        @Override
+        public void onRealTimeMessageReceived(@NonNull RealTimeMessage realTimeMessage) {
+            // Handle messages received here.
+            byte[] message = realTimeMessage.getMessageData();
+            Log.d("MEXX", "Received:" + new String(message));
+            String messageString = new String(message);
+            if (messageString.contains(PathReceiver.ACK_PATH)) {
+                if (pathReceiver!=null)
+                    pathReceiver.receiveAck();
+            } else if(messageString.contains(EndMatchReceiver.END_MATCH)){
+                if (endMatchReceiver != null)
+                    endMatchReceiver.receiveEndMatch(messageString);
+            } else if(messageString.contains(EndMatchReceiver.ACK_END_MATCH)){
+                if (endMatchReceiver != null)
+                    endMatchReceiver.receiveAckEndMatch(messageString);
+            } else {
+                if (pathReceiver != null)
+                    pathReceiver.receivePath(new String(message));
+            }
+        }
+
+        @Override
+        public void onRealTimeMessageSent(int statusCode, int tokenId, String recipientId) {
+            // handle the message being sent.
+            synchronized (this) {
+                pendingMessageSet.remove(tokenId);
+            }
+        }
+
+        public void registerPathReceiver(PathReceiver pathReceiver) {
+            this.pathReceiver = pathReceiver;
+        }
+
+        public void registerForReceiveEndMatch(EndMatchReceiver endMatchReceiver) {
+            this.endMatchReceiver = endMatchReceiver;
+        }
+    }
 }

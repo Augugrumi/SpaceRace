@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:id="@+id/loading_screen">
+
+    <com.flaviofaria.kenburnsview.KenBurnsView
+        android:id="@+id/fragmentloginKenBurnsView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/loading_screen_pic_1" />
+
+    <TextView
+        android:id="@+id/loading_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Random suggestion"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/loading_text"
+        android:layout_width="376dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="60dp"
+        android:layout_weight="1"
+        android:text="@string/loading"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/fragmentloginKenBurnsView1"
+        app:layout_constraintStart_toStartOf="@+id/fragmentloginKenBurnsView1"
+        app:layout_constraintTop_toTopOf="@+id/fragmentloginKenBurnsView1" />
+
+    <TextView
+        android:id="@+id/loading_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/fragmentloginKenBurnsView1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loading_text" />
+
+</android.support.constraint.ConstraintLayout>
+

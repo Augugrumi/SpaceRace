@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 
@@ -99,7 +100,7 @@
     </style>
 
     <style name="InvPopupButton" parent="@style/GameButton">
-        <item name="android:background" >@color/ButtonTextColor</item>
+        <item name="android:background">@color/ButtonTextColor</item>
         <item name="android:textColor">@color/AccentColor</item>
     </style>
 
@@ -192,5 +193,13 @@
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="PreferencesTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">@color/mainBg</item>
+        <item name="android:textColorPrimary">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorSecondary">@android:color/secondary_text_dark_nodisable</item>
     </style>
 </resources>
