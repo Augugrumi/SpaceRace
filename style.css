@@ -7,6 +7,15 @@
 	-o-background-size: cover;
 	background-size: cover;
     }
+    
+        a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 40pt;
+        font-family: Verdana, Geneva, sans-serif;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+   }
 }
 
 @media (orientation: portrait) {
@@ -18,23 +27,23 @@
 	-o-background-size: cover;
 	background-size: cover;
     }
-}
 
-
-
-
-a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 30pt;
-    font-family: Verdana, Geneva, sans-serif;
+    a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 70pt;
+        font-family: Verdana, Geneva, sans-serif;
+   	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
 }
 
 ul {
     color: white;
-    font-size: 30pt;
+    font-size: 40pt;
+    list-style-type: none;
 }
+
 
 .container {
   display: flex;
